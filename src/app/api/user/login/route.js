@@ -11,25 +11,37 @@ export async function POST(req) {
     const { email, password } = await req.json();
 
     if (!validator.isEmail(email)) {
-      return NextResponse.json({ success: false, message: "Enter a valid email" });
+      return NextResponse.json({
+        success: false,
+        message: "Enter a valid email",
+      });
     }
 
     const patient = await patientModel.findOne({ email });
     if (!patient) {
-      return NextResponse.json({ success: false, message: "Patient not found" });
+      return NextResponse.json({
+        success: false,
+        message: "Patient not found",
+      });
     }
-
+    // console.log("Stored hash:", patient.password);
+    // console.log("Entered password:", password);
     const isMatch = await bcrypt.compare(password, patient.password);
     if (!isMatch) {
-      return NextResponse.json({ success: false, message: "Incorrect password" });
+      return NextResponse.json({
+        success: false,
+        message: "Incorrect password",
+      });
     }
 
     const token = createToken(patient._id);
     // console.log("token" , token)
     return NextResponse.json({ success: true, token });
-    
   } catch (error) {
     console.error("Login error:", error);
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
   }
 }

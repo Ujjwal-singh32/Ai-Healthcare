@@ -147,7 +147,7 @@ export default function DoctorSection() {
                 <div className="flex flex-col items-center text-center gap-2">
                   <div className="w-20 h-20 rounded-full border-4 border-purple-400 dark:border-purple-600 shadow-md overflow-hidden bg-black">
                     <Image
-                      src={doctor.profilePic}
+                      src={doctor.profilePic || "/fallback.jpg"}
                       alt={doctor.name}
                       width={80}
                       height={80}
