@@ -1,20 +1,31 @@
 import mongoose from "mongoose";
 
 const chatSchema = new mongoose.Schema({
-  senderId: { type: mongoose.Schema.Types.ObjectId, ref: "Patient", required: true },
-receiverId: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor", required: true },
-bookingId: { type: mongoose.Schema.Types.ObjectId, ref: "DoctorBooking", required: true },
+  bookingId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "DoctorBooking", 
+    required: true 
+  },
 
   messages: [
     {
       text: { type: String, default: "" },
       timestamp: { type: Date, default: Date.now },
-      sentBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
+      // Who sent this message
+      senderId: { type: mongoose.Schema.Types.ObjectId, required: true },
+      senderType: { type: String, enum: ["Patient", "Doctor"], required: true },
+
+      // Who received this message
+      receiverId: { type: mongoose.Schema.Types.ObjectId, required: true },
+      receiverType: { type: String, enum: ["Patient", "Doctor"], required: true }
     },
-  ],  
-});
+  ],
+}, { timestamps: true });
 
-chatSchema.index({ senderId: 1, receiverId: 1, bookingId: 1 });
-const chatModel = mongoose.models.Chats || mongoose.model("Chats", chatSchema);
+// Each booking has only one chat thread
+chatSchema.index({ bookingId: 1 });
 
-export default chatModel;
+const ChatModel = mongoose.models.Chats || mongoose.model("Chats", chatSchema);
+
+export default ChatModel;

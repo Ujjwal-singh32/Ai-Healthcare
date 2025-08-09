@@ -75,12 +75,9 @@ export default function AppointmentDetails() {
     setIsClient(true);
   }, []);
 
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
 
-  const senderId = booking?.doctorId?._id || booking?.doctorId || null; // Doctor is sender
-  const receiverId = booking?.patientId?._id || booking?.patientId || null; // Patient is receiver
+  const senderId = booking?.doctorId?._id || booking?.doctorId || null;
+  const receiverId = booking?.patientId?._id || booking?.patientId || null;
 
   const handleCreateZoomMeeting = async () => {
     try {
@@ -179,28 +176,53 @@ export default function AppointmentDetails() {
     }
   }, [receiverId]);
 
-  const socket = useRef(null);
+  // const socket = useRef(null);
+
+  // useEffect(() => {
+  //   if (!receiverId || !senderId || activeSection !== "chat") return;
+
+  //   const token = localStorage.getItem("drtoken") || "";
+
+  //   socket.current = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+  //     autoConnect: true,
+  //     auth: { token },
+  //   });
+
+  //   socket.current.emit("join", { userId: senderId });
+
+  //   socket.current.on("newMessage", (msg) => {
+  //     setMessages((prev) => [...prev, msg]);
+  //   });
+
+  //   return () => {
+  //     socket.current?.disconnect();
+  //   };
+  // }, [receiverId, senderId, activeSection]);
 
   useEffect(() => {
-    if (!receiverId || !senderId || activeSection !== "chat") return;
+    if (!receiverId || !senderId || activeSection !== "chat" || !booking?._id) return;
 
-    const token = localStorage.getItem("drtoken") || "";
-
-    socket.current = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
-      autoConnect: true,
-      auth: { token },
-    });
-
-    socket.current.emit("join", { userId: senderId });
-
-    socket.current.on("newMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
-
-    return () => {
-      socket.current?.disconnect();
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.post("/api/chat/get", { bookingId: booking._id });
+        if (res.data.success) {
+          setMessages(res.data.messages); // messages will already include senderName from API
+        }
+      } catch (error) {
+        console.error("Failed to fetch chat history:", error);
+      }
     };
-  }, [receiverId, senderId, activeSection]);
+
+    // Fetch immediately on mount
+    fetchMessages();
+
+   
+    const intervalId = setInterval(fetchMessages, 1200);
+
+    // Cleanup on unmount or dependency change
+    return () => clearInterval(intervalId);
+
+  }, [receiverId, senderId, activeSection, booking?._id]);
 
   if (loading || !booking || !senderId || !receiverId) {
     return (
@@ -260,30 +282,37 @@ export default function AppointmentDetails() {
     }
   };
 
-  const handleSendMessage = () => {
-    if (messageInput.trim() === "") return;
+
+  const handleSendMessage = async () => {
+    if (!messageInput.trim()) return;
 
     const newMessage = {
       text: messageInput,
-      sender: senderId,
-      receiverId: receiverId,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      senderId,
+      senderType: "Doctor",
+      receiverId,
+      receiverType: "Patient",
+      timestamp: new Date(),
     };
 
-    // Emit message to server
-    socket.current.emit("sendMessage", {
-      to: receiverId,
-      message: newMessage,
-    });
+    // Emit via socket
+    // socket.current.emit("sendMessage", { to: receiverId, message: newMessage });
 
-    // Append to current UI
-    setMessages((prev) => [...prev, newMessage]);
+    // Save to DB
+    try {
+      await axios.post("/api/chat/save", {
+        bookingId: booking._id,
+        ...newMessage,
+      });
+    } catch (error) {
+      console.error("Error saving message:", error);
+    }
+
+    setMessages(prev => [...prev, newMessage]);
     setMessageInput("");
-    // console.log(messages);
   };
+
+
   const handleSelectChange = (isoDate) => {
     const med = medicationData.find(
       (m) => new Date(m.date).toISOString() === isoDate
@@ -402,8 +431,8 @@ export default function AppointmentDetails() {
                   {section === "reports"
                     ? "View Reports"
                     : section === "zoom"
-                    ? "Zoom Meeting"
-                    : section}
+                      ? "Zoom Meeting"
+                      : section}
                 </Button>
               ))}
             </div>
@@ -424,11 +453,10 @@ export default function AppointmentDetails() {
                     {messages.map((msg, index) => (
                       <div
                         key={index}
-                        className={`text-sm p-2 rounded w-fit ${
-                          msg.sender === senderId
-                            ? "bg-pink-300 dark:bg-purple-800 ml-auto text-right"
-                            : "bg-purple-300 dark:bg-purple-700 mr-auto text-left"
-                        }`}
+                        className={`text-sm p-2 rounded w-fit ${msg.senderType === "Doctor"
+                          ? "bg-pink-300 dark:bg-purple-800 ml-auto text-right"
+                          : "bg-purple-300 dark:bg-purple-700 mr-auto text-left"
+                          }`}
                       >
                         <p>{String(msg.text)}</p>
                         <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">

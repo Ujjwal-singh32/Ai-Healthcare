@@ -119,26 +119,54 @@ export default function AppointmentDetails() {
 
   const socket = useRef(null);
 
-  useEffect(() => {
-    if (!receiverId || !senderId || activeSection !== "chat") return;
+  // useEffect(() => {
+  //   if (!receiverId || !senderId || activeSection !== "chat") return;
 
-    const token = localStorage.getItem("token") || "";
+  //   const token = localStorage.getItem("token") || "";
 
-    socket.current = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
-      autoConnect: true,
-      auth: { token },
-    });
+  //   socket.current = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
+  //     autoConnect: true,
+  //     auth: { token },
+  //   });
 
-    socket.current.emit("join", { userId: senderId });
+  //   socket.current.emit("join", { userId: senderId });
 
-    socket.current.on("newMessage", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+  //   socket.current.on("newMessage", (msg) => {
+  //     setMessages((prev) => [...prev, msg]);
+  //   });
 
-    return () => {
-      socket.current?.disconnect();
-    };
-  }, [receiverId, senderId, activeSection]);
+  //   return () => {
+  //     socket.current?.disconnect();
+  //   };
+  // }, [receiverId, senderId, activeSection]);
+
+   useEffect(() => {
+  if (!receiverId || !senderId || activeSection !== "chat" || !booking?._id) return;
+
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.post("/api/chat/get", { bookingId: booking._id });
+      if (res.data.success) {
+        setMessages(res.data.messages); // messages will already include senderName from API
+      }
+    } catch (error) {
+      console.error("Failed to fetch chat history:", error);
+    }
+  };
+
+  // Fetch immediately on mount
+  fetchMessages();
+
+  // Set up auto-refresh every 1.5 seconds
+  const intervalId = setInterval(fetchMessages, 1500);
+
+  // Cleanup on unmount or dependency change
+  return () => clearInterval(intervalId);
+
+}, [receiverId, senderId, activeSection, booking?._id]);
+
+
+
 
   const [messageInput, setMessageInput] = useState("");
 
@@ -168,7 +196,7 @@ export default function AppointmentDetails() {
           // Compress the image file
           const compressedFile = await imageCompression(file, {
             maxSizeMB: 9,  // max size is 9 mb
-            maxWidthOrHeight: 1920, 
+            maxWidthOrHeight: 1920,
             useWebWorker: true,
           });
 
@@ -264,31 +292,38 @@ export default function AppointmentDetails() {
       console.error("Error sending reports:", error);
     }
   };
+ 
+ const handleSendMessage = async () => {
+  if (!messageInput.trim()) return;
 
-  const handleSendMessage = () => {
-    if (messageInput.trim() === "") return;
-
-    const newMessage = {
-      text: messageInput,
-      sender: senderId,
-      receiverId: receiverId,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-
-    // Emit message to server
-    socket.current.emit("sendMessage", {
-      to: receiverId,
-      message: newMessage,
-    });
-
-    // Append to current UI
-    setMessages((prev) => [...prev, newMessage]);
-    setMessageInput("");
-    // console.log("this is the messages", messages);
+  const newMessage = {
+    text: messageInput,
+    senderId,
+    senderType: "Patient",
+    receiverId,
+    receiverType: "Doctor",
+    timestamp: new Date(),
   };
+
+  // Emit via socket
+  // socket.current.emit("sendMessage", { to: receiverId, message: newMessage });
+
+  // Save to DB
+  try {
+    await axios.post("/api/chat/save", {
+      bookingId: booking._id,
+      ...newMessage,
+    });
+  } catch (error) {
+    console.error("Error saving message:", error);
+  }
+
+  setMessages(prev => [...prev, newMessage]);
+  setMessageInput("");
+};
+
+
+
 
   // if (!isClient) return null;
   // console.log("booking", booking);
@@ -357,8 +392,8 @@ export default function AppointmentDetails() {
                   {section === "reports"
                     ? "Upload Reports"
                     : section === "zoom"
-                    ? "Zoom Meeting"
-                    : section}
+                      ? "Zoom Meeting"
+                      : section}
                 </Button>
               ))}
             </div>
@@ -377,11 +412,10 @@ export default function AppointmentDetails() {
                     {messages.map((msg, index) => (
                       <div
                         key={index}
-                        className={`text-sm p-2 rounded w-fit ${
-                          msg.sender === senderId
+                        className={`text-sm p-2 rounded w-fit ${msg.senderType === "Patient"
                             ? "bg-pink-300 dark:bg-purple-800 ml-auto text-right"
                             : "bg-purple-300 dark:bg-purple-700 mr-auto text-left"
-                        }`}
+                          }`}
                       >
                         <p>{String(msg.text)}</p>
 
