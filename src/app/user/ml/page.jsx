@@ -146,6 +146,7 @@ const options = Object.keys(symptomsDict).map((symptom) => ({
   label: symptom.replace(/_/g, " "),
 }));
 
+
 export default function MLPredictionPage() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [prediction, setPrediction] = useState(null);
@@ -160,8 +161,6 @@ export default function MLPredictionPage() {
       return;
     }
     const apiBaseUrl = process.env.NEXT_PUBLIC_FLASK_URL;
-    // console.log("consoling the api flask url" , apiBaseUrl);
-
     try {
       const res = await fetch(`${apiBaseUrl}/predict`, {
         method: "POST",
@@ -172,14 +171,11 @@ export default function MLPredictionPage() {
           selectedSymptoms: selectedSymptoms.map((s) => s.value),
         }),
       });
-
       const data = await res.json();
-
       if (res.status !== 200 || data.error) {
         alert(`Error: ${data.error || "Prediction failed"}`);
         return;
       }
-
       setPrediction(data.details);
     } catch (error) {
       console.error("Prediction Error:", error);
@@ -188,90 +184,141 @@ export default function MLPredictionPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-purple-100 dark:bg-purple-900 transition-colors duration-500 ease-in-out">
+  <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#1e293b] dark:via-[#334155] dark:to-[#1e293b] text-[#2563eb] dark:text-[#60a5fa] overflow-hidden">
+      {/* Decorative background pattern (copied from home page) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <svg width="100%" height="100%" className="opacity-10 dark:opacity-10">
+          <defs>
+            <radialGradient id="bg-grad-ml" cx="50%" cy="50%" r="80%">
+              <stop offset="0%" stopColor="#2563eb" />
+              <stop offset="100%" stopColor="transparent" />
+            </radialGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#bg-grad-ml)" />
+        </svg>
+      </div>
+
       <UserNavbar />
 
-      <main className="flex-grow py-16 px-4 animate-fade-in">
-        <div className="max-w-4xl mx-auto text-center space-y-10">
+  <main className="flex-grow py-16 px-4 animate-fade-in pt-28 sm:pt-32">
+        <div className="max-w-3xl mx-auto text-center space-y-10">
           <div className="flex justify-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1 bg-purple-200 text-purple-900 dark:bg-purple-800 dark:text-purple-100 rounded-full text-sm font-semibold shadow-md animate-bounce">
-              <Brain className="w-4 h-4 animate-pulse" />
-              AI Health Predictor 🧠✨
+            <span className="inline-flex items-center gap-2 px-6 py-2 bg-white/80 dark:bg-[#f3f4f6]/80 backdrop-blur-xl rounded-full text-lg font-semibold text-[#2563eb] dark:text-[#2563eb] shadow animate-fade-in border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <Brain className="w-5 h-5 text-[#2563eb]" />
+              <span className="tracking-wide">AI Health Predictor</span>
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700 dark:text-purple-300 mb-2">
-            Know Your Health in Seconds ⏱️💡
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-[#2563eb] dark:text-[#2563eb] mb-4 animate-fade-in tracking-tight">
+            Health Risk Assessment
           </h1>
 
-          <p className="text-lg text-gray-700 dark:text-gray-200">
-            Select your symptoms and let our intelligent system guide you with
-            smart, early predictions. 🩺🔍
+          <p className="text-lg text-[#2563eb] dark:text-[#2563eb] animate-fade-in max-w-2xl mx-auto font-medium">
+            Select your symptoms and receive a professional, AI-powered health risk analysis. Our system provides evidence-based predictions and actionable recommendations.
           </p>
 
-          <div className="text-left">
-            <label className="block text-purple-800 dark:text-purple-100 text-lg font-medium mb-2">
-              🤒 Select Symptoms
+          <div className="text-left animate-fade-in">
+            <label className="block text-[#2563eb] dark:text-[#2563eb] text-lg font-semibold mb-2">
+              Select Symptoms
             </label>
-            <Select
-              isMulti
-              name="symptoms"
-              options={options}
-              className="basic-multi-select text-left"
-              classNamePrefix="select"
-              placeholder="Start typing to search symptoms..."
-              onChange={setSelectedSymptoms}
-              value={selectedSymptoms}
-              theme={(theme) => ({
-                ...theme,
-                colors: {
-                  ...theme.colors,
-                  primary25: "#e9d8fd",
-                  primary: "#7c3aed",
-                },
-              })}
-            />
+            <div className="glassmorphic rounded-xl p-2 border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <Select
+                isMulti
+                name="symptoms"
+                options={options}
+                className="cool-select text-left"
+                classNamePrefix="cool-select"
+                placeholder="Start typing to search symptoms..."
+                onChange={setSelectedSymptoms}
+                value={selectedSymptoms}
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    background: '#f8fafc',
+                    borderColor: state.isFocused ? '#2563eb' : '#c7d2fe',
+                    boxShadow: state.isFocused ? '0 0 0 2px #2563eb33' : 'none',
+                    borderRadius: '1rem',
+                    minHeight: '48px',
+                    transition: 'all 0.2s',
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    borderRadius: '1rem',
+                    background: '#f1f5f9',
+                    boxShadow: '0 8px 32px 0 #2563eb22',
+                  }),
+                  option: (base, state) => ({
+                    ...base,
+                    background: state.isSelected
+                      ? '#2563eb'
+                      : state.isFocused
+                      ? '#e0e7ef'
+                      : 'transparent',
+                    color: state.isSelected ? '#fff' : '#2563eb',
+                    fontWeight: state.isSelected ? 600 : 500,
+                    borderRadius: '0.75rem',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                  }),
+                  multiValue: (base) => ({
+                    ...base,
+                    background: '#2563eb22',
+                    borderRadius: '0.75rem',
+                    color: '#2563eb',
+                  }),
+                  multiValueLabel: (base) => ({
+                    ...base,
+                    color: '#2563eb',
+                    fontWeight: 600,
+                  }),
+                  multiValueRemove: (base) => ({
+                    ...base,
+                    color: '#2563eb',
+                    ':hover': { background: '#2563eb', color: '#fff' },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: '#94a3b8',
+                    fontWeight: 500,
+                  }),
+                }}
+              />
+            </div>
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center animate-fade-in">
             <button
-              className="mt-8 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
+              className="mt-8 px-10 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold rounded-full shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer border border-[#2563eb] dark:border-[#60a5fa]"
               onClick={handlePrediction}
             >
-              🔮 Predict Now
+              Predict
             </button>
           </div>
         </div>
 
         {/* Prediction Result Sections */}
         {prediction && (
-          <div className="mt-16 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-16 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 animate-fade-in">
             {/* Disease */}
-            <div className="bg-red-400 dark:bg-white rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                🧬 Predicted Disease
-              </h2>
-              <p className="text-black dark:text-gray-100 text-lg">
+            <div className="glassmorphic bg-white/90 dark:bg-[#f3f4f6]/90 rounded-2xl p-8 shadow-2xl flex flex-col items-start border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Predicted Disease</h2>
+              <p className="text-[#2563eb] dark:text-[#2563eb] text-lg font-semibold break-words">
                 {prediction.disease || "N/A"}
               </p>
             </div>
 
             {/* Description */}
-            <div className="bg-pink-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                📖 Description
-              </h2>
-              <p className="text-gray-800 dark:text-gray-100 text-lg">
+            <div className="glassmorphic bg-white/90 dark:bg-[#f3f4f6]/90 rounded-2xl p-8 shadow-2xl flex flex-col items-start border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Description</h2>
+              <p className="text-[#2563eb] dark:text-[#2563eb] text-base break-words">
                 {prediction.description || "No description available."}
               </p>
             </div>
 
             {/* Precautions */}
-            <div className="bg-blue-400 dark:bg-purple-700 rounded-xl p-6 shadow-lg col-span-1 md:col-span-2">
-              <h2 className="text-2xl font-bold text-purple-900 dark:text-white mb-2">
-                🛡️ Precautions
-              </h2>
-              <ul className="list-disc ml-5 text-gray-800 dark:text-gray-100 space-y-1">
+            <div className="glassmorphic bg-[#f3f4f6]/90 dark:bg-[#e0e7ef]/90 rounded-2xl p-8 shadow-2xl col-span-1 md:col-span-2 border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Precautions</h2>
+              <ul className="list-disc ml-5 text-[#2563eb] dark:text-[#2563eb] space-y-1 text-base">
                 {prediction.precautions?.length > 0 ? (
                   prediction.precautions.map((item, i) => (
                     <li key={i}>{item}</li>
@@ -283,53 +330,47 @@ export default function MLPredictionPage() {
             </div>
 
             {/* Medications */}
-            <div className="bg-green-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                💊 Medications
-              </h2>
-              <div className="ml-2 text-gray-800 dark:text-gray-100 space-y-1">
+            <div className="glassmorphic bg-white/90 dark:bg-[#f3f4f6]/90 rounded-2xl p-8 shadow-2xl flex flex-col items-start border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Medications</h2>
+              <div className="ml-2 text-[#2563eb] dark:text-[#2563eb] space-y-1 text-base">
                 {prediction.medications?.length > 0 ? (
                   prediction.medications.flatMap((item, i) =>
                     item
-                      .replace(/[\[\]']/g, "") // remove brackets and quotes
+                      .replace(/[\[\]']/g, "")
                       .split(",")
                       .map((subItem, j) => (
-                        <div key={`${i}-${j}`}>• {subItem.trim()}</div>
+                        <div key={`${i}-${j}`}>{subItem.trim()}</div>
                       ))
                   )
                 ) : (
-                  <div>• None</div>
+                  <div>None</div>
                 )}
               </div>
             </div>
 
             {/* Diet */}
-            <div className="bg-yellow-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                🍎 Diet Recommendations
-              </h2>
-              <div className="ml-2 text-gray-800 dark:text-gray-100 space-y-1">
+            <div className="glassmorphic bg-white/90 dark:bg-[#f3f4f6]/90 rounded-2xl p-8 shadow-2xl flex flex-col items-start border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Diet Recommendations</h2>
+              <div className="ml-2 text-[#2563eb] dark:text-[#2563eb] space-y-1 text-base">
                 {prediction.diets?.length > 0 ? (
                   prediction.diets.flatMap((item, i) =>
                     item
-                      .replace(/[\[\]']/g, "") // remove brackets and single quotes
+                      .replace(/[\[\]']/g, "")
                       .split(",")
                       .map((subItem, j) => (
-                        <div key={`${i}-${j}`}>• {subItem.trim()}</div>
+                        <div key={`${i}-${j}`}>{subItem.trim()}</div>
                       ))
                   )
                 ) : (
-                  <div>• None</div>
+                  <div>None</div>
                 )}
               </div>
             </div>
 
             {/* Workouts */}
-            <div className="bg-gray-900 dark:bg-purple-800 rounded-xl p-6 shadow-lg col-span-1 md:col-span-2">
-              <h2 className="text-2xl font-bold text-blue-400 dark:text-purple-200 mb-2">
-                🏋️ Workout Suggestions
-              </h2>
-              <ul className="list-disc ml-5 text-gray-100 dark:text-gray-100 space-y-1">
+            <div className="glassmorphic bg-[#f3f4f6]/90 dark:bg-[#e0e7ef]/90 rounded-2xl p-8 shadow-2xl col-span-1 md:col-span-2 border border-[#c7d2fe] dark:border-[#60a5fa]">
+              <h2 className="text-xl font-bold text-[#2563eb] dark:text-[#2563eb] mb-2 tracking-tight">Workout Suggestions</h2>
+              <ul className="list-disc ml-5 text-[#2563eb] dark:text-[#2563eb] space-y-1 text-base">
                 {prediction.workouts?.length > 0 ? (
                   prediction.workouts.map((item, i) => <li key={i}>{item}</li>)
                 ) : (
@@ -342,7 +383,7 @@ export default function MLPredictionPage() {
       </main>
 
       <div className="w-full">
-        <div className="border-t-2 bg-purple-500 border-purple-200 rounded-full" />
+        <div className="border-t-2 bg-blue-400 border-blue-200 rounded-full" />
       </div>
 
       <UserFooter />
