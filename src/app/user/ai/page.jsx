@@ -15,8 +15,7 @@ export default function HealthChatbotSection() {
     setMessages([
       {
         sender: "bot",
-        text:
-          "👋 Hi! I’m Saksham, your AI Health Assistant 🤖. How can I help you today?",
+        text: "👋 Hi! I’m Saksham, your AI Health Assistant 🤖. How can I help you today?",
       },
     ]);
   }, []);
@@ -37,7 +36,7 @@ export default function HealthChatbotSection() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent new line in input
+      e.preventDefault();
       handleSend();
     }
   };
@@ -47,7 +46,6 @@ export default function HealthChatbotSection() {
       const response = await axios.post("/api/gemini", {
         prompt: `You are Saksham, a friendly health assistant chatbot. Reply in a short, simple, helpful, and casual way (8-10 lines max). User asked: "${userInput}"`,
       });
-
       return response.data.botReply;
     } catch (error) {
       const message =
@@ -61,62 +59,18 @@ export default function HealthChatbotSection() {
   return (
     <>
       <UserNavbar />
-      <main className="h-[calc(100vh-4rem)] flex flex-col justify-center items-center bg-purple-100 dark:bg-purple-950 px-4 py-6 overflow-hidden relative">
-        {/* Header moved outside the chat container */}
-        <h2 className="mb-4 text-3xl font-extrabold text-purple-700 dark:text-purple-300 flex items-center gap-3">
-          <Bot className="w-8 h-8 animate-bounce text-purple-600 dark:text-purple-400" />
-          Saksham – AI Health Assistant 🤖
+      <main className="h-[calc(100vh-4rem)] flex flex-col justify-center items-center bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#232946] dark:via-[#334155] dark:to-[#232946] px-4 py-6 overflow-hidden relative pt-24 sm:pt-28 font-sans">
+        <h2 className="mb-4 text-4xl font-bold tracking-tight text-[#2563eb] dark:text-[#60a5fa] flex items-center gap-3 z-10 drop-shadow-lg animate-fade-in">
+          <span className="relative">
+            <Bot className="w-8 h-8 animate-bounce text-[#2563eb] dark:text-[#60a5fa]" />
+            <span className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-tr from-[#60a5fa] to-[#2563eb] rounded-full blur-sm opacity-70 animate-ping"></span>
+          </span>
+          Saksham – AI Health Assistant
         </h2>
-
-        {/* Emoji background decorations */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 pointer-events-none select-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, #d8b4fe 15%, transparent 16%)," +
-              "radial-gradient(circle at 80% 40%, #a78bfa 15%, transparent 16%)," +
-              "radial-gradient(circle at 50% 80%, #c4b5fd 20%, transparent 21%)",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "150px 150px, 120px 120px, 180px 180px",
-            opacity: 0.15,
-            zIndex: 0,
-          }}
-        >
-          <span
-            className="absolute text-4xl animate-bounce"
-            style={{ top: "10%", left: "15%" }}
-            aria-hidden="true"
-          >
-            🩺
-          </span>
-          <span
-            className="absolute text-5xl animate-pulse"
-            style={{ top: "50%", right: "20%" }}
-            aria-hidden="true"
-          >
-            💊
-          </span>
-          <span
-            className="absolute text-3xl animate-spin-slow"
-            style={{ bottom: "10%", left: "40%" }}
-            aria-hidden="true"
-          >
-            🧬
-          </span>
-          <span
-            className="absolute text-4xl animate-bounce"
-            style={{ bottom: "30%", right: "35%" }}
-            aria-hidden="true"
-          >
-            ❤️
-          </span>
-        </div>
-
         {/* Chat container */}
-        <div className="relative w-full max-w-2xl h-[500px] bg-white dark:bg-purple-900 shadow-2xl rounded-2xl overflow-hidden flex flex-col border border-purple-300 dark:border-purple-700 z-10">
+        <div className="relative w-full max-w-2xl h-[500px] bg-white/70 dark:bg-[#232946]/80 shadow-2xl rounded-3xl overflow-hidden flex flex-col border border-[#2563eb]/40 dark:border-[#60a5fa]/40 z-10 backdrop-blur-2xl animate-fade-in ring-1 ring-white/40 dark:ring-[#232946]/40">
           {/* Chat messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 bg-purple-50 dark:bg-purple-950">
+          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3 bg-[#e0e7ef]/80 dark:bg-[#232946]/80">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -125,10 +79,10 @@ export default function HealthChatbotSection() {
                 }`}
               >
                 <div
-                  className={`max-w-xs px-4 py-3 rounded-xl shadow-md text-sm ${
+                  className={`max-w-md px-5 py-2.5 rounded-2xl shadow-md text-base transition-all duration-300 leading-relaxed tracking-tight ${
                     msg.sender === "user"
-                      ? "bg-purple-600 text-white rounded-br-none"
-                      : "bg-purple-200 text-purple-900 dark:bg-purple-700 dark:text-purple-100 rounded-bl-none"
+                      ? "bg-gradient-to-br from-[#2563eb] to-[#60a5fa] text-white rounded-br-2xl animate-fade-in"
+                      : "bg-white/90 dark:bg-[#334155]/90 text-[#2563eb] dark:text-[#e0e7ef] border border-[#2563eb]/10 dark:border-[#60a5fa]/10 rounded-bl-2xl animate-fade-in"
                   }`}
                 >
                   {msg.text}
@@ -137,39 +91,36 @@ export default function HealthChatbotSection() {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-purple-300 text-purple-900 dark:bg-purple-700 dark:text-purple-100 px-4 py-2 rounded-lg shadow-md text-sm animate-pulse">
+                <div className="bg-[#60a5fa]/80 text-[#232946] dark:bg-[#334155] dark:text-[#e0e7ef] px-4 py-2 rounded-lg shadow-md text-sm animate-pulse">
                   Typing...
                 </div>
               </div>
             )}
           </div>
-
           {/* Input */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 p-4 border-t border-purple-300 dark:border-purple-700 bg-purple-100 dark:bg-purple-900">
+          <div className="flex flex-col sm:flex-row items-center gap-3 p-4 border-t border-[#2563eb]/20 dark:border-[#60a5fa]/20 bg-[#e0e7ef]/80 dark:bg-[#232946]/80">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message... 💬"
-              className="w-full bg-white dark:bg-purple-800 text-purple-900 dark:text-purple-100 rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full bg-white/90 dark:bg-[#232946]/80 text-[#232946] dark:text-[#e0e7ef] rounded-full px-4 py-2 outline-none focus:ring-2 focus:ring-[#2563eb] border border-[#2563eb]/10 dark:border-[#60a5fa]/10 shadow-sm"
             />
             <button
               onClick={handleSend}
               disabled={loading}
-              className="w-full sm:w-auto px-5 py-2 flex justify-center items-center gap-2 bg-gradient-to-r from-purple-700 via-purple-600 to-purple-700 text-white rounded-full hover:scale-105 transition-transform duration-200 disabled:opacity-50 shadow-lg shadow-purple-500/50 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-2.5 flex justify-center items-center gap-2 bg-gradient-to-r from-[#2563eb] via-[#60a5fa] to-[#2563eb] text-white rounded-full hover:scale-105 active:scale-95 transition-transform duration-200 disabled:opacity-50 shadow-lg shadow-blue-500/30 cursor-pointer focus:ring-2 focus:ring-[#2563eb] focus:ring-offset-2 font-semibold text-base tracking-tight"
               aria-label="Send message"
             >
               <SendHorizonal className="w-5 h-5 animate-pulse" />
-              Send
+              <span>Send</span>
             </button>
           </div>
         </div>
       </main>
-
       <div className="w-full">
-        <div className="border-t-2 bg-purple-500 border-purple-200 rounded-full" />
+        <div className="border-t-2 bg-[#2563eb] border-[#60a5fa] rounded-full shadow-md shadow-[#2563eb]/10" />
       </div>
-
       <UserFooter />
     </>
   );

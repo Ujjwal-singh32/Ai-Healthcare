@@ -9,12 +9,13 @@ import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { useUser } from "@/context/userContext";
+import { Calendar, Clock, MapPin, Award, Stethoscope, DollarSign, Heart, Star, ThumbsUp } from "lucide-react";
 // Predefined slot times
 const timeSlots = {
   "10:00 AM": 3,
   "11:00 AM": 2,
   "12:00 PM": 5,
-  "2:00 PM": 4,
+  "2:00 PM": 4, 
   "3:00 PM": 1,
 };
 
@@ -83,12 +84,12 @@ export default function DoctorDetailsPage() {
     return (
       <>
         <UserNavbar />
-        <div className="min-h-screen flex flex-col items-center justify-center bg-purple-50 dark:bg-purple-900 px-4">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#232946] dark:via-[#334155] dark:to-[#232946] px-4">
           {/* Gradient Spinner */}
-          <div className="w-16 h-16 border-4 border-transparent border-t-purple-500 border-l-purple-400 rounded-full animate-spin bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 shadow-lg mb-6"></div>
+          <div className="w-16 h-16 border-4 border-transparent border-t-[#2563eb] border-l-[#60a5fa] rounded-full animate-spin bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#2563eb] shadow-lg mb-6"></div>
 
           {/* Animated Text */}
-          <p className="text-purple-800 dark:text-purple-200 text-xl font-semibold animate-pulse">
+          <p className="text-[#2563eb] dark:text-[#60a5fa] text-xl font-semibold animate-pulse">
             Loading doctor details...
           </p>
         </div>
@@ -120,8 +121,32 @@ export default function DoctorDetailsPage() {
   return (
     <>
       <UserNavbar />
-      <div className="bg-purple-50 dark:bg-purple-900 min-h-screen py-10">
-        <div className="max-w-5xl mx-auto bg-white dark:bg-purple-950 rounded-3xl shadow-xl p-8 md:p-12 border border-purple-300 dark:border-purple-700">
+      <div className="min-h-screen bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#232946] dark:via-[#334155] dark:to-[#232946] py-10 pt-24 relative">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <svg width="100%" height="100%" className="opacity-10 dark:opacity-5">
+            <defs>
+              <radialGradient id="bg-grad" cx="50%" cy="50%" r="80%">
+                <stop offset="0%" stopColor="#6366f1" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#bg-grad)" />
+          </svg>
+        </div>
+        
+        {/* Animated floating icons */}
+        <div className="absolute left-8 top-32 animate-float-slow hidden md:block">
+          <Stethoscope className="w-12 h-12 text-[#2563eb] opacity-70" />
+        </div>
+        <div className="absolute right-12 top-48 animate-float-fast hidden md:block">
+          <Heart className="w-10 h-10 text-[#2563eb] opacity-60" />
+        </div>
+        <div className="absolute left-24 bottom-32 animate-float-medium hidden md:block">
+          <Star className="w-10 h-10 text-[#2563eb] opacity-60" />
+        </div>
+        
+        <div className="max-w-5xl mx-auto bg-white/80 dark:bg-[#232946]/80 rounded-3xl shadow-2xl p-8 md:p-12 border border-[#2563eb]/30 dark:border-[#60a5fa]/30 backdrop-blur-xl relative z-10">
           {/* Doctor Info */}
           <div className="flex flex-col md:flex-row items-center gap-8">
             <Image
@@ -129,16 +154,16 @@ export default function DoctorDetailsPage() {
               alt={doctor.name}
               width={160}
               height={160}
-              className="rounded-full border-4 border-purple-400 dark:border-purple-600 shadow-md"
+              className="rounded-full border-4 border-[#2563eb] dark:border-[#60a5fa] shadow-xl"
             />
             <div className="text-center md:text-left space-y-2">
-              <h2 className="text-3xl font-bold text-purple-800 dark:text-purple-100">
+              <h2 className="text-3xl font-bold text-[#2563eb] dark:text-[#60a5fa] drop-shadow-sm">
                 {doctor.name}
               </h2>
-              <p className="text-xl font-medium text-purple-600 dark:text-purple-300">
+              <p className="text-xl font-medium text-[#2563eb]/80 dark:text-[#60a5fa]/80">
                 {doctor.specialization}
               </p>
-              <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+              <p className="text-sm font-semibold text-[#1e1b4b] dark:text-[#f3e8ff]">
                 {doctor.qualification}
               </p>
               <p className="text-sm text-green-600 dark:text-green-400 font-bold">
@@ -160,48 +185,75 @@ export default function DoctorDetailsPage() {
             </div>
           </div>
 
+          {/* Divider */}
+          <div className="w-full flex justify-center my-8">
+            <div className="h-1 w-32 bg-[#2563eb]/50 dark:bg-[#60a5fa]/50 rounded-full shadow-md" />
+          </div>
+          
           {/* About Section */}
-          <div className="mt-10 space-y-4 text-purple-800 dark:text-purple-100">
-            <h3 className="text-2xl font-bold border-b border-purple-300 dark:border-purple-600 pb-2">
+          <div className="mt-6 space-y-4 text-[#2563eb] dark:text-[#60a5fa]">
+            <h3 className="text-2xl font-bold border-b border-[#2563eb]/30 dark:border-[#60a5fa]/30 pb-2">
               About Doctor
             </h3>
-            <p className="text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+            <p className="text-sm leading-relaxed text-[#1e1b4b] dark:text-[#f3e8ff]">
               {doctor.qualification}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-              <div className="bg-purple-100 dark:bg-purple-800 p-4 rounded-xl">
-                <p className="font-semibold">Experience</p>
-                <p className="text-sm text-gray-700 dark:text-gray-200">
+              <div className="bg-white/80 dark:bg-[#232946]/80 p-5 rounded-xl shadow-lg border border-[#2563eb]/30 dark:border-[#60a5fa]/30 hover:shadow-xl transition-shadow group">
+                <div className="flex items-center gap-3 mb-2">
+                  <Award className="w-5 h-5 text-[#2563eb] dark:text-[#60a5fa] group-hover:scale-110 transition-transform" />
+                  <p className="font-semibold text-[#2563eb] dark:text-[#60a5fa]">Experience</p>
+                </div>
+                <p className="text-sm text-[#1e1b4b] dark:text-[#f3e8ff]">
                   {doctor.experience}
                 </p>
               </div>
-              <div className="bg-purple-100 dark:bg-purple-800 p-4 rounded-xl">
-                <p className="font-semibold">Clinic Location</p>
-                <p className="text-sm text-gray-700 dark:text-gray-200">
+              <div className="bg-white/80 dark:bg-[#232946]/80 p-5 rounded-xl shadow-lg border border-[#2563eb]/30 dark:border-[#60a5fa]/30 hover:shadow-xl transition-shadow group">
+                <div className="flex items-center gap-3 mb-2">
+                  <MapPin className="w-5 h-5 text-[#2563eb] dark:text-[#60a5fa] group-hover:scale-110 transition-transform" />
+                  <p className="font-semibold text-[#2563eb] dark:text-[#60a5fa]">Clinic Location</p>
+                </div>
+                <p className="text-sm text-[#1e1b4b] dark:text-[#f3e8ff]">
                   {doctor.address}
                 </p>
               </div>
-              <div className="bg-purple-100 dark:bg-purple-800 p-4 rounded-xl">
-                <p className="font-semibold">Availability</p>
-                <p className="text-sm text-gray-700 dark:text-gray-200">
+              <div className="bg-white/80 dark:bg-[#232946]/80 p-5 rounded-xl shadow-lg border border-[#2563eb]/30 dark:border-[#60a5fa]/30 hover:shadow-xl transition-shadow group">
+                <div className="flex items-center gap-3 mb-2">
+                  <Clock className="w-5 h-5 text-[#2563eb] dark:text-[#60a5fa] group-hover:scale-110 transition-transform" />
+                  <p className="font-semibold text-[#2563eb] dark:text-[#60a5fa]">Availability</p>
+                </div>
+                <p className="text-sm text-[#1e1b4b] dark:text-[#f3e8ff]">
                   Mon-Fri (10 am - 6 Pm)
                 </p>
               </div>
-              <div className="bg-purple-100 dark:bg-purple-800 p-4 rounded-xl">
-                <p className="font-semibold">Consultation Fee</p>
-                <p className="text-sm text-gray-700 dark:text-gray-200">
+              <div className="bg-white/80 dark:bg-[#232946]/80 p-5 rounded-xl shadow-lg border border-[#2563eb]/30 dark:border-[#60a5fa]/30 hover:shadow-xl transition-shadow group">
+                <div className="flex items-center gap-3 mb-2">
+                  <DollarSign className="w-5 h-5 text-[#2563eb] dark:text-[#60a5fa] group-hover:scale-110 transition-transform" />
+                  <p className="font-semibold text-[#2563eb] dark:text-[#60a5fa]">Consultation Fee</p>
+                </div>
+                <p className="text-sm text-[#1e1b4b] dark:text-[#f3e8ff]">
                   ₹{doctor.consultationFees}
                 </p>
               </div>
             </div>
           </div>
 
+          {/* Divider */}
+          <div className="w-full flex justify-center my-8">
+            <div className="h-1 w-32 bg-[#2563eb]/50 dark:bg-[#60a5fa]/50 rounded-full shadow-md" />
+          </div>
+          
           {/* Date & Slot Selection */}
-          <div className="mt-12 space-y-6">
+          <div className="mt-8 space-y-6 bg-white/90 dark:bg-[#232946]/90 p-6 rounded-2xl shadow-xl border border-[#2563eb]/30 dark:border-[#60a5fa]/30">
+            <h3 className="text-2xl font-bold text-[#2563eb] dark:text-[#60a5fa] mb-6 text-center">
+              Book an Appointment
+            </h3>
+            
             {/* Date Picker */}
             <div>
-              <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+              <label className="flex items-center gap-2 text-sm font-semibold mb-2 text-[#2563eb] dark:text-[#60a5fa]">
+                <Calendar className="w-5 h-5" />
                 Select Appointment Date
               </label>
               <input
@@ -209,19 +261,21 @@ export default function DoctorDetailsPage() {
                 value={date}
                 onChange={handleDateChange}
                 min={new Date().toISOString().split("T")[0]}
-                className="w-full px-3 py-2 rounded-lg border border-purple-300 dark:border-purple-700 bg-purple-100 dark:bg-purple-800 text-purple-900 dark:text-white"
+                className="w-full px-4 py-3 rounded-xl border border-[#2563eb]/30 dark:border-[#60a5fa]/30 bg-white/70 dark:bg-[#232946]/70 text-[#1e1b4b] dark:text-[#f3e8ff] focus:ring-2 focus:ring-[#2563eb] dark:focus:ring-[#60a5fa] focus:border-transparent outline-none transition-all shadow-md"
               />
             </div>
+            
             {/* Disease Input */}
             <div className="mt-8">
-              <label className="block text-sm font-semibold mb-1 text-gray-700 dark:text-gray-300">
+              <label className="flex items-center gap-2 text-sm font-semibold mb-2 text-[#2563eb] dark:text-[#60a5fa]">
+                <Stethoscope className="w-5 h-5" />
                 Describe Your Health Issue / Disease
               </label>
               <textarea
                 value={disease}
                 onChange={(e) => setDisease(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2 rounded-lg border border-purple-300 dark:border-purple-700 bg-purple-100 dark:bg-purple-800 text-purple-900 dark:text-white"
+                className="w-full px-4 py-3 rounded-xl border border-[#2563eb]/30 dark:border-[#60a5fa]/30 bg-white/70 dark:bg-[#232946]/70 text-[#1e1b4b] dark:text-[#f3e8ff] focus:ring-2 focus:ring-[#2563eb] dark:focus:ring-[#60a5fa] focus:border-transparent outline-none transition-all shadow-md"
                 placeholder="E.g., Fever, Cough, Headache..."
               ></textarea>
             </div>
@@ -231,31 +285,32 @@ export default function DoctorDetailsPage() {
               <div className="text-center">
                 <button
                   onClick={() => setShowSlots(true)}
-                  className="px-6 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-all cursor-pointer"
+                  className="px-6 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white rounded-full transition-all cursor-pointer shadow-lg hover:shadow-xl font-semibold"
                 >
-                  Select Slot
+                  View Available Slots
                 </button>
               </div>
             )}
 
             {/* Slot Selector */}
             {showSlots && (
-              <div>
+              <div className="mt-8 animate-fade-in">
                 {isValidDay ? (
                   <>
-                    <p className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+                    <p className="flex items-center gap-2 text-sm font-semibold mb-3 text-[#2563eb] dark:text-[#60a5fa]">
+                      <Clock className="w-5 h-5" />
                       Available Time Slots
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {Object.entries(timeSlots).map(([slot, count]) => (
                         <label
                           key={slot}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-all cursor-pointer ${
+                          className={`flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium border shadow-md transition-all cursor-pointer ${
                             selectedSlot === slot
-                              ? "bg-green-500 text-white border-green-600"
+                              ? "bg-green-500 text-white border-green-600 shadow-lg scale-105"
                               : count === 0
-                              ? "bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed"
-                              : "bg-purple-100 dark:bg-purple-800 text-purple-900 dark:text-white border-purple-300 dark:border-purple-700 hover:bg-purple-200 dark:hover:bg-purple-700"
+                              ? "bg-gray-300 text-gray-500 border-gray-400 cursor-not-allowed opacity-50"
+                              : "bg-white/80 dark:bg-[#232946]/80 text-[#2563eb] dark:text-[#60a5fa] border-[#2563eb]/30 dark:border-[#60a5fa]/30 hover:bg-[#2563eb]/10 dark:hover:bg-[#60a5fa]/10"
                           }`}
                         >
                           <input
@@ -268,7 +323,9 @@ export default function DoctorDetailsPage() {
                             className="hidden"
                           />
                           {slot}{" "}
-                          <span className="text-xs ml-1 font-normal">
+                          <span className={`text-xs ml-1 font-normal ${
+                            selectedSlot === slot ? "text-white" : "text-[#2563eb]/70 dark:text-[#60a5fa]/70"
+                          }`}>
                             ({count} left)
                           </span>
                         </label>
@@ -276,10 +333,11 @@ export default function DoctorDetailsPage() {
                     </div>
                   </>
                 ) : (
-                  <p className="text-center text-red-500 font-semibold">
-                    Doctor is not available on weekends. Please select a
-                    weekday.
-                  </p>
+                  <div className="bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-xl p-4 text-center">
+                    <p className="text-red-600 dark:text-red-400 font-semibold">
+                      Doctor is not available on weekends. Please select a weekday.
+                    </p>
+                  </div>
                 )}
               </div>
             )}
@@ -287,10 +345,10 @@ export default function DoctorDetailsPage() {
 
           {/* Appointment Button */}
           {selectedSlot && (
-            <div className="mt-10 text-center">
+            <div className="mt-10 text-center animate-fade-in">
               <button
                 onClick={handleAppointment}
-                className="px-8 py-3 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold rounded-full shadow-lg hover:scale-105 transition-transform cursor-pointer"
+                className="px-8 py-3 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-pointer"
               >
                 Take Appointment
               </button>
