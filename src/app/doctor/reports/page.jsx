@@ -62,84 +62,96 @@ export default function DoctorDashboard() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-purple-50 dark:bg-purple-950 text-purple-900 dark:text-purple-100">
-        <DocNav />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-blue-950 dark:to-blue-900 text-blue-900 dark:text-blue-100">
 
-        <section className="px-4 sm:px-6 lg:px-10 py-10 max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center break-words">
+  <DocNav />
+  {/* Spacer to ensure content starts after navbar */}
+  <div className="h-16 sm:h-20" />
+
+        <section className="px-4 sm:px-6 lg:px-10 py-12 max-w-5xl mx-auto">
+          <h2
+            className="text-3xl sm:text-4xl font-bold mb-10 text-center text-blue-700 dark:text-blue-100 tracking-wide font-sans"
+            style={{ fontFamily: 'Segoe UI, Arial, Helvetica, sans-serif', letterSpacing: '0.02em' }}
+          >
             Submitted Reports
           </h2>
 
           {/* Dropdown to select patient */}
-          <div className="mb-8 text-center">
-            <select
-              onChange={handleSelectChange}
-              className="border border-purple-400 rounded-md p-2 text-purple-900 dark:text-purple-100 bg-white dark:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Select Patient
-              </option>
-              {Object.keys(groupedReports).map((patientName) => (
-                // Use a safe id by replacing spaces with dashes or encoding
-                <option
-                  key={patientName}
-                  value={patientName.replace(/\s+/g, "-")}
-                >
-                  {patientName}
+          <div className="mb-10 flex justify-center">
+            <div className="relative w-full flex justify-center">
+              <select
+                onChange={handleSelectChange}
+                className="border-2 border-blue-400 rounded-2xl px-5 py-3 pr-12 text-blue-900 dark:text-blue-100 bg-white/60 dark:bg-blue-950/60 shadow-lg backdrop-blur-md focus:outline-none focus:ring-4 focus:ring-blue-300/40 transition-all text-lg font-semibold appearance-none hover:border-blue-500 hover:shadow-xl custom-dropdown"
+                style={{ minWidth: '120px', maxWidth: '180px', width: '100%', WebkitBackdropFilter: 'blur(8px)', backdropFilter: 'blur(8px)' }}
+                defaultValue=""
+              >
+                <option value="" disabled className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 font-semibold">
+                  Select Patient
                 </option>
-              ))}
-            </select>
+                {Object.keys(groupedReports).map((patientName) => (
+                  <option
+                    key={patientName}
+                    value={patientName.replace(/\s+/g, "-")}
+                    className="bg-white dark:bg-blue-950 text-blue-900 dark:text-blue-100 font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/80 transition-all"
+                  >
+                    {patientName}
+                  </option>
+                ))}
+              </select>
+              
+            </div>
           </div>
 
           {Object.entries(groupedReports).map(([patientName, reports]) => (
             <div
               key={patientName}
-              id={patientName.replace(/\s+/g, "-")} // ID for scrolling
-              className="mb-10 bg-white dark:bg-purple-900 rounded-2xl shadow-lg p-6 sm:p-8"
-              style={{ border: "2px solid #7c3aed" }}
+              id={patientName.replace(/\s+/g, "-")}
+              className="mb-12 bg-white/70 dark:bg-blue-950/70 backdrop-blur-md rounded-3xl shadow-2xl p-8 border border-blue-200 dark:border-blue-900 transition-all hover:shadow-blue-300/40"
             >
-              <h3 className="text-2xl font-semibold mb-6 text-center text-purple-700 dark:text-purple-300 break-words">
+              <h3 className="text-2xl font-bold mb-7 text-center text-blue-700 dark:text-blue-200 tracking-wide">
                 {patientName}
               </h3>
-              <div className="space-y-6">
+              <div className="space-y-7">
                 {reports.map((report, index) => (
                   <div
                     key={index}
-                    className="bg-purple-50 dark:bg-purple-800 rounded-lg p-4 sm:p-6 shadow-md border border-purple-300 dark:border-purple-700 break-words"
+                    className="bg-blue-50/80 dark:bg-blue-900/60 rounded-xl p-6 shadow border border-blue-100 dark:border-blue-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
                   >
-                    <p className="text-purple-900 dark:text-purple-200 font-medium mb-4 break-words">
-                      <span className="font-semibold">Date:</span>{" "}
-                      {new Date(report.date).toLocaleString(undefined, {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </p>
-
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-blue-900 dark:text-blue-100 font-medium mb-2 break-words">
+                        <span className="font-semibold">Date:</span>{" "}
+                        {new Date(report.date).toLocaleString(undefined, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </p>
+                      <p className="text-blue-800 dark:text-blue-200 font-semibold break-words">
+                        {report.reportName}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-4 sm:justify-end">
                       {/* Download Image */}
                       <Button
                         onClick={() => {
                           const a = document.createElement("a");
-                          a.href = report.url; // Cloudinary image URL
-                          a.download = report.reportName || "report.jpg"; // Default extension can be jpg/png based on your data
+                          a.href = report.url;
+                          a.download = report.reportName || "report.jpg";
                           a.click();
                         }}
                         variant="link"
-                        className="text-purple-600 hover:text-purple-800 flex items-center gap-1 text-sm whitespace-nowrap cursor-pointer"
+                        className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-base font-semibold whitespace-nowrap cursor-pointer"
                       >
-                        <Download className="w-4 h-4" /> Download
+                        <Download className="w-5 h-5" /> Download
                       </Button>
-
                       {/* View Image */}
                       <Button
                         onClick={() => {
-                          window.open(report.url, "_blank"); // Open image in new tab
+                          window.open(report.url, "_blank");
                         }}
                         variant="link"
-                        className="text-purple-600 hover:text-purple-800 flex items-center gap-1 text-sm whitespace-nowrap cursor-pointer"
+                        className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-base font-semibold whitespace-nowrap cursor-pointer"
                       >
-                        <Eye className="w-4 h-4" /> View
+                        <Eye className="w-5 h-5" /> View
                       </Button>
                     </div>
                   </div>

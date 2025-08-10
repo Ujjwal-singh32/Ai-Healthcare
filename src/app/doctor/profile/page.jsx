@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import DocNav from "@/components/DocNavbar";
 import { Button } from "@/components/ui/button";
+import DoctorFooter from "@/components/DocFooter";
 
 export default function DoctorProfilePage() {
   const router = useRouter();
@@ -71,13 +72,12 @@ export default function DoctorProfilePage() {
 
   if (loding || !doctorInfo) {
     return (
-      <div className="flex justify-center items-center py-20 bg-purple-50 dark:bg-purple-900 min-h-screen px-4">
+      <div className="flex justify-center items-center py-20 bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#dbeafe] dark:from-[#0f172a] dark:via-[#1e3a8a] dark:to-[#1e40af] min-h-screen px-4">
         <div className="flex flex-col items-center space-y-6">
-          {/* Beautiful Gradient Spinner */}
-          <div className="w-16 h-16 border-4 border-transparent border-t-purple-500 border-l-purple-400 rounded-full animate-spin bg-gradient-to-r from-purple-300 via-purple-400 to-purple-600 shadow-lg"></div>
-
+          {/* Modern Blue Gradient Spinner */}
+          <div className="w-16 h-16 border-4 border-transparent border-t-blue-500 border-l-blue-400 rounded-full animate-spin bg-gradient-to-r from-blue-200 via-blue-400 to-blue-600 shadow-xl"></div>
           {/* Animated Text */}
-          <p className="text-purple-700 dark:text-purple-200 text-xl font-semibold animate-pulse">
+          <p className="text-blue-700 dark:text-blue-200 text-xl font-semibold animate-pulse">
             Loading Profile Details...
           </p>
         </div>
@@ -93,67 +93,92 @@ export default function DoctorProfilePage() {
 
   const renderField = (label, name) => (
     <div className="flex flex-col gap-1">
-      <label className="font-semibold">{label}</label>
+      <label className="font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-1">
+        {label}
+      </label>
       {isEditing ? (
         <input
           type="text"
           name={name}
           value={doctorInfo[name]}
           onChange={handleChange}
-          className="p-2 rounded-md border border-purple-300 text-black focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="p-2 rounded-lg border border-blue-200 dark:border-blue-700 text-gray-900 dark:text-white bg-white dark:bg-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
         />
       ) : (
-        <p className="text-md">{doctorInfo[name]}</p>
+        <p className="text-md text-gray-800 dark:text-gray-200 font-medium">
+          {doctorInfo[name]}
+        </p>
       )}
     </div>
   );
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-purple-50 dark:bg-purple-950 text-purple-900 dark:text-purple-100">
+      <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f0f9ff] to-[#dbeafe] dark:from-[#0f172a] dark:via-[#1e3a8a] dark:to-[#1e40af] text-gray-900 dark:text-gray-100">
         <DocNav />
-        <section className="max-w-6xl mx-auto px-6 py-10 space-y-10">
-          {/* HEADER */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <Avatar className="w-20 h-20 border-4 border-purple-400">
+        <section className="max-w-5xl mx-auto px-4 py-10 pt-28 space-y-10">
+          {/* Profile Header */}
+          <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-white/80 dark:bg-blue-900/60 shadow-xl rounded-2xl p-8 border border-blue-100 dark:border-blue-900/40 backdrop-blur-md">
+            <div className="flex items-center gap-6">
+              <Avatar className="w-24 h-24 border-4 border-blue-400 shadow-lg">
                 <AvatarImage src={doctorInfo.profilePic} alt="Doctor" />
                 <AvatarFallback>DR</AvatarFallback>
               </Avatar>
               <div>
-                <h2 className="text-2xl font-bold">{doctorInfo.name}</h2>
-                <p className="text-sm text-purple-600">
+                <h2 className="text-3xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                  {doctorInfo.name}
+                </h2>
+                <p className="text-base text-blue-700 dark:text-blue-300 font-medium mt-1">
                   {doctorInfo.specialization}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
+                  {doctorInfo.email}
                 </p>
               </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center">
               {isEditing ? (
                 <>
-                  <Button onClick={handleSaveChanges}>Save</Button>
+                  <Button
+                    className="bg-gradient-to-r from-[#2563eb] to-[#60a5fa] text-white font-semibold shadow-md hover:from-[#1d4ed8] hover:to-[#2563eb]"
+                    onClick={handleSaveChanges}
+                  >
+                    Save
+                  </Button>
                   <Button
                     variant="secondary"
+                    className="border border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300 bg-white dark:bg-blue-950 hover:bg-blue-50 dark:hover:bg-blue-900"
                     onClick={() => setIsEditing(false)}
                   >
                     Cancel
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+                <Button
+                  className="bg-gradient-to-r from-[#2563eb] to-[#60a5fa] text-white font-semibold shadow-md hover:from-[#1d4ed8] hover:to-[#2563eb]"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit Profile
+                </Button>
               )}
-              <Button variant="destructive" onClick={handleLogout}>
+              <Button
+                variant="destructive"
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold shadow-md"
+                onClick={handleLogout}
+              >
                 Logout
               </Button>
             </div>
           </div>
 
-          {/* CARD CONTAINER - row above 450px, column below */}
-          <div className="flex flex-col max-[450px]:flex-col sm:flex-row gap-6">
+          {/* Info Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Basic Info */}
-            <div className="flex-1 bg-purple-100 dark:bg-purple-900 p-6 rounded-xl shadow space-y-4">
-              <h3 className="text-xl font-semibold mb-2">Basic Information</h3>
+            <div className="bg-white/80 dark:bg-blue-900/60 border border-blue-100 dark:border-blue-900/40 rounded-2xl shadow-xl p-7 backdrop-blur-md flex flex-col gap-4">
+              <h3 className="text-xl font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-2">
+                Basic Information
+              </h3>
               {renderField("Name", "name")}
-              {renderField("Email", "email")}
               {renderField("Phone", "phone")}
               {renderField("Hospital", "hospital")}
               {renderField("Address", "address")}
@@ -162,8 +187,8 @@ export default function DoctorProfilePage() {
             </div>
 
             {/* Professional Info */}
-            <div className="flex-1 bg-purple-100 dark:bg-purple-900 p-6 rounded-xl shadow space-y-4">
-              <h3 className="text-xl font-semibold mb-2">
+            <div className="bg-white/80 dark:bg-blue-900/60 border border-blue-100 dark:border-blue-900/40 rounded-2xl shadow-xl p-7 backdrop-blur-md flex flex-col gap-4">
+              <h3 className="text-xl font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-2">
                 Professional Details
               </h3>
               {renderField("Specialization", "specialization")}
@@ -175,6 +200,7 @@ export default function DoctorProfilePage() {
             </div>
           </div>
         </section>
+        <DoctorFooter />
       </div>
     </TooltipProvider>
   );
