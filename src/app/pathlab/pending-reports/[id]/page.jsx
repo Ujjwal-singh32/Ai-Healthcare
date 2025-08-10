@@ -65,39 +65,40 @@ const Page = () => {
   return (
     <>
       <LabNavbar />
-      <div className="min-h-screen bg-purple-50 dark:bg-purple-950 p-6 sm:p-10">
-        <h1 className="text-4xl font-bold text-center text-purple-900 dark:text-purple-100 mb-10">
-          🧾 Report Details
+      {/* Spacer to ensure content starts after navbar */}
+      <div className="h-16 sm:h-20" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-blue-950 dark:to-blue-900 py-12 px-4 sm:px-8">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-[#2563eb] dark:text-[#60a5fa] mb-10 tracking-tight font-sans">
+          Report Details
         </h1>
 
-        <div className="max-w-2xl mx-auto bg-white dark:bg-purple-900 border border-purple-300 dark:border-purple-700 rounded-2xl shadow-xl p-8 space-y-8">
+        <div className="max-w-2xl mx-auto bg-white/80 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 rounded-2xl shadow-xl p-8 space-y-10 backdrop-blur-md">
           {/* Patient Info */}
-          <div className="space-y-1 text-center">
-            <h2 className="text-2xl font-semibold text-purple-800 dark:text-purple-100">
+          <div className="space-y-2 text-center">
+            <h2 className="text-2xl font-bold text-blue-800 dark:text-blue-200 font-sans tracking-tight">
               {patientName}
             </h2>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>Fee:</strong> ₹{fee}
+            <p className="text-lg text-blue-700 dark:text-blue-200">
+              <span className="font-semibold">Fee:</span> ₹{fee}
             </p>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong>Date:</strong> {new Date(date).toLocaleDateString()}
+            <p className="text-lg text-blue-700 dark:text-blue-200">
+              <span className="font-semibold">Date:</span> {new Date(date).toLocaleDateString()}
             </p>
             <p
-              className={`text-sm font-semibold ${status === "Pending" ? "text-yellow-600" : "text-green-500"
-                }`}
+              className={`text-lg font-semibold ${status === "Pending" ? "text-yellow-600" : "text-green-600"}`}
             >
               Status: {status}
             </p>
           </div>
 
           {/* Tests */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {tests.map((test, index) => (
               <div
                 key={index}
-                className="bg-purple-100 dark:bg-purple-800 p-5 rounded-lg space-y-3 shadow-sm"
+                className="bg-blue-100 dark:bg-blue-900 p-6 rounded-xl space-y-4 shadow border border-blue-200 dark:border-blue-800"
               >
-                <p className="font-medium text-lg text-purple-900 dark:text-purple-100">
+                <p className="font-semibold text-xl text-blue-900 dark:text-blue-100 font-sans tracking-tight">
                   {test.name}
                 </p>
 
@@ -107,7 +108,7 @@ const Page = () => {
                     handleFieldChange(index, "result", e.target.value)
                   }
                   placeholder="Enter result value or description..."
-                  className="w-full p-2 bg-white dark:bg-purple-700 text-purple-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-3 bg-white dark:bg-blue-950 text-blue-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium shadow-sm"
                   rows={2}
                 />
 
@@ -118,7 +119,7 @@ const Page = () => {
                     handleFieldChange(index, "normalRange", e.target.value)
                   }
                   placeholder="Normal Range (e.g. 70-110 mg/dL)"
-                  className="w-full p-2 bg-white dark:bg-purple-700 text-purple-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-3 bg-white dark:bg-blue-950 text-blue-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium shadow-sm"
                 />
 
                 <input
@@ -128,7 +129,7 @@ const Page = () => {
                     handleFieldChange(index, "units", e.target.value)
                   }
                   placeholder="Units (e.g. mg/dL)"
-                  className="w-full p-2 bg-white dark:bg-purple-700 text-purple-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-3 bg-white dark:bg-blue-950 text-blue-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium shadow-sm"
                 />
 
                 <textarea
@@ -137,7 +138,7 @@ const Page = () => {
                     handleFieldChange(index, "remarks", e.target.value)
                   }
                   placeholder="Remarks / Interpretation"
-                  className="w-full p-2 bg-white dark:bg-purple-700 text-purple-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-3 bg-white dark:bg-blue-950 text-blue-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium shadow-sm"
                   rows={2}
                 />
               </div>
@@ -149,13 +150,12 @@ const Page = () => {
             <button
               onClick={handleSendReport}
               disabled={loading}
-              className={`flex items-center gap-3 px-8 py-4 rounded-xl text-lg font-semibold shadow-lg transition
+              className={`flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-semibold shadow-lg transition
     ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 text-white"}`}
             >
               <Send size={22} />
               {loading ? "Sending..." : "Send Report"}
             </button>
-
           </div>
         </div>
       </div>
