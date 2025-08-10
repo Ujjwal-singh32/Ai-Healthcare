@@ -186,163 +186,392 @@ export default function MLPredictionPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-purple-100 dark:bg-purple-900 transition-colors duration-500 ease-in-out">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f0f9ff] via-[#e0f2fe] to-[#dbeafe] dark:from-[#0f172a] dark:via-[#1e3a8a] dark:to-[#1e40af] transition-colors duration-500 ease-in-out">
       <DocNav />
 
-      <main className="flex-grow py-16 px-4 animate-fade-in">
-        <div className="max-w-4xl mx-auto text-center space-y-10">
+      <main className="flex-grow pt-24 pb-16 px-4">
+        {/* Decorative elements */}
+        <div className="absolute top-36 left-0 w-64 h-64 bg-blue-400/10 dark:bg-blue-600/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute bottom-24 right-0 w-80 h-80 bg-indigo-400/10 dark:bg-indigo-600/10 rounded-full filter blur-3xl"></div>
+        
+        <div className="relative max-w-4xl mx-auto text-center space-y-10 backdrop-blur-sm">
           <div className="flex justify-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1 bg-purple-200 text-purple-900 dark:bg-purple-800 dark:text-purple-100 rounded-full text-sm font-semibold shadow-md animate-bounce">
-              <Brain className="w-4 h-4 animate-pulse" />
-              AI Health Predictor 🧠✨
+            <span className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[#2563eb]/10 to-[#3b82f6]/10 dark:from-[#2563eb]/20 dark:to-[#3b82f6]/20 backdrop-blur-sm border border-blue-200 dark:border-blue-800/50 rounded-full text-sm font-semibold shadow-md">
+              <Brain className="w-4 h-4 text-[#2563eb] dark:text-[#60a5fa] animate-pulse" />
+              <span className="text-[#1d4ed8] dark:text-[#60a5fa]">AI Health Predictor</span>
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700 dark:text-purple-300 mb-2">
-            Know Your Health in Seconds ⏱️💡
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#1e40af] dark:text-[#60a5fa] mb-6 leading-tight">
+            Intelligent Disease Prediction
           </h1>
 
           <p className="text-lg text-gray-700 dark:text-gray-200">
-            Select your symptoms and let our intelligent system guide you with
-            smart, early predictions. 🩺🔍
+            Leverage our machine learning model to analyze symptoms and receive data-driven 
+            disease predictions with corresponding medical recommendations.
           </p>
+          
+          <div className="mt-8 p-6 bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50">
+            <div className="text-left mb-6">
+              <label className="flex items-center gap-2 text-[#1e40af] dark:text-[#60a5fa] text-lg font-medium mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Select Patient Symptoms
+              </label>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Search and select all symptoms the patient is experiencing
+              </p>
+              <Select
+                isMulti
+                name="symptoms"
+                options={options}
+                className="basic-multi-select text-left"
+                classNamePrefix="select"
+                placeholder="Start typing to search symptoms..."
+                onChange={setSelectedSymptoms}
+                value={selectedSymptoms}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 14,
+                  colors: {
+                    ...theme.colors,
+                    primary25: "#e0e7ff",
+                    primary: "#2563eb",
+                    neutral0: "rgba(255,255,255,0.85)",
+                    neutral10: "#dbeafe",
+                    neutral20: "#93c5fd",
+                    neutral30: "#60a5fa",
+                    neutral40: "#3b82f6",
+                    neutral80: "#1e40af",
+                  },
+                })}
+                styles={{
+                  container: (base) => ({
+                    ...base,
+                    width: '100%',
+                  }),
+                  control: (base, state) => ({
+                    ...base,
+                    minHeight: '3rem',
+                    borderWidth: '2px',
+                    borderColor: state.isFocused ? '#2563eb' : '#c7d2fe',
+                    borderRadius: '0.9rem',
+                    boxShadow: state.isFocused ? '0 0 0 2px #2563eb33' : '0 1px 4px rgba(30,64,175,0.06)',
+                    background: 'rgba(255,255,255,0.85)',
+                    backdropFilter: 'blur(8px)',
+                    transition: 'all 0.2s',
+                    "&:hover": {
+                      borderColor: '#2563eb',
+                    },
+                  }),
+                  valueContainer: (base) => ({
+                    ...base,
+                    padding: '0.5rem 1rem',
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: '#64748b',
+                    fontSize: '1rem',
+                  }),
+                  multiValue: (base) => ({
+                    ...base,
+                    background: 'linear-gradient(90deg,#dbeafe 60%,#e0e7ff 100%)',
+                    borderRadius: '0.6rem',
+                    padding: '0.1rem 0.2rem',
+                    margin: '0.2rem',
+                    boxShadow: '0 1px 2px rgba(30,64,175,0.04)',
+                    border: '1px solid #c7d2fe',
+                  }),
+                  multiValueLabel: (base) => ({
+                    ...base,
+                    color: '#1e40af',
+                    fontWeight: 500,
+                    fontSize: '0.97rem',
+                  }),
+                  multiValueRemove: (base) => ({
+                    ...base,
+                    color: '#2563eb',
+                    borderRadius: '0 0.4rem 0.4rem 0',
+                    '&:hover': {
+                      backgroundColor: '#c7d2fe',
+                      color: '#1e3a8a',
+                    },
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    background: 'rgba(255,255,255,0.97)',
+                    backdropFilter: 'blur(12px)',
+                    borderRadius: '0.9rem',
+                    boxShadow: '0 10px 24px -5px #2563eb22',
+                    border: '1px solid #c7d2fe',
+                    overflow: 'hidden',
+                  }),
+                  menuList: (base) => ({
+                    ...base,
+                    padding: '0.5rem',
+                  }),
+                  option: (base, state) => ({
+                    ...base,
+                    background: state.isSelected
+                      ? 'linear-gradient(90deg,#2563eb 60%,#60a5fa 100%)'
+                      : state.isFocused
+                        ? '#e0e7ff'
+                        : 'transparent',
+                    color: state.isSelected ? 'white' : '#1e293b',
+                    borderRadius: '0.5rem',
+                    padding: '0.75rem 1rem',
+                    margin: '0.2rem 0',
+                    fontSize: '1rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                  }),
+                  noOptionsMessage: (base) => ({
+                    ...base,
+                    color: '#64748b',
+                    fontSize: '1rem',
+                    padding: '1rem',
+                  }),
+                  input: (base) => ({
+                    ...base,
+                    color: '#1e293b',
+                  }),
+                  indicatorsContainer: (base) => ({
+                    ...base,
+                    "& > div": {
+                      padding: '0.5rem',
+                    },
+                  }),
+                  dropdownIndicator: (base, state) => ({
+                    ...base,
+                    color: state.isFocused ? '#2563eb' : '#93c5fd',
+                    transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
+                    transition: 'all 0.2s',
+                  }),
+                  clearIndicator: (base) => ({
+                    ...base,
+                    color: '#93c5fd',
+                    '&:hover': {
+                      color: '#2563eb',
+                    },
+                  }),
+                }}
+              />
+            </div>
 
-          <div className="text-left">
-            <label className="block text-purple-800 dark:text-purple-100 text-lg font-medium mb-2">
-              🤒 Select Symptoms
-            </label>
-            <Select
-              isMulti
-              name="symptoms"
-              options={options}
-              className="basic-multi-select text-left"
-              classNamePrefix="select"
-              placeholder="Start typing to search symptoms..."
-              onChange={setSelectedSymptoms}
-              value={selectedSymptoms}
-              theme={(theme) => ({
-                ...theme,
-                colors: {
-                  ...theme.colors,
-                  primary25: "#e9d8fd",
-                  primary: "#7c3aed",
-                },
-              })}
-            />
-          </div>
-
-          <div className="flex justify-center">
-            <button
-              className="mt-8 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-              onClick={handlePrediction}
-            >
-              🔮 Predict Now
-            </button>
+            <div className="flex justify-center">
+              <button
+                className="px-8 py-3 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] hover:from-[#1d4ed8] hover:to-[#2563eb] text-white font-semibold rounded-lg shadow-lg transform hover:translate-y-[-2px] transition-all duration-300 flex items-center gap-2 cursor-pointer"
+                onClick={handlePrediction}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Generate Prediction
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Prediction Result Sections */}
         {prediction && (
-          <div className="mt-16 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Disease */}
-            <div className="bg-red-400 dark:bg-white rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                🧬 Predicted Disease
-              </h2>
-              <p className="text-black dark:text-gray-100 text-lg">
-                {prediction.disease || "N/A"}
-              </p>
-            </div>
+          <div className="relative mt-16 max-w-6xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-[#1e40af] dark:text-[#60a5fa]">
+              Diagnostic Results
+            </h2>
+            
+            <div className="relative bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50 p-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Disease */}
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                      Predicted Disease
+                    </h3>
+                  </div>
+                  <div className="bg-[#dbeafe]/50 dark:bg-[#1e3a8a]/50 p-4 rounded-lg flex-grow">
+                    <p className="text-[#1e40af] dark:text-white text-lg font-medium">
+                      {prediction.disease || "N/A"}
+                    </p>
+                  </div>
+                </div>
 
-            {/* Description */}
-            <div className="bg-pink-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                📖 Description
-              </h2>
-              <p className="text-gray-800 dark:text-gray-100 text-lg">
-                {prediction.description || "No description available."}
-              </p>
+                {/* Description */}
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                      Description
+                    </h3>
+                  </div>
+                  <div className="bg-[#dbeafe]/50 dark:bg-[#1e3a8a]/50 p-4 rounded-lg flex-grow">
+                    <p className="text-gray-700 dark:text-gray-200">
+                      {prediction.description || "No description available."}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-
+            
             {/* Precautions */}
-            <div className="bg-blue-400 dark:bg-purple-700 rounded-xl p-6 shadow-lg col-span-1 md:col-span-2">
-              <h2 className="text-2xl font-bold text-purple-900 dark:text-white mb-2">
-                🛡️ Precautions
-              </h2>
-              <ul className="list-disc ml-5 text-gray-800 dark:text-gray-100 space-y-1">
+            <div className="relative bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50 p-6 mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                  Precautions
+                </h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {prediction.precautions?.length > 0 ? (
                   prediction.precautions.map((item, i) => (
-                    <li key={i}>{item}</li>
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="mt-1 text-[#2563eb] dark:text-[#60a5fa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-200">{item}</span>
+                    </div>
                   ))
                 ) : (
-                  <li>None</li>
-                )}
-              </ul>
-            </div>
-
-            {/* Medications */}
-            <div className="bg-green-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                💊 Medications
-              </h2>
-              <div className="ml-2 text-gray-800 dark:text-gray-100 space-y-1">
-                {prediction.medications?.length > 0 ? (
-                  prediction.medications.flatMap((item, i) =>
-                    item
-                      .replace(/[\[\]']/g, "") // remove brackets and quotes
-                      .split(",")
-                      .map((subItem, j) => (
-                        <div key={`${i}-${j}`}>• {subItem.trim()}</div>
-                      ))
-                  )
-                ) : (
-                  <div>• None</div>
+                  <div className="text-gray-500 dark:text-gray-400">No specific precautions recommended.</div>
                 )}
               </div>
             </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Medications */}
+              <div className="relative bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50 p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                    Medications
+                  </h3>
+                </div>
+                
+                <div className="space-y-2">
+                  {prediction.medications?.length > 0 ? (
+                    prediction.medications.flatMap((item, i) =>
+                      item
+                        .replace(/[\[\]']/g, "") // remove brackets and quotes
+                        .split(",")
+                        .map((subItem, j) => (
+                          <div key={`${i}-${j}`} className="flex items-start gap-2">
+                            <div className="mt-1 text-[#2563eb] dark:text-[#60a5fa]">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                            </div>
+                            <span className="text-gray-700 dark:text-gray-200">{subItem.trim()}</span>
+                          </div>
+                        ))
+                    )
+                  ) : (
+                    <div className="text-gray-500 dark:text-gray-400">No medications recommended.</div>
+                  )}
+                </div>
+              </div>
 
-            {/* Diet */}
-            <div className="bg-yellow-400 dark:bg-purple-800 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-700 dark:text-purple-200 mb-2">
-                🍎 Diet Recommendations
-              </h2>
-              <div className="ml-2 text-gray-800 dark:text-gray-100 space-y-1">
-                {prediction.diets?.length > 0 ? (
-                  prediction.diets.flatMap((item, i) =>
-                    item
-                      .replace(/[\[\]']/g, "") // remove brackets and single quotes
-                      .split(",")
-                      .map((subItem, j) => (
-                        <div key={`${i}-${j}`}>• {subItem.trim()}</div>
-                      ))
-                  )
-                ) : (
-                  <div>• None</div>
-                )}
+              {/* Diet */}
+              <div className="relative bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50 p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                    Diet Recommendations
+                  </h3>
+                </div>
+                
+                <div className="space-y-2">
+                  {prediction.diets?.length > 0 ? (
+                    prediction.diets.flatMap((item, i) =>
+                      item
+                        .replace(/[\[\]']/g, "") // remove brackets and quotes
+                        .split(",")
+                        .map((subItem, j) => (
+                          <div key={`${i}-${j}`} className="flex items-start gap-2">
+                            <div className="mt-1 text-[#2563eb] dark:text-[#60a5fa]">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                            </div>
+                            <span className="text-gray-700 dark:text-gray-200">{subItem.trim()}</span>
+                          </div>
+                        ))
+                    )
+                  ) : (
+                    <div className="text-gray-500 dark:text-gray-400">No specific diet recommendations.</div>
+                  )}
+                </div>
               </div>
             </div>
-
+            
             {/* Workouts */}
-            <div className="bg-gray-900 dark:bg-purple-800 rounded-xl p-6 shadow-lg col-span-1 md:col-span-2">
-              <h2 className="text-2xl font-bold text-blue-400 dark:text-purple-200 mb-2">
-                🏋️ Workout Suggestions
-              </h2>
-              <ul className="list-disc ml-5 text-gray-100 dark:text-gray-100 space-y-1">
+            <div className="relative bg-white/80 dark:bg-gray-900/50 backdrop-blur-md shadow-xl rounded-2xl border border-blue-100 dark:border-blue-900/50 p-6 mt-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-[#dbeafe] dark:bg-[#1e3a8a] rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#2563eb] dark:text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-[#1e40af] dark:text-[#60a5fa]">
+                  Workout Suggestions
+                </h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {prediction.workouts?.length > 0 ? (
-                  prediction.workouts.map((item, i) => <li key={i}>{item}</li>)
+                  prediction.workouts.map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="mt-1 text-[#2563eb] dark:text-[#60a5fa]">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-gray-700 dark:text-gray-200">{item}</span>
+                    </div>
+                  ))
                 ) : (
-                  <li>None</li>
+                  <div className="text-gray-500 dark:text-gray-400">No specific workout suggestions.</div>
                 )}
-              </ul>
+              </div>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <button
+                onClick={() => setPrediction(null)}
+                className="inline-flex items-center gap-2 px-5 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-[#1e40af] dark:text-[#60a5fa] rounded-lg transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Start New Analysis
+              </button>
             </div>
           </div>
         )}
       </main>
-
-      <div className="w-full">
-        <div className="border-t-2 bg-purple-500 border-purple-200 rounded-full" />
-      </div>
-
       <DoctorFooter />
     </div>
   );
