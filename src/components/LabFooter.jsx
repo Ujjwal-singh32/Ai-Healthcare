@@ -3,67 +3,70 @@
 import React from "react";
 import Link from "next/link";
 
+
+import { Github, Instagram, Linkedin } from "lucide-react";
+
 const LabFooter = () => {
   return (
-    <footer className="bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-100 py-8 px-4 sm:px-10 font-sans">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
-        {/* Section 1: About */}
-        <div>
-          <h3 className="text-xl font-semibold mb-3">Rakshaa Labs</h3>
-          <p className="text-sm font-light leading-relaxed">
-            Empowering diagnostics through seamless technology. Manage reports,
-            stay organized, and offer better care.
+    <footer className="bg-white/95 dark:bg-[#181c2a]/95 backdrop-blur-2xl border-t-2 border-[#2563eb]/20 dark:border-[#60a5fa]/20 shadow-2xl text-[#2563eb] dark:text-[#60a5fa] pb-0 mt-0">
+      <div className="max-w-7xl mx-auto px-8 py-14 flex flex-col sm:flex-row items-center justify-center gap-12 text-center">
+        {/* Logo and Tagline */}
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="text-3xl font-black flex items-center gap-2 text-[#2563eb] dark:text-[#60a5fa] drop-shadow-md tracking-tight">🧪 Rakshaa Labs</h2>
+          <p className="text-base mt-3 font-medium text-[#2563eb]/80 dark:text-[#60a5fa]/80">
+            Empowering diagnostics through seamless technology. Manage reports, stay organized, and offer better care.
           </p>
         </div>
 
-        {/* Section 2: Quick Links */}
-        <div>
-          <h3 className="text-xl font-semibold mb-3">Quick Links</h3>
-          <ul className="space-y-2 text-sm font-medium">
-            <li>
-              <Link href="/pathlab/home" className="hover:underline">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/pathlab/pending-reports" className="hover:underline">
-                Pending Reports
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/pathlab/completed-reports"
-                className="hover:underline"
-              >
-                Reports Submitted
-              </Link>
-            </li>
-            <li>
-              <Link href="/pathlab/tests" className="hover:underline">
-                Test Offered
-              </Link>
-            </li>
-          </ul>
+        {/* Navigation Links */}
+        <div className="grid grid-cols-2 gap-8 mx-auto">
+          <div className="flex flex-col gap-3 items-center">
+            <FooterLink href="/pathlab/pending-reports" label="Pending Reports" />
+            <FooterLink href="/pathlab/completed-reports" label="Submitted Reports" />
+            <FooterLink href="/pathlab/tests" label="Test Offered" />
+          </div>
+          <div className="flex flex-col gap-3 items-center">
+            <FooterLink href="/pathlab/home" label="Home" />
+            <FooterLink href="/pathlab/profile" label="Profile" />
+          </div>
         </div>
 
-        {/* Section 3: Contact */}
-        <div>
-          <h3 className="text-xl font-semibold mb-3">Support</h3>
-          <p className="text-sm font-light leading-relaxed">
-            📧 Email: support@rakshaa.com <br />
-            📞 Phone: +91-98765-43210
-          </p>
-          <p className="text-xs mt-2 text-purple-600 dark:text-purple-300 font-medium">
-            Available Mon-Fri • 9am to 6pm
-          </p>
+        {/* Social / Contact */}
+        <div className="flex flex-col gap-3 items-center justify-center">
+          <span className="font-bold text-[#2563eb] dark:text-[#60a5fa]">Connect with us</span>
+          <div className="flex gap-5 mt-1">
+            <FooterIcon href="https://github.com" icon={<Github className="w-7 h-7" />} />
+            <FooterIcon href="https://linkedin.com" icon={<Linkedin className="w-7 h-7" />} />
+            <FooterIcon href="https://instagram.com" icon={<Instagram className="w-7 h-7" />} />
+          </div>
         </div>
       </div>
-      <hr className="my-6 border-t border-purple-300 dark:border-purple-600" />
-      <div className="text-center text-xs text-purple-600 dark:text-purple-400 font-light">
-        © {new Date().getFullYear()} Rakshaa Labs. All rights reserved.
+
+      {/* Copyright */}
+      <div className="border-t-2 border-dashed border-[#2563eb]/20 dark:border-[#60a5fa]/20 py-5 text-center text-base font-semibold text-[#2563eb] dark:text-[#60a5fa] bg-white/90 dark:bg-[#181c2a]/90 rounded-b-3xl tracking-wide">
+        &copy; {new Date().getFullYear()} Rakshaa Labs. All rights reserved.
       </div>
     </footer>
   );
 };
+
+function FooterLink({ href, label }) {
+  return (
+    <Link
+      href={href}
+      className="text-md text-[#2563eb] dark:text-[#60a5fa] hover:text-[#1d4ed8] dark:hover:text-[#3b82f6] hover:underline transition-colors rounded px-1 py-0.5"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function FooterIcon({ href, icon }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition-transform">
+      {icon}
+    </a>
+  );
+}
 
 export default LabFooter;

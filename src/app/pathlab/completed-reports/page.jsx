@@ -41,21 +41,23 @@ const Page = () => {
   return (
     <>
       <LabNavbar />
-      <div className="min-h-screen bg-purple-50 dark:bg-purple-900 p-6 sm:p-10">
-        <h1 className="text-2xl sm:text-3xl font-bold text-purple-800 dark:text-white mb-6 text-center">
+      {/* Spacer to ensure content starts after navbar */}
+      <div className="h-16 sm:h-20" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-blue-950 dark:to-blue-900 py-12 px-4 sm:px-8">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-[#2563eb] dark:text-[#60a5fa] mb-10 tracking-tight font-sans">
           Reports Submitted
         </h1>
 
         {loading ? (
-          <p className="text-center text-purple-700 dark:text-purple-200">
+          <p className="text-center text-blue-700 dark:text-blue-200 text-lg font-semibold">
             Loading reports...
           </p>
         ) : completedReports.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-300 text-center">
+          <p className="text-blue-400 dark:text-blue-300 text-center text-lg">
             No completed reports yet.
           </p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {completedReports.map((report) => (
               <Link
                 key={report._id}
@@ -71,25 +73,21 @@ const Page = () => {
                     status: report.status,
                   },
                 }}
-                className="bg-white dark:bg-purple-950 border border-purple-200 dark:border-purple-700 rounded-xl shadow hover:shadow-lg transition p-5 space-y-2 cursor-pointer"
+                className="bg-white/80 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-6 space-y-4 cursor-pointer backdrop-blur-md"
               >
-                <div className="text-lg font-semibold text-purple-800 dark:text-purple-100">
+                <div className="text-2xl font-extrabold text-blue-800 dark:text-blue-100 truncate font-sans tracking-tight">
                   {report.patientId?.name}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  Test:{" "}
-                  <span className="font-medium">{report.tests.join(", ")}</span>
+                <div className="text-lg text-blue-700 dark:text-blue-200">
+                  <span className="font-semibold">Test:</span> {report.tests.join(", ")}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  Fee: <span className="font-medium">₹ {report.fee}</span>
+                <div className="text-lg text-blue-700 dark:text-blue-200">
+                  <span className="font-semibold">Fee:</span> <span className="text-blue-900 dark:text-blue-100 font-bold">₹ {report.fee}</span>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  Date:{" "}
-                  <span className="font-medium">
-                    {new Date(report.date).toLocaleDateString()}
-                  </span>
+                <div className="text-lg text-blue-700 dark:text-blue-200">
+                  <span className="font-semibold">Date:</span> <span className="text-blue-900 dark:text-blue-100 font-medium">{new Date(report.date).toLocaleDateString()}</span>
                 </div>
-                <div className="inline-block text-xs px-3 py-1 rounded-full bg-green-200 text-green-800">
+                <div className="inline-block text-base px-4 py-1 rounded-full bg-green-100 text-green-800 font-semibold border border-green-200">
                   {report.status}
                 </div>
               </Link>
