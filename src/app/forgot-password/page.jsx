@@ -66,6 +66,7 @@ export default function ForgotPassword() {
               >
                 <option value="Patient">Patient</option>
                 <option value="Doctor">Doctor</option>
+                <option value="Pathlab">Pathlab</option>
               </select>
               <div className="pointer-events-none absolute top-1/2 right-4 transform -translate-y-1/2 text-blue-400 dark:text-blue-200 text-xl">▼</div>
             </div>

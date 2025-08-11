@@ -1,6 +1,7 @@
 import connectDB from "@/lib/db";
 import patientModel from "@/models/patientModel";
 import doctorModel from "@/models/doctorModel";
+import pathLabModel from "@/models/pathLabModel";
 import bcrypt from "bcryptjs";
 
 export async function POST(req, res) {
@@ -22,6 +23,8 @@ export async function POST(req, res) {
       UserModel = patientModel;
     } else if (role === "Doctor") {
       UserModel = doctorModel;
+    } else if (role === "Pathlab") {
+      UserModel = pathLabModel;
     } else {
       return new Response(JSON.stringify({ error: "Invalid role" }), {
         status: 400,

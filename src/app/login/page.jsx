@@ -335,11 +335,11 @@ export default function AuthPage() {
       });
 
       if (response.data.success) {
-        console.log("pathlab signup:", response.data);
+        // console.log("pathlab signup:", response.data);
         toast.success("Account Created Successfully Now login");
         setMode("login");
       } else {
-        toast.error(response.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error("Signup error:", error);

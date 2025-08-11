@@ -27,7 +27,7 @@ export async function POST(req) {
     });
 
     const { labName, email, password, phone, labAddress, profilePic } = data;
-    // console.log("data" , data);
+    // console.log("data", data);
     if (!validator.isEmail(email)) {
       return NextResponse.json({ success: false, message: "Invalid email." });
     }
@@ -40,6 +40,7 @@ export async function POST(req) {
     }
 
     const existing = await pathLabModel.findOne({ email });
+    // console.log("at this point");
     if (existing) {
       return NextResponse.json({
         success: false,
@@ -49,11 +50,16 @@ export async function POST(req) {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
     let imageUrl = "";
-    if (profilePic && typeof profilePic === "object" && profilePic.arrayBuffer) {
+    if (
+      profilePic &&
+      typeof profilePic === "object" &&
+      profilePic.arrayBuffer
+    ) {
       const buffer = Buffer.from(await profilePic.arrayBuffer());
-      const base64 = `data:${profilePic.type};base64,${buffer.toString("base64")}`;
+      const base64 = `data:${profilePic.type};base64,${buffer.toString(
+        "base64"
+      )}`;
 
       const result = await cloudinary.uploader.upload(base64, {
         folder: "rakshaa/pathlabs",
@@ -72,7 +78,6 @@ export async function POST(req) {
 
     const saved = await newPathLab.save();
     const token = createToken(saved._id);
-
     return NextResponse.json({
       success: true,
       token,
