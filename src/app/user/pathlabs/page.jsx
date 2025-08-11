@@ -20,6 +20,7 @@ export default function PathlabSection() {
       try {
         const res = await axios.get("/api/user/all-pathlab");
         if (res.data.success) {
+          console.log("printing all data of labs", res.data.labs)
           setPathlabs(res.data.labs);
         }
       } catch (error) {
@@ -35,13 +36,19 @@ export default function PathlabSection() {
     .filter(
       (lab) =>
         lab.labName.toLowerCase().includes(search.toLowerCase()) ||
-        (lab.tests || []).some((test) =>
-          test.testname?.toLowerCase().includes(search.toLowerCase())
+        (lab.test || []).some((t) =>
+          t.testname?.toLowerCase().includes(search.toLowerCase())
         )
     )
-    .sort((a, b) =>
-      sortOrder === "asc" ? a.price - b.price : b.price - a.price
-    );
+    .sort((a, b) => {
+      const minPriceA = Math.min(...(a.test || []).map(t => t.price || 0));
+      const minPriceB = Math.min(...(b.test || []).map(t => t.price || 0));
+
+      return sortOrder === "asc"
+        ? minPriceA - minPriceB
+        : minPriceB - minPriceA;
+    });
+
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
