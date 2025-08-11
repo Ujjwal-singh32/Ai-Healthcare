@@ -1,6 +1,7 @@
 import connectDB from "@/lib/db";
 import patientModel from "@/models/patientModel";
 import doctorModel from "@/models/doctorModel";
+import pathLabModel from "@/models/pathLabModel";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
@@ -23,6 +24,8 @@ export async function POST(req, res) {
       UserModel = patientModel;
     } else if (role === "Doctor") {
       UserModel = doctorModel;
+    } else if (role === "Pathlab") {
+      UserModel = pathLabModel;
     } else {
       return new Response(JSON.stringify({ error: "Invalid role" }), {
         status: 400,
@@ -80,7 +83,7 @@ export async function POST(req, res) {
 
     return new Response(
       JSON.stringify({
-         success: true,
+        success: true,
         message: `Password reset link sent to ${email}. Please check your inbox.`,
       }),
       { status: 200 }

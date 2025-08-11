@@ -43,8 +43,16 @@ const pathLabSchema = new mongoose.Schema(
         },
       },
     ],
-  },
+    resetPasswordToken: {
+      type: String,
+      default: "",
+    },
 
+    resetPasswordExpires: {
+      type: Date,
+      default: "",
+    },
+  },
   { timestamps: true }
 );
 
