@@ -65,7 +65,7 @@ export default function DoctorSection() {
   );
 
   if (sortBy === "price") {
-    filteredDoctors.sort((a, b) => a.price - b.price);
+    filteredDoctors.sort((a, b) => a.consultationFees  - b.consultationFees );
   } else if (sortBy === "rating") {
     filteredDoctors.sort((a, b) => b.rating - a.rating);
   }
@@ -170,7 +170,7 @@ export default function DoctorSection() {
                     <div className="w-24 h-24 rounded-full border-4 border-[#2563eb] dark:border-[#60a5fa] shadow-lg overflow-hidden bg-gradient-to-br from-[#2563eb] to-[#60a5fa] p-1">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-[#232946]">
                         <Image
-                          src={doctor.profilePic}
+                          src={doctor.profilePic || "/fallback.jpg"}
                           alt={doctor.name}
                           width={96}
                           height={96}
