@@ -380,13 +380,7 @@ export default function AuthPage() {
     setStep(0);
   };
 
-  const FloatingBlobs = () => (
-    <div className="absolute inset-0 -z-10 overflow-hidden">
-      <div className="absolute w-96 h-96 bg-purple-400 opacity-40 rounded-full top-10 left-10 animate-float1 blur-[100px]" />
-      <div className="absolute w-[500px] h-[500px] bg-pink-400 opacity-40 rounded-full top-[60%] right-[-100px] animate-float2 blur-[120px]" />
-      <div className="absolute w-80 h-80 bg-blue-400 opacity-40 rounded-full bottom-[-100px] left-[40%] animate-float3 blur-[100px]" />
-    </div>
-  );
+  // Remove FloatingBlobs for a more professional look
   const handleNextStep = () => {
     if (step >= steps.length) {
       if (mode === "signup") {
@@ -434,57 +428,51 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-purple-200 via-purple-100 to-blue-100 p-2 sm:p-4">
-      <FloatingBlobs />
-      <div className="flex flex-col md:flex-row w-full max-w-6xl h-auto md:h-[90vh] overflow-hidden rounded-3xl shadow-2xl backdrop-blur-xl bg-white/80">
-        {/* Left Image Section */}
-        <div className="hidden md:flex md:w-1/2 bg-gradient-to-tr from-blue-700 via-purple-700 to-pink-500 relative items-center justify-center p-4">
-          <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/024/585/326/small/3d-happy-cartoon-doctor-cartoon-doctor-on-transparent-background-generative-ai-png.png"
-            alt="doctor"
-            className="w-[80%] max-h-[80%] object-contain"
-          />
-        </div>
+  <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-tr from-blue-100 via-blue-200 to-blue-50 overflow-hidden font-sans px-2 sm:px-4 md:px-6">
+      {/* Animated floating glass blobs */}
+  <div className="absolute -top-32 -left-32 w-[420px] h-[420px] bg-gradient-to-br from-blue-200/30 via-blue-100/20 to-white/10 rounded-full blur-2xl animate-pulse-slow z-0" />
+  <div className="absolute bottom-0 right-0 w-[320px] h-[320px] bg-gradient-to-tr from-blue-300/20 via-blue-200/10 to-white/5 rounded-full blur-xl animate-pulse-slower z-0" />
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-blue-100/10 via-blue-50/10 to-white/5 rounded-full blur-[100px] z-0" />
 
-        {/* Right Form Section */}
-        <div className="w-full md:flex-1 p-3 sm:p-6 md:p-10 flex flex-col justify-center bg-gradient-to-tr from-purple-200 via-purple-100 to-blue-100">
-          <div className="w-full max-w-xs sm:max-w-md mx-auto">
+      {/* Glassmorphic Card */}
+  <div className="relative z-10 w-full max-w-md mx-auto rounded-3xl shadow-2xl bg-white/60 dark:bg-blue-950/60 backdrop-blur-2xl border border-blue-300/60 dark:border-blue-800/60 p-4 sm:p-8 md:p-12 flex flex-col items-center gap-8 animate-fade-in ring-2 ring-blue-200/40 dark:ring-blue-900/40 ring-offset-2 ring-offset-blue-100 dark:ring-offset-blue-950 transition-all duration-300 sm:mx-4 md:mx-6" style={{boxShadow: '0 8px 32px 0 rgba(37,99,235,0.12), 0 1.5px 8px 0 rgba(37,99,235,0.10)'}}> 
+        {/* Glowing Rakshaa Logo/Text */}
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-4xl sm:text-5xl font-black text-blue-700 dark:text-blue-200 tracking-tight">
+            Rakshaa
+          </span>
+          <span className="text-base sm:text-lg font-medium text-blue-900/80 dark:text-blue-100/80 tracking-widest uppercase letter-spacing-[0.2em]">
+            Secure Healthcare Portal
+          </span>
+        </div>
+        <div className="w-full">
             {!role ? (
               <>
-                <h1 className="text-2xl sm:text-4xl font-extrabold text-center text-purple-700 mb-4 sm:mb-6 tracking-widest drop-shadow-lg flex items-center justify-center gap-2 sm:gap-3">
-                  <span className="animate-bounce">🛡️</span>
-                  <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 bg-clip-text text-transparent">
-                    Rakshaa!!
-                  </span>
-                  <span className="animate-ping text-purple-300 text-sm sm:text-2xl">
-                    💖
-                  </span>
-                </h1>
-                <h2 className="text-xl sm:text-3xl font-bold text-center text-purple-700 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-semibold text-center text-blue-900 dark:text-blue-100 mb-6 tracking-wide">
                   Select Your Role
                 </h2>
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-                  {roles.map((r) => (
-                    <Button
-                      key={r}
-                      variant="outline"
-                      className="rounded-full border-purple-400 text-purple-700 hover:bg-purple-100 cursor-pointer text-sm sm:text-base"
-                      onClick={() => setRole(r)}
-                    >
-                      {r}
-                    </Button>
-                  ))}
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 w-full">
+                    {roles.map((r) => (
+                      <Button
+                        key={r}
+                        variant="outline"
+                        className="rounded-xl border-2 border-blue-400/70 text-blue-800 dark:text-blue-200 bg-white/70 dark:bg-blue-900/40 hover:bg-blue-200 dark:hover:bg-blue-800/80 shadow font-semibold w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg transition-all duration-200 cursor-pointer hover:text-blue-700"
+                        onClick={() => setRole(r)}
+                      >
+                        {r}
+                      </Button>
+                    ))}
                 </div>
               </>
             ) : (
               <>
-                <h2 className="text-lg sm:text-2xl font-semibold text-center text-blue-800 mb-2">
-                  {mode === "login" ? "Welcome Back!!" : `${role} Signup`}
+                <h2 className="text-2xl font-semibold text-center text-blue-900 dark:text-blue-100 mb-6 font-sans tracking-tight animate-fade-in">
+                  {mode === "login" ? "Welcome Back" : `${role} Signup`}
                 </h2>
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <span className="text-sm text-gray-500">Role:</span>
                   <select
-                    className="text-sm border border-purple-300 rounded-full px-3 py-1 text-purple-700 bg-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    className="text-base border-2 border-blue-300/60 rounded-xl px-4 py-2 text-blue-800 dark:text-blue-200 bg-white/60 dark:bg-blue-900/40 focus:outline-none focus:ring-2 focus:ring-blue-400 font-semibold shadow-sm"
                     value={role}
                     onChange={(e) => handleRoleChange(e.target.value)}
                   >
@@ -523,15 +511,15 @@ export default function AuthPage() {
                       </a>
                     </div>
                     <Button
-                      className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-full py-4 sm:py-6 cursor-pointer text-sm sm:text-base"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-4 sm:py-6 text-lg font-bold tracking-wide shadow-lg transition-all duration-200 border border-blue-700/20"
                       onClick={handleLogin}
                     >
                       LOGIN
                     </Button>
-                    <p className="text-center text-xs sm:text-sm mt-2 sm:mt-4">
-                      Don’t have an account?{" "}
+                    <p className="text-center text-base mt-4 text-blue-900/80 dark:text-blue-100/80">
+                      Don’t have an account?{' '}
                       <span
-                        className="text-blue-600 cursor-pointer hover:underline"
+                        className="text-blue-700 cursor-pointer hover:underline font-semibold"
                         onClick={() => {
                           setMode("signup");
                           setStep(0);
@@ -545,7 +533,7 @@ export default function AuthPage() {
                   <>
                     <Progress
                       value={(step / (steps.length - 1)) * 100}
-                      className="mb-4"
+                      className="mb-4 bg-blue-200 dark:bg-blue-900 h-2 rounded-full shadow-inner"
                     />
                     <div className="space-y-4">
                       {steps[step] && steps[step].type === "image" ? (
@@ -553,7 +541,7 @@ export default function AuthPage() {
                           <div className="flex flex-col items-center space-y-4">
                             <label
                               htmlFor="profile-upload"
-                              className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-dashed border-purple-400 flex items-center justify-center cursor-pointer hover:bg-purple-100 transition-all"
+                              className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-2xl border-2 border-dashed border-blue-400/60 flex items-center justify-center cursor-pointer hover:bg-blue-100/60 dark:hover:bg-blue-900/60 transition-all bg-white/50 dark:bg-blue-950/40 shadow-inner animate-fade-in"
                             >
                               {currentData.profilePic ? (
                                 <img
@@ -561,10 +549,10 @@ export default function AuthPage() {
                                     currentData.profilePic
                                   )}
                                   alt="Profile"
-                                  className="w-full h-full object-cover rounded-full"
+                                  className="w-full h-full object-cover rounded-2xl"
                                 />
                               ) : (
-                                <span className="text-center text-xs sm:text-sm text-purple-500 px-2">
+                                <span className="text-center text-xs sm:text-sm text-blue-500 px-2">
                                   Click to upload
                                 </span>
                               )}
@@ -579,7 +567,7 @@ export default function AuthPage() {
                               />
                             </label>
                             {currentData.profilePic && (
-                              <p className="text-xs sm:text-sm text-gray-600 text-center truncate max-w-xs">
+                              <p className="text-xs sm:text-sm text-blue-600 text-center truncate max-w-xs">
                                 {currentData.profilePic.name}
                               </p>
                             )}
@@ -588,25 +576,31 @@ export default function AuthPage() {
                       ) : (
                         <div className="space-y-1">
                           {steps[step].type === "select" ? (
-                            <select
-                              className={`w-full py-3 px-4 rounded-full bg-gray-100 text-gray-700 text-sm border ${errorMessage
-                                ? "border-red-500"
-                                : "border-transparent"
-                                }`}
-                              value={currentData[steps[step].field] || ""}
-                              onChange={(e) =>
-                                handleChange(steps[step].field, e.target.value)
-                              }
-                            >
-                              <option value="">
-                                Select {steps[step].label}
-                              </option>
-                              {steps[step].options.map((option) => (
-                                <option key={option} value={option}>
-                                  {option}
+                            <div className="relative w-full">
+                              <select
+                                className={`w-full py-3 px-4 pr-10 rounded-xl bg-white/70 dark:bg-blue-900/60 text-blue-900 dark:text-white text-base font-semibold border-2 ${errorMessage
+                                  ? "border-red-500"
+                                  : "border-blue-400 dark:border-blue-700"
+                                  } shadow-lg focus:ring-2 focus:ring-blue-400 transition-all duration-200 appearance-none cursor-pointer outline-none hover:bg-blue-50/80 dark:hover:bg-blue-800/60`}
+                                value={currentData[steps[step].field] || ""}
+                                onChange={(e) =>
+                                  handleChange(steps[step].field, e.target.value)
+                                }
+                              >
+                                <option value="" className="text-blue-400 font-normal">
+                                  Select {steps[step].label}
                                 </option>
-                              ))}
-                            </select>
+                                {steps[step].options.map((option) => (
+                                  <option key={option} value={option} className="text-blue-900 dark:text-white font-semibold">
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                              {/* Custom arrow icon */}
+                              <div className="pointer-events-none absolute top-1/2 right-4 transform -translate-y-1/2 text-blue-400 dark:text-blue-200 text-xl">
+                                ▼
+                              </div>
+                            </div>
                           ) : (
                             <Input
                               placeholder={steps[step].label}
@@ -616,8 +610,7 @@ export default function AuthPage() {
                                 handleChange(steps[step].field, e.target.value)
                               }
                               onKeyDown={handleKeyDown}
-                              className={`py-4 rounded-full bg-gray-100 text-sm ${errorMessage ? "border border-red-500" : ""
-                                }`}
+                              className={`py-4 rounded-xl bg-white/80 dark:bg-blue-900/60 text-base text-blue-900 dark:text-white border-2 ${errorMessage ? "border-red-500" : "border-blue-200 dark:border-blue-700"} shadow-sm focus:ring-2 focus:ring-blue-400`}
                             />
                           )}
                           {errorMessage && (
@@ -667,7 +660,6 @@ export default function AuthPage() {
                 )}
               </>
             )}
-          </div>
         </div>
       </div>
     </div>
