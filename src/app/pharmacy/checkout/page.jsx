@@ -5,6 +5,7 @@ import Image from "next/image";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
 import Link from "next/link";
+import { useUser } from "@/context/userContext";
 
 export default function CheckoutPage() {
     const [address, setAddress] = useState("123, Sample Street, New Delhi, India");
@@ -15,6 +16,29 @@ export default function CheckoutPage() {
     ]);
     const [showAddressPanel, setShowAddressPanel] = useState(false);
     const [newAddress, setNewAddress] = useState("");
+    const { user } = useUser();
+    async function handleProceedToBuy() {
+        try {
+            const res = await fetch("/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: user._id, 
+                    address: address,
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Failed to place order");
+
+            alert("✅ Order placed successfully!");
+            window.location.href = "/pharmacy/order";
+        } catch (err) {
+            console.error(err);
+            alert("❌ " + err.message);
+        }
+    }
+
 
     const cartItems = [
         { id: 1, name: "Paracetamol", price: 20, qty: 2, image: "/medis.jpg" },
@@ -39,7 +63,7 @@ export default function CheckoutPage() {
 
     return (
         <div className="relative min-h-screen bg-blue-50">
-            <PharmaNavbar />
+            <PharmaNavbar user={user} />
 
             {/* Main Page Content (Blur when panel open) */}
             <div
@@ -120,12 +144,13 @@ export default function CheckoutPage() {
                                 <span>Total:</span>
                                 <span>₹{finalTotal.toFixed(2)}</span>
                             </div>
-                            <Link
-                                href="/pharmacy/order"
+                            <button
+                                onClick={handleProceedToBuy}
                                 className="block w-full bg-blue-600 text-white py-3 rounded-lg font-medium text-center hover:bg-blue-700"
                             >
                                 Proceed to Buy
-                            </Link>
+                            </button>
+
 
                             <p className="text-xs text-gray-500 text-center mt-2">
                                 By continuing, you agree to our Terms & Privacy.

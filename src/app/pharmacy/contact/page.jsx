@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
+import { useUser } from "@/context/userContext";
 
 export default function PharmacyContact() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function PharmacyContact() {
     issue: "",
   });
   const [errors, setErrors] = useState({});
+  const { user } = useUser();
 
   const validate = () => {
     let newErrors = {};
@@ -50,7 +52,7 @@ export default function PharmacyContact() {
 
   return (
     <div className="min-h-screen bg-blue-50 flex flex-col">
-      <PharmaNavbar />
+      <PharmaNavbar user={user} />
 
       <main className="flex-grow flex justify-center items-center px-4 py-8">
         <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-8 space-y-6 border">
