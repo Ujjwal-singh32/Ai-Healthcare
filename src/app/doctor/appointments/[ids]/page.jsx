@@ -129,11 +129,26 @@ export default function AppointmentDetails() {
         const data = await res.json();
 
         if (res.ok) {
-          const transformed = data.reports.map((r, i) => ({
-            name: `Report_${i + 1} (${r.patientName || "Unknown"})`,
-            url: r.url,
-            date: new Date(r.date).toLocaleDateString(),
-          }));
+          // console.log("data reports", data.reports)
+          const transformed = data.reports
+            // Step 1: Sort by date ascending so oldest first
+            .slice()
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            // Step 2: Number them in upload order
+            .map((r, i) => ({
+              name: `Report_${i + 1} (${r.patientName || "Unknown"})`,
+
+              url: r.url,
+              date: new Date(r.date).toLocaleDateString(),
+              time: new Date(r.date).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })
+            }))
+            // Step 3: Reverse so newest shows at top in UI
+            .reverse();
+
           setUploadedReports(transformed);
         } else {
           console.log("report error");
@@ -216,7 +231,7 @@ export default function AppointmentDetails() {
     // Fetch immediately on mount
     fetchMessages();
 
-   
+
     const intervalId = setInterval(fetchMessages, 1200);
 
     // Cleanup on unmount or dependency change
@@ -524,15 +539,27 @@ export default function AppointmentDetails() {
                       {medicationData.map((med, index) => (
                         <SelectItem
                           key={index}
-                          value={new Date(med.date).toISOString()}
-                          className="bg-[#dbeafe] dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] font-bold hover:bg-[#2563eb] hover:text-white dark:hover:bg-[#60a5fa] dark:hover:text-[#181c2a] focus:bg-[#2563eb] focus:text-white dark:focus:bg-[#60a5fa] dark:focus:text-[#181c2a]"
+                          value={med.date} // keep original or ISO if you need exact value
                         >
-                          {new Intl.DateTimeFormat("en-US", {
-                            weekday: "short",
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }).format(new Date(med.date))}
+                          {(() => {
+                            const d = new Date(med.date);
+                            const datePart = d.toLocaleDateString("en-US", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            });
+                            const timePart = d.toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            });
+                            return (
+                              <span className="flex gap-2 w-full">
+                                <span>{datePart}</span>
+                                <span>{timePart}</span>
+                              </span>
+                            );
+                          })()}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -602,7 +629,8 @@ export default function AppointmentDetails() {
                                 {file.name}
                               </span>
                               <div className="text-xs text-gray-600 dark:text-gray-400 break-words">
-                                Uploaded on: {file.date || "Unknown date"}
+                              Uploaded on: {file.date || "Unknown date"} {file.time ? `at ${file.time}` : ""}
+
                                 {file.patientName && (
                                   <> | Patient: {file.patientName}</>
                                 )}

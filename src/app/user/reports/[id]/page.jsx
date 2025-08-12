@@ -374,10 +374,9 @@ export default function AppointmentDetails() {
                   key={section}
                   variant={activeSection === section ? "default" : "outline"}
                   className={`w-full capitalize cursor-pointer
-                    ${
-                      activeSection === section
-                        ? "bg-[#2563eb] !text-white dark:bg-[#60a5fa] !dark:text-[#181c2a] !border-[#2563eb] !dark:border-[#60a5fa] pointer-events-none"
-                        : "border-[#2563eb] dark:border-[#60a5fa] text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#e0e7ff] dark:hover:bg-[#181c2a] hover:text-[#2563eb] dark:hover:text-[#60a5fa]"
+                    ${activeSection === section
+                      ? "bg-[#2563eb] !text-white dark:bg-[#60a5fa] !dark:text-[#181c2a] !border-[#2563eb] !dark:border-[#60a5fa] pointer-events-none"
+                      : "border-[#2563eb] dark:border-[#60a5fa] text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#e0e7ff] dark:hover:bg-[#181c2a] hover:text-[#2563eb] dark:hover:text-[#60a5fa]"
                     }
                   `}
                   onClick={() => setActiveSection(section)}
@@ -385,8 +384,8 @@ export default function AppointmentDetails() {
                   {section === "reports"
                     ? "Upload Reports"
                     : section === "zoom"
-                    ? "Zoom Meeting"
-                    : section}
+                      ? "Zoom Meeting"
+                      : section}
                 </Button>
               ))}
             </div>
@@ -427,10 +426,9 @@ export default function AppointmentDetails() {
                       <div
                         key={index}
                         className={`max-w-[80%] md:max-w-[60%] px-5 py-3 rounded-2xl shadow-md relative
-                          ${
-                            msg.senderType === "Patient"
-                              ? "ml-auto bg-gradient-to-br from-[#2563eb] to-[#60a5fa] text-white dark:from-[#60a5fa] dark:to-[#2563eb] dark:text-[#181c2a]"
-                              : "mr-auto bg-white dark:bg-[#181c2a] border border-[#2563eb]/10 dark:border-[#60a5fa]/10 text-[#2563eb] dark:text-[#60a5fa]"
+                          ${msg.senderType === "Patient"
+                            ? "ml-auto bg-gradient-to-br from-[#2563eb] to-[#60a5fa] text-white dark:from-[#60a5fa] dark:to-[#2563eb] dark:text-[#181c2a]"
+                            : "mr-auto bg-white dark:bg-[#181c2a] border border-[#2563eb]/10 dark:border-[#60a5fa]/10 text-[#2563eb] dark:text-[#60a5fa]"
                           }
                         `}
                       >
@@ -505,15 +503,27 @@ export default function AppointmentDetails() {
                       {filteredMeds.map((med, index) => (
                         <SelectItem
                           key={index}
-                          value={med.date}
-                          className="bg-[#dbeafe] dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] font-bold hover:bg-[#2563eb] hover:text-white dark:hover:bg-[#60a5fa] dark:hover:text-[#181c2a] focus:bg-[#2563eb] focus:text-white dark:focus:bg-[#60a5fa] dark:focus:text-[#181c2a]"
+                          value={med.date} // keep original or ISO if you need exact value
                         >
-                          {new Intl.DateTimeFormat("en-US", {
-                            weekday: "short",
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }).format(new Date(med.date))}
+                          {(() => {
+                            const d = new Date(med.date);
+                            const datePart = d.toLocaleDateString("en-US", {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            });
+                            const timePart = d.toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            });
+                            return (
+                              <span className="flex gap-2 w-full">
+                                <span>{datePart}</span>
+                                <span>{timePart}</span>
+                              </span>
+                            );
+                          })()}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -571,6 +581,7 @@ export default function AppointmentDetails() {
                     <Input
                       type="file"
                       multiple
+                      accept="image/png, image/jpeg, image/jpg"
                       onChange={handleReportUpload}
                       className="bg-white dark:bg-[#181c2a] border-[#2563eb] dark:border-[#60a5fa]"
                       ref={(ref) => (fileInputRef.current = ref)}
