@@ -2,6 +2,7 @@
 
 import PharmaFooter from "@/components/pharmacyFooter";
 import PharmaNavbar from "@/components/pharmacyNav";
+import { useUser } from "@/context/userContext";
 import { useState } from "react";
 
 export default function AddMedicinePage() {
@@ -12,6 +13,8 @@ export default function AddMedicinePage() {
         price: "",
         stock: "",
     });
+
+    const { user } = useUser();
 
     const [images, setImages] = useState([]);
     const [uploading, setUploading] = useState(false);
@@ -108,7 +111,7 @@ export default function AddMedicinePage() {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <PharmaNavbar />
+            <PharmaNavbar user={user} />
             <div className="flex justify-center py-10">
                 <form
                     onSubmit={handleSubmit}

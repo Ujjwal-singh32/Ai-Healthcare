@@ -1,28 +1,71 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
+import { useUser } from "@/context/userContext";
 
 export default function HomePage() {
-  const medicines = [
-    { id: 1, name: "Paracetamol", desc: "Pain reliever & fever reducer", price: "₹20", img: "/medis.jpg" },
-    { id: 2, name: "Amoxicillin", desc: "Antibiotic for infections", price: "₹50", img: "/medis.jpg" },
-    { id: 3, name: "Cetirizine", desc: "Allergy relief", price: "₹15", img: "/medis.jpg" },
-    { id: 4, name: "Vitamin C", desc: "Boost immunity", price: "₹100", img: "/medis.jpg" },
-    { id: 5, name: "Ibuprofen", desc: "Pain reliever & anti-inflammatory", price: "₹30", img: "/medis.jpg" },
-    { id: 6, name: "Azithromycin", desc: "Antibiotic for bacterial infections", price: "₹60", img: "/medis.jpg" },
-    { id: 7, name: "Dolo 650", desc: "Fever and mild pain relief", price: "₹25", img: "/medis.jpg" },
-    { id: 8, name: "ORS Sachets", desc: "Oral rehydration salts", price: "₹12", img: "/medis.jpg" },
-  ];
+  const [medicines, setMedicines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useUser();
+
+  const currentUserId = user?._id;
+
+  useEffect(() => {
+    const fetchMedicines = async () => {
+      try {
+        const res = await fetch("/api/medicines");
+        const data = await res.json();
+        setMedicines(data);
+      } catch (error) {
+        console.error("Error fetching medicines:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMedicines();
+  }, []);
+
+  const handleAddToCart = async (medicineId) => {
+    try {
+      const res = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: currentUserId,
+          medicineId,
+          quantity: 1
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Added to cart!");
+      } else {
+        alert(data.error || "Failed to add to cart");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Loading medicines...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-100 to-white text-gray-900">
-      <PharmaNavbar />
+      <PharmaNavbar user={user} />
 
       {/* Hero Section */}
       <main className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-[60vh] px-8">
-        {/* Left Text */}
         <div className="flex-1 md:pr-12 text-right">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-blue-800">
             Your medication delivered
@@ -32,7 +75,6 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Right Image */}
         <div className="flex-1 md:pl-12 flex justify-center">
           <Image
             src="/med.png"
@@ -46,45 +88,54 @@ export default function HomePage() {
       </main>
 
       {/* General Medicine Section */}
-      {/* General Medicine Section */}
       <section className="px-8 py-12">
         <h2 className="text-3xl font-bold text-blue-800 mb-6">General Medicines</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {medicines.map((med) => (
-            <Link
-              key={med.id}
-              href={`/pharmacy/medicines/${med.id}`}
-              className="bg-white shadow-lg rounded-xl overflow-hidden border border-blue-100 hover:shadow-xl transition flex flex-col cursor-pointer"
+            <div
+              key={med._id}
+              className="bg-white shadow-lg rounded-xl overflow-hidden border border-blue-100 hover:shadow-xl transition flex flex-col"
             >
-              {/* Product Image */}
-              <div className="w-full h-40 bg-gray-50 flex justify-center items-center p-4">
+              {/* Product Image - clickable */}
+              <Link href={`/pharmacy/medicines/${med._id}`} className="w-full h-40 bg-gray-50 flex justify-center items-center p-4">
                 <Image
-                  src={med.img}
+                  src={med.image?.[0] || "/medis.jpg"}
                   alt={med.name}
                   width={250}
                   height={150}
                   className="object-contain"
                 />
-              </div>
+              </Link>
 
               {/* Product Details */}
               <div className="p-4 flex flex-col flex-1">
-                <h3 className="text-lg font-semibold text-blue-700 truncate">{med.name}</h3>
-                <p className="text-sm text-gray-600 mb-2">{med.desc}</p>
-                <p className="text-blue-600 font-bold mb-3">{med.price}</p>
+                <Link href={`/pharmacy/medicines/${med._id}`}>
+                  <h3 className="text-lg font-semibold text-blue-700 truncate">
+                    {med.name}
+                  </h3>
+                </Link>
+                {/* Show category instead of description */}
+                <p className="text-sm text-gray-600 mb-2">{med.category}</p>
+                <p className="text-blue-600 font-bold mb-3">₹{med.price}</p>
 
                 {/* Buttons */}
                 <div className="flex justify-between mt-4">
-                  <span className="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm">
+                  <Link
+                    href={`/pharmacy/medicines/${med._id}`}
+                    className="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm hover:bg-blue-700"
+                  >
                     Details
-                  </span>
-                  <span className="border border-blue-500 text-blue-600 px-4 py-1 rounded-lg text-sm">
+                  </Link>
+                  <button
+                    onClick={() => handleAddToCart(med._id)}
+                    className="border border-blue-500 text-blue-600 px-4 py-1 rounded-lg text-sm hover:bg-blue-500 hover:text-white transition-colors"
+                  >
                     Add to Cart
-                  </span>
+                  </button>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 
@@ -99,7 +150,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
       <PharmaFooter />
     </div>
   );

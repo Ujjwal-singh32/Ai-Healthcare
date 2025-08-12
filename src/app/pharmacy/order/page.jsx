@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
+import { useUser } from "@/context/userContext";
 
 export default function OrdersPage() {
+    const { user } = useUser();
     const orders = [
         {
             id: "24a5fc",
@@ -40,7 +42,7 @@ export default function OrdersPage() {
 
     return (
         <div className="min-h-screen bg-blue-50">
-            <PharmaNavbar />
+            <PharmaNavbar user={user} />
 
             <div className="max-w-6xl mx-auto px-4 py-6">
                 <div className="flex gap-4 mb-6">

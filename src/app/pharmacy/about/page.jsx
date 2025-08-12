@@ -2,11 +2,13 @@
 
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
+import { useUser } from "@/context/userContext";
 
 export default function AboutPage() {
+  const { user } = useUser();
   return (
     <div className="min-h-screen bg-blue-50 flex flex-col">
-      <PharmaNavbar />
+      <PharmaNavbar user={user} />
 
       <main className="flex-grow px-4 py-8">
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-8 border">

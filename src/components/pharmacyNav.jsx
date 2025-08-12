@@ -1,24 +1,49 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function PharmaNavbar() {
+export default function PharmaNavbar({ user }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  
 
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("Searching for:", searchTerm);
   };
 
+  // Poll cart count every 1.5 seconds
+  useEffect(() => {
+    if (!user?._id) return; 
+
+    const fetchCartCount = async () => {
+      try {
+        const res = await fetch(`/api/cart?userId=${user._id}`);
+        if (!res.ok) throw new Error("Failed to fetch cart");
+        const data = await res.json();
+
+        // Assuming `data.items` is an array with { quantity }
+        const count = data.totalQuantity || 0;
+
+        setCartCount(count);
+      } catch (error) {
+        console.error("Error fetching cart count:", error);
+      }
+    };
+
+    fetchCartCount(); // initial fetch
+    const interval = setInterval(fetchCartCount, 1100);
+
+    return () => clearInterval(interval); // cleanup
+  }, [user?._id]);
+
   return (
     <header className="relative z-50 bg-white/70 backdrop-blur-md shadow-md top-0 sticky">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between px-4 py-3 gap-2">
-
-        {/* Top Row: Logo + Menu Button */}
+        {/* Logo + Menu Button */}
         <div className="flex items-center justify-between w-full md:w-auto">
-          {/* Logo */}
           <Link href="/pharmacy/home">
             <div className="flex items-center gap-2">
               <Image src="/logo2.jpg" alt="Logo" width={40} height={40} />
@@ -27,8 +52,6 @@ export default function PharmaNavbar() {
               </span>
             </div>
           </Link>
-
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden text-2xl text-blue-700"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -37,7 +60,7 @@ export default function PharmaNavbar() {
           </button>
         </div>
 
-        {/* Search Bar - Wider & Taller */}
+        {/* Search Bar */}
         <form
           onSubmit={handleSearch}
           className="flex items-center w-full md:w-[450px] max-w-lg"
@@ -60,17 +83,22 @@ export default function PharmaNavbar() {
         {/* Desktop Nav + Cart */}
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex gap-6 text-lg">
-            <Link href="/pharmacy/home" className="text-blue-600 hover:text-blue-800">Home</Link>
+            <Link href="/user/home" className="text-blue-600 hover:text-blue-800">Home</Link>
             <Link href="/pharmacy/medicines" className="text-blue-600 hover:text-blue-800">Shop</Link>
-            <Link href="/pharmacy/orders" className="text-blue-600 hover:text-blue-800">Orders</Link>
+            <Link href="/pharmacy/order" className="text-blue-600 hover:text-blue-800">Orders</Link>
             <Link href="/pharmacy/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
             <Link href="/pharmacy/about" className="text-blue-600 hover:text-blue-800">About</Link>
           </nav>
           <Link
             href="/pharmacy/cart"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+            className="relative bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition flex items-center gap-2"
           >
             🛒 Cart
+            {cartCount >= 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
       </div>
@@ -85,9 +113,14 @@ export default function PharmaNavbar() {
           <Link href="/pharmacy/about" className="text-blue-600 hover:text-blue-800">About</Link>
           <Link
             href="/pharmacy/cart"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition text-center"
+            className="relative bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition text-center"
           >
             🛒 Cart
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
       )}
