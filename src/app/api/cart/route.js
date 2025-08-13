@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Cart from "@/models/cartModel";
-import Medicine from "@/models/medicineModel"; 
-
 
 export async function GET(req) {
   await connectDB();

@@ -1,22 +1,25 @@
-// /api/medicines/search
-import Medicine from "@/models/Medicine";
-import dbConnect from "@/lib/dbConnect";
+import connectDB from "@/lib/db";
+import Medicine from "@/models/medicineModel";
 
-export default async function handler(req, res) {
-  await dbConnect();
+export async function GET(req) {
+  await connectDB();
 
-  const { q } = req.query; // search term from frontend
+  const { search } = Object.fromEntries(new URL(req.url).searchParams);
+
+  let query = {};
+  if (search) {
+    query = {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } }
+      ]
+    };
+  }
 
   try {
-    const medicines = await Medicine.find({
-      $or: [
-        { name: { $regex: q, $options: "i" } },       // match by name
-        { category: { $regex: q, $options: "i" } }    // match by category
-      ]
-    });
-
-    res.status(200).json(medicines);
-  } catch (err) {
-    res.status(500).json({ error: "Search failed", details: err.message });
+    const medicines = await Medicine.find(query);
+    return new Response(JSON.stringify(medicines), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: "Failed to fetch medicines" }), { status: 500 });
   }
 }
