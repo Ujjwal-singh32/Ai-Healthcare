@@ -55,9 +55,12 @@ export default function AppointmentPage() {
     }
   };
 
-  const filteredAppointments = appointments.filter(
-    (appt) => appt.status === (activeTab === "started" ? "started" : "upcoming")
-  );
+  const filteredAppointments = appointments
+    .filter(
+      (appt) => appt.status === (activeTab === "started" ? "started" : "upcoming")
+    )
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // newest first
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 dark:from-blue-950 dark:to-blue-900 text-blue-900 dark:text-blue-100">
@@ -71,21 +74,19 @@ export default function AppointmentPage() {
         <div className="flex flex-wrap gap-4 mb-8 w-full justify-center">
           <button
             onClick={() => setActiveTab("started")}
-            className={`px-6 py-2 rounded-full font-semibold text-base shadow transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-400/50 ${
-              activeTab === "started"
+            className={`px-6 py-2 rounded-full font-semibold text-base shadow transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-400/50 ${activeTab === "started"
                 ? "bg-blue-600 text-white border-blue-700 shadow-lg scale-105"
                 : "bg-white/60 text-blue-800 border-blue-200 hover:bg-blue-100"
-            }`}
+              }`}
           >
             Started Appointments
           </button>
           <button
             onClick={() => setActiveTab("upcoming")}
-            className={`px-6 py-2 rounded-full font-semibold text-base shadow transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-400/50 ${
-              activeTab === "upcoming"
+            className={`px-6 py-2 rounded-full font-semibold text-base shadow transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-400/50 ${activeTab === "upcoming"
                 ? "bg-blue-600 text-white border-blue-700 shadow-lg scale-105"
                 : "bg-white/60 text-blue-800 border-blue-200 hover:bg-blue-100"
-            }`}
+              }`}
           >
             Upcoming Appointments
           </button>

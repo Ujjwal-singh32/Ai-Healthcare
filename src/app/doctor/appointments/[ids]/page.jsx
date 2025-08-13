@@ -282,7 +282,7 @@ export default function AppointmentDetails() {
           patientId: receiverId, // valid ObjectId
           doctorId: senderId, // valid ObjectId
           medications: newMedications,
-          bookingId:ids
+          bookingId: ids
         }),
       });
 
@@ -436,10 +436,11 @@ export default function AppointmentDetails() {
                   key={section}
                   variant={activeSection === section ? "default" : "outline"}
                   className={`w-full capitalize cursor-pointer
-                    ${activeSection === section
-                      ? 'bg-[#2563eb] !text-white dark:bg-[#60a5fa] !dark:text-[#181c2a] !border-[#2563eb] !dark:border-[#60a5fa] pointer-events-none'
-                      : 'border-[#2563eb] dark:border-[#60a5fa] text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#e0e7ff] dark:hover:bg-[#181c2a] hover:text-[#2563eb] dark:hover:text-[#60a5fa]'}
-                  `}
+    ${activeSection === section
+                      ? " text-black dark:bg-cyan-500 dark:text-black border-blue-600 dark:border-cyan-500"
+                      : "border-blue-600 dark:border-cyan-500 text-blue-600 dark:text-cyan-500 hover:bg-blue-100 dark:hover:bg-[#181c2a] hover:text-blue-600 dark:hover:text-cyan-500"
+                    }
+  `}
                   onClick={() => setActiveSection(section)}
                 >
                   {section === "reports"
