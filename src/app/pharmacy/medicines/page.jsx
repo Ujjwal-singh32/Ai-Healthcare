@@ -1,5 +1,6 @@
+
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import PharmaNavbar from "@/components/pharmacyNav";
@@ -7,7 +8,7 @@ import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
 import { toast } from "react-toastify";
 
-export default function MedicinesPage() {
+function MedicinesPage() {
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +17,6 @@ export default function MedicinesPage() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
 
-  // Fetch medicines
   useEffect(() => {
     async function fetchMedicines() {
       setLoading(true);
@@ -39,7 +39,6 @@ export default function MedicinesPage() {
     fetchMedicines();
   }, [search]);
 
-  // Add to cart
   async function handleAddToCart(medicineId) {
     try {
       if (!user?._id) {
@@ -66,7 +65,6 @@ export default function MedicinesPage() {
     }
   }
 
-  // Loader
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20 bg-blue-50 dark:bg-[#181c2a] min-h-screen px-4">
@@ -168,5 +166,13 @@ export default function MedicinesPage() {
 
       <PharmaFooter />
     </div>
+  );
+}
+
+export default function MedicinesPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <MedicinesPage />
+    </Suspense>
   );
 }

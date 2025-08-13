@@ -111,7 +111,7 @@ export default function PharmacyCartPage() {
                 <p className="text-gray-500">Your cart is empty.</p>
               ) : (
                 cartItems.map(item => (
-                  <div key={item.id} className="flex flex-col sm:flex-row gap-4 pb-6 border-b last:border-none">
+                  <div key={item.id} className="flex flex-col mt-5 sm:flex-row gap-4 pb-6 border-b last:border-none">
                     <div className="w-32 h-32 bg-gray-100 rounded-lg overflow-hidden relative">
                       <Image src={item.image[0] || "/fallback.jpg"} alt={item.name} width={128} height={128} className="object-contain" />
                     </div>
