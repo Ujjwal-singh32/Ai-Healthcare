@@ -8,6 +8,7 @@ import { useUser } from "@/context/userContext";
 
 export default function HomePage() {
   const [medicines, setMedicines] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(20); // Show 20 initially
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
 
@@ -37,7 +38,7 @@ export default function HomePage() {
         body: JSON.stringify({
           userId: currentUserId,
           medicineId,
-          quantity: 1
+          quantity: 1,
         }),
       });
 
@@ -54,8 +55,13 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Loading medicines...</p>
+      <div className="flex justify-center items-center py-20 bg-blue-50 dark:bg-[#181c2a] min-h-screen px-4">
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-16 h-16 border-4 border-transparent border-t-[#2563eb] border-l-[#60a5fa] rounded-full animate-spin bg-gradient-to-r from-[#93c5fd] via-[#2563eb] to-[#60a5fa] shadow-lg"></div>
+          <p className="text-[#2563eb] dark:text-[#60a5fa] text-xl font-semibold animate-pulse">
+            Loading Medicines...
+          </p>
+        </div>
       </div>
     );
   }
@@ -89,22 +95,27 @@ export default function HomePage() {
 
       {/* General Medicine Section */}
       <section className="px-8 py-12">
-        <h2 className="text-3xl font-bold text-blue-800 mb-6">General Medicines</h2>
+        <h2 className="text-3xl font-bold text-blue-800 mb-6">
+          General Medicines
+        </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {medicines.map((med) => (
+          {medicines.slice(0, visibleCount).map((med) => (
             <div
               key={med._id}
               className="bg-white shadow-lg rounded-xl overflow-hidden border border-blue-100 hover:shadow-xl transition flex flex-col"
             >
-              {/* Product Image - clickable */}
-              <Link href={`/pharmacy/medicines/${med._id}`} className="w-full h-40 bg-gray-50 flex justify-center items-center p-4">
+              {/* Product Image */}
+              <Link
+                href={`/pharmacy/medicines/${med._id}`}
+                className="w-full h-40 bg-gray-50 flex justify-center items-center p-4 overflow-hidden"
+              >
                 <Image
                   src={med.image?.[0] || "/medis.jpg"}
                   alt={med.name}
                   width={250}
                   height={150}
-                  className="object-contain"
+                  className="object-contain max-h-36"
                 />
               </Link>
 
@@ -115,12 +126,11 @@ export default function HomePage() {
                     {med.name}
                   </h3>
                 </Link>
-                {/* Show category instead of description */}
                 <p className="text-sm text-gray-600 mb-2">{med.category}</p>
                 <p className="text-blue-600 font-bold mb-3">₹{med.price}</p>
 
                 {/* Buttons */}
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-between mt-auto">
                   <Link
                     href={`/pharmacy/medicines/${med._id}`}
                     className="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm hover:bg-blue-700"
@@ -139,15 +149,17 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* More Medicines Button */}
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/pharmacy/medicines"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
-          >
-            More Medicines →
-          </Link>
-        </div>
+        {/* Show More Button */}
+        {visibleCount < medicines.length && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 20)}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+            >
+              Show More 
+            </button>
+          </div>
+        )}
       </section>
 
       <PharmaFooter />

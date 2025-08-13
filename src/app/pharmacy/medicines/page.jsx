@@ -14,33 +14,31 @@ export default function MedicinesPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
-  
 
-  // Fetch medicines (all or filtered by search)
+  // Fetch medicines
   useEffect(() => {
-  async function fetchMedicines() {
-    setLoading(true);
-    try {
-      const apiUrl = search
-        ? `/api/medicines/search?search=${encodeURIComponent(search)}`
-        : `/api/medicines`;
+    async function fetchMedicines() {
+      setLoading(true);
+      try {
+        const apiUrl = search
+          ? `/api/medicines/search?search=${encodeURIComponent(search)}`
+          : `/api/medicines`;
 
-      const res = await fetch(apiUrl);
-      if (!res.ok) throw new Error("Failed to fetch medicines");
+        const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error("Failed to fetch medicines");
 
-      const data = await res.json();
-      setMedicines(data);
-    } catch (error) {
-      console.error("Failed to fetch medicines:", error);
-    } finally {
-      setLoading(false);
+        const data = await res.json();
+        setMedicines(data);
+      } catch (error) {
+        console.error("Failed to fetch medicines:", error);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
-  fetchMedicines();
-}, [search]);
+    fetchMedicines();
+  }, [search]);
 
-
-  // Add to cart function
+  // Add to cart
   async function handleAddToCart(medicineId) {
     try {
       if (!user?._id) {
@@ -67,10 +65,16 @@ export default function MedicinesPage() {
     }
   }
 
+  // Loader
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-lg text-blue-700">
-        Loading medicines...
+      <div className="flex justify-center items-center py-20 bg-blue-50 dark:bg-[#181c2a] min-h-screen px-4">
+        <div className="flex flex-col items-center space-y-6">
+          <div className="w-16 h-16 border-4 border-transparent border-t-[#2563eb] border-l-[#60a5fa] rounded-full animate-spin bg-gradient-to-r from-[#93c5fd] via-[#2563eb] to-[#60a5fa] shadow-lg"></div>
+          <p className="text-[#2563eb] dark:text-[#60a5fa] text-xl font-semibold animate-pulse">
+            Loading Medicines...
+          </p>
+        </div>
       </div>
     );
   }
@@ -105,18 +109,21 @@ export default function MedicinesPage() {
             {medicines.map((med) => (
               <div
                 key={med._id}
-                className="bg-white shadow-lg rounded-xl overflow-hidden border border-blue-100 hover:shadow-xl transition flex flex-col cursor-pointer"
+                className="bg-white shadow-md rounded-xl overflow-hidden border border-blue-100 hover:shadow-2xl hover:scale-[1.02] transition transform flex flex-col cursor-pointer"
                 onClick={() => router.push(`/pharmacy/medicines/${med._id}`)}
               >
-                <div className="w-full h-40 bg-blue-50 flex justify-center items-center p-4">
+                {/* Image container */}
+                <div className="w-full h-48 bg-blue-50 flex justify-center items-center p-4 overflow-hidden">
                   <Image
                     src={med.image?.[0] || "/medis.jpg"}
                     alt={med.name}
                     width={250}
-                    height={150}
-                    className="object-contain"
+                    height={180}
+                    className="object-contain max-h-full max-w-full"
                   />
                 </div>
+
+                {/* Card Content */}
                 <div className="p-4 flex flex-col flex-1">
                   <h3 className="text-lg font-semibold text-blue-700 truncate">
                     {med.name}
@@ -124,14 +131,18 @@ export default function MedicinesPage() {
                   <p className="text-sm text-gray-600 mb-2">
                     {med.category || "No category"}
                   </p>
-                  <p className="text-blue-600 font-bold mb-3">₹{med.price}</p>
-                  <div className="flex justify-between mt-auto">
+                  <p className="text-blue-600 font-bold mb-4 text-lg">
+                    ₹{med.price}
+                  </p>
+
+                  {/* Buttons */}
+                  <div className="flex gap-2 mt-auto">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         router.push(`/pharmacy/medicines/${med._id}`);
                       }}
-                      className="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm"
+                      className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
                     >
                       Details
                     </button>
@@ -140,7 +151,7 @@ export default function MedicinesPage() {
                         e.stopPropagation();
                         handleAddToCart(med._id);
                       }}
-                      className="border border-blue-500 text-blue-600 px-4 py-1 rounded-lg text-sm"
+                      className="flex-1 border border-blue-500 text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition"
                     >
                       Add to Cart
                     </button>
