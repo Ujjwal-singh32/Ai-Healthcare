@@ -170,7 +170,7 @@ export default function AppointmentDetails() {
   useEffect(() => {
     const fetchMeds = async () => {
       try {
-        const res = await fetch(`/api/medications?patientId=${receiverId}`);
+        const res = await fetch(`/api/medications?patientId=${receiverId}&bookingId=${ids}`);
         const data = await res.json();
 
         if (data.success && Array.isArray(data.medications)) {
@@ -282,6 +282,7 @@ export default function AppointmentDetails() {
           patientId: receiverId, // valid ObjectId
           doctorId: senderId, // valid ObjectId
           medications: newMedications,
+          bookingId:ids
         }),
       });
 
