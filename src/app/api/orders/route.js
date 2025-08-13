@@ -39,7 +39,7 @@ export async function POST(req) {
       (sum, item) => sum + item.price * item.qty,
       0
     );
-
+    console.log("userId:", userId);
     // Create order
     const newOrder = await MedicineOrder.create({
       userId,
