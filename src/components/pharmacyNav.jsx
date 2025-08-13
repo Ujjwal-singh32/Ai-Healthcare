@@ -1,29 +1,26 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function PharmaNavbar({ user }) {
-  
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
-
-  
-
-   
-const handleSearch = (e) => {
-  e.preventDefault();
-  if (searchTerm.trim()) {
-    router.push(`/pharmacy/medicines?search=${encodeURIComponent(searchTerm)}`);
-  }
-};
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(
+        `/pharmacy/medicines?search=${encodeURIComponent(searchTerm)}`
+      );
+    }
+  };
 
   // Poll cart count every 1.5 seconds
   useEffect(() => {
-    if (!user?._id) return; 
+    if (!user?._id) return;
 
     const fetchCartCount = async () => {
       try {
@@ -90,11 +87,36 @@ const handleSearch = (e) => {
         {/* Desktop Nav + Cart */}
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex gap-6 text-lg">
-            <Link href="/user/home" className="text-blue-600 hover:text-blue-800">Home</Link>
-            <Link href="/pharmacy/medicines" className="text-blue-600 hover:text-blue-800">Shop</Link>
-            <Link href="/pharmacy/order" className="text-blue-600 hover:text-blue-800">Orders</Link>
-            <Link href="/pharmacy/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
-            <Link href="/pharmacy/about" className="text-blue-600 hover:text-blue-800">About</Link>
+            <Link
+              href="/user/home"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Home
+            </Link>
+            <Link
+              href="/pharmacy/medicines"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Shop
+            </Link>
+            <Link
+              href="/pharmacy/order"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Orders
+            </Link>
+            <Link
+              href="/pharmacy/contact"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/pharmacy/about"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              About
+            </Link>
           </nav>
           <Link
             href="/pharmacy/cart"
@@ -113,11 +135,36 @@ const handleSearch = (e) => {
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-4 px-6 pb-4 bg-white shadow-lg transition-all duration-300 ease-in-out">
-          <Link href="/pharmacy/home" className="text-blue-600 hover:text-blue-800">Home</Link>
-          <Link href="/pharmacy/medicines" className="text-blue-600 hover:text-blue-800">Shop</Link>
-          <Link href="/pharmacy/orders" className="text-blue-600 hover:text-blue-800">Orders</Link>
-          <Link href="/pharmacy/contact" className="text-blue-600 hover:text-blue-800">Contact</Link>
-          <Link href="/pharmacy/about" className="text-blue-600 hover:text-blue-800">About</Link>
+          <Link
+            href="/pharmacy/home"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Home
+          </Link>
+          <Link
+            href="/pharmacy/medicines"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Shop
+          </Link>
+          <Link
+            href="/pharmacy/order"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Orders
+          </Link>
+          <Link
+            href="/pharmacy/contact"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            Contact
+          </Link>
+          <Link
+            href="/pharmacy/about"
+            className="text-blue-600 hover:text-blue-800"
+          >
+            About
+          </Link>
           <Link
             href="/pharmacy/cart"
             className="relative bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition text-center"
