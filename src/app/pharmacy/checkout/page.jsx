@@ -144,13 +144,7 @@ export default function CheckoutPage() {
                                 Pay when your order is delivered to your doorstep.
                             </p>
                         </div>
-                        <Image
-                            src="/cod-icon.png"
-                            alt="Cash on Delivery"
-                            width={40}
-                            height={40}
-                            className="rounded"
-                        />
+                      
                     </div>
                 </div>
 

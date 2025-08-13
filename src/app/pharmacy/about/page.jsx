@@ -11,7 +11,7 @@ export default function AboutPage() {
       <PharmaNavbar user={user} />
 
       {/* Add top padding to avoid content hidden under navbar */}
-      <main className="flex-grow px-4 pt-32 pb-10 md:pt-36 md:pb-16">
+      <main className="flex-grow px-4  pb-10 md:pt-10 md:pb-16">
         <div className="max-w-5xl mx-auto bg-white/95 dark:bg-[#181c2a]/95 rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-[#2563eb]/20 dark:border-[#60a5fa]/20">
           <h1 className="text-4xl font-black text-[#2563eb] dark:text-[#60a5fa] mb-8 text-center drop-shadow-md tracking-tight">
             About Rakshaa
