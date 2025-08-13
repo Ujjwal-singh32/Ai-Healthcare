@@ -1,18 +1,25 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 
 export default function PharmaNavbar({ user }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
   
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log("Searching for:", searchTerm);
-  };
+   
+const handleSearch = (e) => {
+  e.preventDefault();
+  if (searchTerm.trim()) {
+    router.push(`/pharmacy/medicines?search=${encodeURIComponent(searchTerm)}`);
+  }
+};
 
   // Poll cart count every 1.5 seconds
   useEffect(() => {
@@ -67,7 +74,7 @@ export default function PharmaNavbar({ user }) {
         >
           <input
             type="text"
-            placeholder="Search medicines..."
+            placeholder="Search medicine or category"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-1 px-4 py-2 rounded-l-lg border border-blue-400 focus:outline-none focus:border-blue-600 text-base"

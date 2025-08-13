@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
-import Link from "next/link";
 import { useUser } from "@/context/userContext";
 
 export default function CheckoutPage() {
@@ -16,15 +15,47 @@ export default function CheckoutPage() {
     ]);
     const [showAddressPanel, setShowAddressPanel] = useState(false);
     const [newAddress, setNewAddress] = useState("");
+    const [cartItems, setCartItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [paymentMethod, setPaymentMethod] = useState("COD"); // default Cash on Delivery
     const { user } = useUser();
+
+    const shipping = 40;
+    const discount = 15;
+
+    // Fetch cart data dynamically
+    useEffect(() => {
+        if (!user?._id) return; // Wait until user is loaded
+        async function fetchCart() {
+            try {
+                const res = await fetch(`/api/cart?userId=${user._id}`);
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || "Failed to fetch cart");
+                setCartItems(data.items);
+            } catch (err) {
+                console.error("Error fetching cart:", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchCart();
+    }, [user]);
+
+    const itemsTotal = cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+    );
+    const finalTotal = itemsTotal + shipping - discount;
+
     async function handleProceedToBuy() {
         try {
             const res = await fetch("/api/orders", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    userId: user._id, 
+                    userId: user._id,
                     address: address,
+                    paymentMethod: paymentMethod,
                 }),
             });
 
@@ -39,27 +70,20 @@ export default function CheckoutPage() {
         }
     }
 
-
-    const cartItems = [
-        { id: 1, name: "Paracetamol", price: 20, qty: 2, image: "/medis.jpg" },
-        { id: 2, name: "Vitamin C", price: 100, qty: 1, image: "/medis.jpg" },
-    ];
-
-    const shipping = 40;
-    const discount = 15;
-
-    const itemsTotal = cartItems.reduce(
-        (total, item) => total + item.price * item.qty,
-        0
-    );
-    const finalTotal = itemsTotal + shipping - discount;
-
     const handleAddAddress = () => {
         if (newAddress.trim()) {
             setAddresses([...addresses, newAddress.trim()]);
             setNewAddress("");
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center text-lg text-blue-700">
+                Loading your cart...
+            </div>
+        );
+    }
 
     return (
         <div className="relative min-h-screen bg-blue-50">
@@ -72,6 +96,7 @@ export default function CheckoutPage() {
             >
                 {/* Left Section */}
                 <div className="flex-1 space-y-6">
+                    {/* Header */}
                     <div className="bg-blue-600 text-white p-6 rounded-lg shadow-md flex justify-between items-center">
                         <div>
                             <h1 className="text-2xl font-bold">CHECKOUT</h1>
@@ -99,6 +124,33 @@ export default function CheckoutPage() {
                         </div>
                         <p className="mt-4 text-gray-700">{address}</p>
                     </div>
+
+                    {/* Payment Method - Cash on Delivery */}
+                    <div className="bg-white rounded-lg border p-4 shadow-sm flex items-center gap-4 cursor-pointer hover:bg-blue-50 transition"
+                        onClick={() => setPaymentMethod("COD")}
+                    >
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="COD"
+                            checked={paymentMethod === "COD"}
+                            onChange={() => setPaymentMethod("COD")}
+                            className="w-5 h-5 text-blue-600"
+                        />
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-gray-800">Cash on Delivery</h3>
+                            <p className="text-sm text-gray-500">
+                                Pay when your order is delivered to your doorstep.
+                            </p>
+                        </div>
+                        <Image
+                            src="/cod-icon.png"
+                            alt="Cash on Delivery"
+                            width={40}
+                            height={40}
+                            className="rounded"
+                        />
+                    </div>
                 </div>
 
                 {/* Order Summary */}
@@ -111,7 +163,7 @@ export default function CheckoutPage() {
                             {cartItems.map((item) => (
                                 <div key={item.id} className="flex items-center gap-3 mb-4">
                                     <Image
-                                        src={item.image}
+                                        src={item.image?.[0] || "fallback.jpg"}
                                         alt={item.name}
                                         width={50}
                                         height={50}
@@ -119,10 +171,10 @@ export default function CheckoutPage() {
                                     />
                                     <div className="flex-1">
                                         <p className="text-sm">{item.name}</p>
-                                        <p className="text-xs text-gray-500">Qty: {item.qty}</p>
+                                        <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                                     </div>
                                     <p className="text-sm font-medium">
-                                        ₹{(item.price * item.qty).toFixed(2)}
+                                        ₹{(item.price * item.quantity).toFixed(2)}
                                     </p>
                                 </div>
                             ))}
@@ -148,10 +200,8 @@ export default function CheckoutPage() {
                                 onClick={handleProceedToBuy}
                                 className="block w-full bg-blue-600 text-white py-3 rounded-lg font-medium text-center hover:bg-blue-700"
                             >
-                                Proceed to Buy
+                                Buy Now
                             </button>
-
-
                             <p className="text-xs text-gray-500 text-center mt-2">
                                 By continuing, you agree to our Terms & Privacy.
                             </p>
@@ -160,7 +210,7 @@ export default function CheckoutPage() {
                 </div>
             </div>
 
-            {/* Address Selection Panel with Blurred BG */}
+            {/* Address Selection Panel */}
             {showAddressPanel && (
                 <div className="fixed inset-0 bg-white/40 backdrop-blur-sm flex items-center justify-center z-50 px-4">
                     <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 animate-slideUp">
@@ -209,7 +259,6 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             )}
-
 
             <PharmaFooter />
         </div>

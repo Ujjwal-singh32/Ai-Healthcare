@@ -539,7 +539,8 @@ export default function AppointmentDetails() {
                       {medicationData.map((med, index) => (
                         <SelectItem
                           key={index}
-                          value={med.date} // keep original or ISO if you need exact value
+                          value={med.date}
+                          className="bg-[#dbeafe] text-[#2563eb] font-bold data-[highlighted]:bg-[#dbeafe] data-[highlighted]:text-[#2563eb]"
                         >
                           {(() => {
                             const d = new Date(med.date);
@@ -561,6 +562,7 @@ export default function AppointmentDetails() {
                             );
                           })()}
                         </SelectItem>
+
                       ))}
                     </SelectContent>
                   </Select>
@@ -629,7 +631,7 @@ export default function AppointmentDetails() {
                                 {file.name}
                               </span>
                               <div className="text-xs text-gray-600 dark:text-gray-400 break-words">
-                              Uploaded on: {file.date || "Unknown date"} {file.time ? `at ${file.time}` : ""}
+                                Uploaded on: {file.date || "Unknown date"} {file.time ? `at ${file.time}` : ""}
 
                                 {file.patientName && (
                                   <> | Patient: {file.patientName}</>

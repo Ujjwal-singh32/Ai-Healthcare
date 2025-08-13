@@ -121,26 +121,6 @@ export default function AppointmentDetails() {
 
   const socket = useRef(null);
 
-  // useEffect(() => {
-  //   if (!receiverId || !senderId || activeSection !== "chat") return;
-
-  //   const token = localStorage.getItem("token") || "";
-
-  //   socket.current = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
-  //     autoConnect: true,
-  //     auth: { token },
-  //   });
-
-  //   socket.current.emit("join", { userId: senderId });
-
-  //   socket.current.on("newMessage", (msg) => {
-  //     setMessages((prev) => [...prev, msg]);
-  //   });
-
-  //   return () => {
-  //     socket.current?.disconnect();
-  //   };
-  // }, [receiverId, senderId, activeSection]);
 
   useEffect(() => {
     if (!receiverId || !senderId || activeSection !== "chat" || !booking?._id)
@@ -499,11 +479,12 @@ export default function AppointmentDetails() {
                         }
                       />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#dbeafe] dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] font-bold">
+                    <SelectContent className="bg-[#dbeafe]  text-[#2563eb]  font-bold">
                       {filteredMeds.map((med, index) => (
                         <SelectItem
                           key={index}
-                          value={med.date} // keep original or ISO if you need exact value
+                          value={med.date}
+                          className="bg-[#dbeafe] text-[#2563eb] font-bold data-[highlighted]:bg-[#dbeafe] data-[highlighted]:text-[#2563eb]"
                         >
                           {(() => {
                             const d = new Date(med.date);
@@ -525,8 +506,12 @@ export default function AppointmentDetails() {
                             );
                           })()}
                         </SelectItem>
+
+
+
                       ))}
                     </SelectContent>
+
                   </Select>
 
                   {/* Show Medication Table if a Date is Selected */}
