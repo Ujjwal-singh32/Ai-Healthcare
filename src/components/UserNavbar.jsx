@@ -32,6 +32,7 @@ export default function Navbar() {
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/pathlab-reports" label="Reports" />
+          <NavLink href="/pharmacy/home" label="Pharmacy" />
         </nav>
 
         {/* Right: Avatar & Mobile Menu */}
@@ -66,6 +67,7 @@ export default function Navbar() {
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/pathlab-reports" label="Reports" />
+          <NavLink href="/pharmacy/home" label="Pharmacy" />
         </div>
       )}
     </header>

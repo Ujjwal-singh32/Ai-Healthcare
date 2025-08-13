@@ -51,19 +51,20 @@ export default function PharmacyContact() {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-[#181c2a] flex flex-col">
       <PharmaNavbar user={user} />
 
-      <main className="flex-grow flex justify-center items-center px-4 py-8">
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-8 space-y-6 border">
-          <h1 className="text-3xl font-bold text-blue-700 text-center mb-4">
+      {/* Add top padding to avoid content hidden under navbar */}
+      <main className="flex-grow flex justify-center items-center px-4 pt-32 pb-10 md:pt-36 md:pb-16">
+        <div className="w-full max-w-2xl bg-white/95 dark:bg-[#181c2a]/95 rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-[#2563eb]/20 dark:border-[#60a5fa]/20">
+          <h1 className="text-3xl md:text-4xl font-black text-[#2563eb] dark:text-[#60a5fa] text-center mb-8 drop-shadow-md tracking-tight">
             Contact Us
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Name */}
             <div>
-              <label className="block text-lg font-medium text-blue-700 mb-2">
+              <label className="block text-lg font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-2">
                 Name
               </label>
               <input
@@ -71,8 +72,8 @@ export default function PharmacyContact() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full border rounded-lg p-3 text-lg focus:outline-none focus:ring-2 ${
-                  errors.name ? "border-red-500 focus:ring-red-500" : "focus:ring-blue-500"
+                className={`w-full border rounded-lg p-3 text-lg bg-white dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] focus:outline-none focus:ring-2 ${
+                  errors.name ? "border-red-500 focus:ring-red-500" : "border-[#2563eb]/40 dark:border-[#60a5fa]/40 focus:ring-[#2563eb] dark:focus:ring-[#60a5fa]"
                 }`}
               />
               {errors.name && (
@@ -82,7 +83,7 @@ export default function PharmacyContact() {
 
             {/* Email */}
             <div>
-              <label className="block text-lg font-medium text-blue-700 mb-2">
+              <label className="block text-lg font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-2">
                 Email
               </label>
               <input
@@ -90,8 +91,8 @@ export default function PharmacyContact() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full border rounded-lg p-3 text-lg focus:outline-none focus:ring-2 ${
-                  errors.email ? "border-red-500 focus:ring-red-500" : "focus:ring-blue-500"
+                className={`w-full border rounded-lg p-3 text-lg bg-white dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] focus:outline-none focus:ring-2 ${
+                  errors.email ? "border-red-500 focus:ring-red-500" : "border-[#2563eb]/40 dark:border-[#60a5fa]/40 focus:ring-[#2563eb] dark:focus:ring-[#60a5fa]"
                 }`}
               />
               {errors.email && (
@@ -101,7 +102,7 @@ export default function PharmacyContact() {
 
             {/* Issue */}
             <div>
-              <label className="block text-lg font-medium text-blue-700 mb-2">
+              <label className="block text-lg font-semibold text-[#2563eb] dark:text-[#60a5fa] mb-2">
                 Issue
               </label>
               <textarea
@@ -109,8 +110,8 @@ export default function PharmacyContact() {
                 value={formData.issue}
                 onChange={handleChange}
                 rows="5"
-                className={`w-full border rounded-lg p-3 text-lg focus:outline-none focus:ring-2 ${
-                  errors.issue ? "border-red-500 focus:ring-red-500" : "focus:ring-blue-500"
+                className={`w-full border rounded-lg p-3 text-lg bg-white dark:bg-[#181c2a] text-[#2563eb] dark:text-[#60a5fa] focus:outline-none focus:ring-2 ${
+                  errors.issue ? "border-red-500 focus:ring-red-500" : "border-[#2563eb]/40 dark:border-[#60a5fa]/40 focus:ring-[#2563eb] dark:focus:ring-[#60a5fa]"
                 }`}
               />
               {errors.issue && (
@@ -121,7 +122,7 @@ export default function PharmacyContact() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-4 rounded-lg text-lg font-medium hover:bg-blue-700"
+              className="w-full bg-[#2563eb] dark:bg-[#60a5fa] text-white py-4 rounded-lg text-lg font-bold hover:bg-[#1d4ed8] dark:hover:bg-[#3b82f6] transition-colors shadow-md"
             >
               Submit
             </button>
