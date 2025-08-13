@@ -136,7 +136,7 @@ export default function PharmaNavbar({ user }) {
       {menuOpen && (
         <div className="md:hidden flex flex-col gap-4 px-6 pb-4 bg-white shadow-lg transition-all duration-300 ease-in-out">
           <Link
-            href="/pharmacy/home"
+            href="/user/home"
             className="text-blue-600 hover:text-blue-800"
           >
             Home

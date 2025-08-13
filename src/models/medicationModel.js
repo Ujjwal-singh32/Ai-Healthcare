@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const medicationSchema = new mongoose.Schema({
+  bookingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   doctorId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",

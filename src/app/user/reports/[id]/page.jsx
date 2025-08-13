@@ -27,6 +27,7 @@ import { useParams } from "next/navigation";
 
 export default function AppointmentDetails() {
   const [activeSection, setActiveSection] = useState("chat");
+  const [mounted, setMounted] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [sendingReport, setSendingReport] = useState(false);
   const [selectedMedication, setSelectedMedication] = useState(null);
@@ -100,7 +101,7 @@ export default function AppointmentDetails() {
     const fetchMedications = async () => {
       try {
         const res = await fetch(
-          `/api/medications?patientId=${senderId}&doctorId=${receiverId}`
+          `/api/medications?patientId=${senderId}&doctorId=${receiverId}&bookingId=${id}`
         );
         const data = await res.json();
         // console.log("Fetched medications:", data.medications);
@@ -110,7 +111,7 @@ export default function AppointmentDetails() {
       }
     };
 
-    if (receiverId && senderId) {
+    if (receiverId && senderId && id) {
       fetchMedications();
       const interval = setInterval(fetchMedications, 10000); // Every 10 seconds
       return () => clearInterval(interval);
@@ -150,7 +151,9 @@ export default function AppointmentDetails() {
   }, [receiverId, senderId, activeSection, booking?._id]);
 
   const [messageInput, setMessageInput] = useState("");
+  useEffect(() => setMounted(true), []);
 
+  if (!mounted) return null;
   if (loading || !receiverId || !senderId) {
     return (
       <div className="flex justify-center items-center py-20 bg-blue-50 dark:bg-[#181c2a] min-h-screen px-4">
@@ -354,11 +357,11 @@ export default function AppointmentDetails() {
                   key={section}
                   variant={activeSection === section ? "default" : "outline"}
                   className={`w-full capitalize cursor-pointer
-                    ${activeSection === section
-                      ? "bg-[#2563eb] !text-white dark:bg-[#60a5fa] !dark:text-[#181c2a] !border-[#2563eb] !dark:border-[#60a5fa] pointer-events-none"
-                      : "border-[#2563eb] dark:border-[#60a5fa] text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#e0e7ff] dark:hover:bg-[#181c2a] hover:text-[#2563eb] dark:hover:text-[#60a5fa]"
+    ${activeSection === section
+                      ? " text-black dark:bg-cyan-500 dark:text-black border-blue-600 dark:border-cyan-500"
+                      : "border-blue-600 dark:border-cyan-500 text-blue-600 dark:text-cyan-500 hover:bg-blue-100 dark:hover:bg-[#181c2a] hover:text-blue-600 dark:hover:text-cyan-500"
                     }
-                  `}
+  `}
                   onClick={() => setActiveSection(section)}
                 >
                   {section === "reports"

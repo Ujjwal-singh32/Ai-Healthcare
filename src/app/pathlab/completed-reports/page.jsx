@@ -36,7 +36,9 @@ const Page = () => {
     fetchReports();
   }, [pathlabId]);
 
-  const completedReports = reports.filter((report) => report.status === "completed");
+  const completedReports = reports
+    .filter((report) => report.status === "completed")
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <>

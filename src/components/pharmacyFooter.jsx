@@ -17,7 +17,7 @@ export default function PharmaFooter() {
         {/* Navigation Links */}
         <div className="grid grid-cols-2 gap-8 mx-auto">
           <div className="flex flex-col gap-3 items-center">
-            <FooterLink href="/pharmacy/home" label="Home" />
+            <FooterLink href="/user/home" label="Home" />
             <FooterLink href="/pharmacy/medicines" label="Shop" />
             <FooterLink href="/pharmacy/order" label="Orders" />
           </div>
