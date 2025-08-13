@@ -28,7 +28,7 @@ const handleSearch = (e) => {
     const fetchCartCount = async () => {
       try {
         const res = await fetch(`/api/cart?userId=${user._id}`);
-        if (!res.ok) throw new Error("Failed to fetch cart");
+        // if (!res.ok) throw new Error("Failed to fetch cart");
         const data = await res.json();
 
         // Assuming `data.items` is an array with { quantity }

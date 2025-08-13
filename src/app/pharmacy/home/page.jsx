@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
+import { toast } from "react-toastify";
 
 export default function HomePage() {
   const [medicines, setMedicines] = useState([]);
@@ -44,9 +45,9 @@ export default function HomePage() {
 
       const data = await res.json();
       if (res.ok) {
-        alert("Added to cart!");
+        toast.success("Added to cart!");
       } else {
-        alert(data.error || "Failed to add to cart");
+        toast.error(data.error || "Failed to add to cart");
       }
     } catch (error) {
       console.error("Add to cart error:", error);

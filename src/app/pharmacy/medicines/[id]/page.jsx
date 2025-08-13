@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
+import { toast } from "react-toastify";
 
 export default function MedicineDetails() {
   const { id } = useParams();
@@ -130,7 +131,7 @@ export default function MedicineDetails() {
           <button
             className="mt-6 w-full md:w-auto bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-full font-medium shadow-md hover:scale-105 transition-transform duration-300"
             onClick={async () => {
-              if (!user?._id) return alert("Please log in to add to cart");
+              if (!user?._id) return toast.error("Please log in to add to cart");
               try {
                 await fetch("/api/cart", {
                   method: "POST",
@@ -141,9 +142,9 @@ export default function MedicineDetails() {
                     quantity: 1,
                   }),
                 });
-                alert("Added to cart");
+                toast.success("Added to cart");
               } catch (error) {
-                console.error("Add to cart failed", error);
+                toast.error("Add to cart failed");
               }
             }}
           >
