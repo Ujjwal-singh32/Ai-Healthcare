@@ -5,6 +5,7 @@ import Image from "next/image";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
+import { toast } from "react-toastify";
 
 export default function CheckoutPage() {
     const [address, setAddress] = useState("123, Sample Street, New Delhi, India");
@@ -62,11 +63,11 @@ export default function CheckoutPage() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Failed to place order");
 
-            alert("✅ Order placed successfully!");
+            toast.success("✅ Order placed successfully!");
             window.location.href = "/pharmacy/order";
         } catch (err) {
             console.error(err);
-            alert("❌ " + err.message);
+            toast.error("❌ " + err.message);
         }
     }
 

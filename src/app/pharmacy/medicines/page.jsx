@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
+import { toast } from "react-toastify";
 
 export default function MedicinesPage() {
   const [medicines, setMedicines] = useState([]);
@@ -42,7 +43,7 @@ export default function MedicinesPage() {
   async function handleAddToCart(medicineId) {
     try {
       if (!user?._id) {
-        alert("Please log in to add items to cart");
+        toast.error("Please log in to add items to cart");
         return;
       }
 
@@ -58,10 +59,10 @@ export default function MedicinesPage() {
 
       if (!res.ok) throw new Error("Failed to add to cart");
 
-      alert("✅ Added to cart!");
+      toast.success("✅ Added to cart!");
     } catch (error) {
       console.error("Error adding to cart:", error);
-      alert("❌ Failed to add to cart");
+      toast.error("❌ Failed to add to cart");
     }
   }
 

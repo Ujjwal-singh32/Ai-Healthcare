@@ -18,7 +18,6 @@ export default function OrdersPage() {
                 const res = await fetch(`/api/orders/get?userId=${user._id}`);
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed to fetch orders");
-                // console.log("printing orders"  ,data)
                 setOrders(data);
                 console.log("Fetched orders:", data);
             } catch (err) {
@@ -55,10 +54,10 @@ export default function OrdersPage() {
                     orders.map((order) => (
                         <div
                             key={order._id}
-                            className="bg-white rounded-lg shadow-sm border mb-6 p-4 flex flex-col justify-between"
+                            className="bg-white rounded-lg shadow-sm border mb-6 p-4 flex flex-col"
                         >
-                            {/* Top info */}
-                            <div className="flex justify-between items-start flex-wrap mb-3">
+                            {/* Order info */}
+                            <div className="flex justify-between flex-wrap mb-3">
                                 <div>
                                     <p className="text-sm font-bold">
                                         ORDER PLACED:{" "}
@@ -90,38 +89,38 @@ export default function OrdersPage() {
 
                             <hr className="my-3" />
 
-                            {/* Items horizontally */}
-                            <div className="flex flex-wrap gap-4 mb-3">
+                            {/* Horizontal scrolling items */}
+                            <div className="flex gap-4 overflow-x-auto pb-2">
                                 {order.items.map((item, idx) => (
                                     <div
                                         key={idx}
-                                        className="flex flex-col items-center md:items-start md:flex-col w-28 p-2 border rounded"
+                                        className="flex-shrink-0 w-40 bg-gray-50 border rounded-lg p-3 flex flex-col items-center hover:shadow"
                                     >
                                         <Image
                                             src={item.image || "/medis.jpg"}
                                             alt={item.name}
-                                            width={60}    // reduced size
-                                            height={60}   // reduced size
+                                            width={80}
+                                            height={80}
                                             className="rounded border"
                                         />
                                         <Link
                                             href="#"
-                                            className="text-blue-600 hover:underline text-sm font-medium mt-1 text-center md:text-left"
+                                            className="text-blue-600 hover:underline text-sm font-medium mt-2 text-center"
                                         >
                                             {item.name}
                                         </Link>
-                                        <p className="text-sm text-center md:text-left">
+                                        <p className="text-sm text-gray-800 text-center">
                                             ₹{item.price} x {item.quantity}
                                         </p>
-                                        <p className="text-xs text-gray-600 text-center md:text-left">
+                                        <p className="text-xs text-gray-600 text-center">
                                             Status: {order.status || "Placed"}
                                         </p>
                                     </div>
                                 ))}
                             </div>
 
-                            {/* Action buttons at bottom */}
-                            <div className="flex flex-wrap gap-2 mt-auto">
+                            {/* Actions */}
+                            <div className="flex flex-wrap gap-2 mt-4">
                                 <button className="px-3 py-2 border rounded hover:bg-blue-50 flex items-center gap-1">
                                     📦 Track Order
                                 </button>
@@ -134,7 +133,6 @@ export default function OrdersPage() {
                             </div>
                         </div>
                     ))
-
                 )}
             </div>
 

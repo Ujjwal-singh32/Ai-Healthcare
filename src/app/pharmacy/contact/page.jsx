@@ -4,6 +4,7 @@ import { useState } from "react";
 import PharmaNavbar from "@/components/pharmacyNav";
 import PharmaFooter from "@/components/pharmacyFooter";
 import { useUser } from "@/context/userContext";
+import { toast } from "react-toastify";
 
 export default function PharmacyContact() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function PharmacyContact() {
     e.preventDefault();
     if (validate()) {
       console.log("Form Submitted:", formData);
-      alert("Your issue has been submitted. We’ll get back to you soon!");
+      toast.success("Your issue has been submitted. We’ll get back to you soon!");
       setFormData({ name: "", email: "", issue: "" });
       setErrors({});
     }
