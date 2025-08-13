@@ -3,7 +3,7 @@ import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { HeartPulse, Bot, Activity, FileText } from "lucide-react";
+import { HeartPulse, Bot, Activity, FileText, FlaskConical, FileBarChart, ShoppingBag, ScanText } from "lucide-react";
 export default function HomePage() {
   return (
   <main className="min-h-screen bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#232946] dark:via-[#334155] dark:to-[#232946] text-[#1e1b4b] dark:text-[#f3e8ff] relative overflow-x-hidden pt-24">
@@ -85,6 +85,33 @@ export default function HomePage() {
             title="Appointments"
             description="View and manage your medical history and reports."
             href="/user/reports"
+          />
+        </div>
+        {/* Second row of features */}
+        <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-12">
+          <FeatureCard
+            icon={<FlaskConical className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-float-slow" />}
+            title="Pathlabs"
+            description="Book and view your pathology lab tests."
+            href="/user/pathlabs"
+          />
+          <FeatureCard
+            icon={<FileBarChart className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-fade-in" />}
+            title="Reports"
+            description="Access all your medical reports in one place."
+            href="/user/reports"
+          />
+          <FeatureCard
+            icon={<ShoppingBag className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-bounce" />}
+            title="Pharmacy"
+            description="Order medicines and manage your prescriptions."
+            href="/pharmacy/home"
+          />
+          <FeatureCard
+            icon={<ScanText className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-spin-slow" />}
+            title="OCR"
+            description="Scan and digitize your medical documents."
+            href="/user/ocr"
           />
         </div>
       </section>
