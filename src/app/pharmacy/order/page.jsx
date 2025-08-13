@@ -18,6 +18,7 @@ export default function OrdersPage() {
                 const res = await fetch(`/api/orders/get?userId=${user._id}`);
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed to fetch orders");
+                // console.log("printing orders"  ,data)
                 setOrders(data);
                 console.log("Fetched orders:", data);
             } catch (err) {
@@ -54,9 +55,10 @@ export default function OrdersPage() {
                     orders.map((order) => (
                         <div
                             key={order._id}
-                            className="bg-white rounded-lg shadow-sm border mb-6 p-4"
+                            className="bg-white rounded-lg shadow-sm border mb-6 p-4 flex flex-col justify-between"
                         >
-                            <div className="flex justify-between items-start flex-wrap">
+                            {/* Top info */}
+                            <div className="flex justify-between items-start flex-wrap mb-3">
                                 <div>
                                     <p className="text-sm font-bold">
                                         ORDER PLACED:{" "}
@@ -88,47 +90,51 @@ export default function OrdersPage() {
 
                             <hr className="my-3" />
 
-                            {order.items.map((item, idx) => (
-                                <div
-                                    key={idx}
-                                    className="flex flex-col md:flex-row items-start md:items-center gap-4"
-                                >
-                                    <Image
-                                        src={item.image?.[0] || "/medis.jpg"}
-                                        alt={item.name}
-                                        width={80}
-                                        height={80}
-                                        className="rounded border"
-                                    />
-                                    <div className="flex-1">
+                            {/* Items horizontally */}
+                            <div className="flex flex-wrap gap-4 mb-3">
+                                {order.items.map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="flex flex-col items-center md:items-start md:flex-col w-28 p-2 border rounded"
+                                    >
+                                        <Image
+                                            src={item.image || "/medis.jpg"}
+                                            alt={item.name}
+                                            width={60}    // reduced size
+                                            height={60}   // reduced size
+                                            className="rounded border"
+                                        />
                                         <Link
                                             href="#"
-                                            className="text-blue-600 hover:underline text-sm font-medium"
+                                            className="text-blue-600 hover:underline text-sm font-medium mt-1 text-center md:text-left"
                                         >
                                             {item.name}
                                         </Link>
-                                        <p className="text-sm">
+                                        <p className="text-sm text-center md:text-left">
                                             ₹{item.price} x {item.quantity}
                                         </p>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-xs text-gray-600 text-center md:text-left">
                                             Status: {order.status || "Placed"}
                                         </p>
                                     </div>
-                                    <div className="flex flex-wrap gap-2">
-                                        <button className="px-3 py-2 border rounded hover:bg-blue-50 flex items-center gap-1">
-                                            📦 Track Order
-                                        </button>
-                                        <Link
-                                            href="/pharmacy/contact"
-                                            className="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-1"
-                                        >
-                                            🛠 Get Medicine Support
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+
+                            {/* Action buttons at bottom */}
+                            <div className="flex flex-wrap gap-2 mt-auto">
+                                <button className="px-3 py-2 border rounded hover:bg-blue-50 flex items-center gap-1">
+                                    📦 Track Order
+                                </button>
+                                <Link
+                                    href="/pharmacy/contact"
+                                    className="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center gap-1"
+                                >
+                                    🛠 Get Medicine Support
+                                </Link>
+                            </div>
                         </div>
                     ))
+
                 )}
             </div>
 
