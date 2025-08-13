@@ -47,7 +47,7 @@ const handleSearch = (e) => {
   }, [user?._id]);
 
   return (
-    <header className="relative z-50 bg-white/70 backdrop-blur-md shadow-md top-0 sticky">
+    <header className="z-50 bg-white/70 backdrop-blur-md shadow-md top-0 sticky">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between px-4 py-3 gap-2">
         {/* Logo + Menu Button */}
         <div className="flex items-center justify-between w-full md:w-auto">
