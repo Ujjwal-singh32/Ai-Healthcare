@@ -19,11 +19,13 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 mx-auto">
           <div className="flex flex-col gap-3 items-center">
             <FooterLink href="/user/pathlab-reports" label="Reports" />
+            <FooterLink href="/user/ocr" label="OCR" />
             <FooterLink href="/user/doctor" label="Doctors" />
             <FooterLink href="/user/pathlabs" label="Path Labs" />
           </div>
           <div className="flex flex-col gap-3 items-center">
             <FooterLink href="/user/ai" label="Ask Saksham" />
+            <FooterLink href="/pharmacy/home" label="Pharmacy" />
             <FooterLink href="/user/reports" label="Appointments" />
             <FooterLink href="/user/ml" label="Predict Disease" />
           </div>

@@ -99,7 +99,7 @@ export default function HomePage() {
             icon={<FileBarChart className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-fade-in" />}
             title="Reports"
             description="Access all your medical reports in one place."
-            href="/user/reports"
+            href="/user/pathlab-reports"
           />
           <FeatureCard
             icon={<ShoppingBag className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-bounce" />}

@@ -112,7 +112,12 @@ export default function OCRPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full p-12 border-2 border-dashed border-[#2563eb] rounded-xl flex flex-col items-center justify-center bg-white/80 dark:bg-[#334155]/80 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-[#334155]/90 transition-all duration-300">
+                  <label
+                    htmlFor="ocr-file-input"
+                    className="w-full p-12 border-2 border-dashed border-[#2563eb] rounded-xl flex flex-col items-center justify-center bg-white/80 dark:bg-[#334155]/80 backdrop-blur-sm hover:bg-white/90 dark:hover:bg-[#334155]/90 transition-all duration-300 cursor-pointer"
+                    tabIndex={0}
+                    style={{ outline: 'none' }}
+                  >
                     <svg
                       className="w-16 h-16 text-[#2563eb] mb-4"
                       fill="none"
@@ -133,15 +138,16 @@ export default function OCRPage() {
                     <p className="text-gray-500 text-sm mt-2">
                       Supports JPG, PNG, WEBP files
                     </p>
-                  </div>
+                  </label>
                 )}
 
                 <div className="w-full space-y-6">
                   <input
+                    id="ocr-file-input"
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="w-full text-sm file:mr-4 file:py-4 file:px-8 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#2563eb] file:text-white hover:file:bg-[#1d4ed8] file:transition-all file:cursor-pointer file:shadow-lg"
+                    className="w-full text-sm file:mr-4 file:py-4 file:px-8 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#2563eb] file:text-white hover:file:bg-[#1d4ed8] file:transition-all file:cursor-pointer file:shadow-lg hidden"
                   />
 
                   <div className="flex flex-col sm:flex-row items-center gap-4">
