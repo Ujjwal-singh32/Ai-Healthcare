@@ -42,7 +42,7 @@ export async function GET(req) {
         image: item.image?.length ? item.image : item.medicineId?.image || [],
       })),
     }));
-    console.log("formatted orders" , formattedOrders)
+    // console.log("formatted orders" , formattedOrders)
     return NextResponse.json(formattedOrders, { status: 200 });
   } catch (error) {
     console.error("Error fetching orders:", error);

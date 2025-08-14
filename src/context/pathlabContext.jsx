@@ -12,7 +12,7 @@ const PathlabProvider = ({ children }) => {
   useEffect(() => {
     const fetchPathlab = async () => {
       const pttoken = localStorage.getItem("pttoken");
-      console.log("token in context", pttoken);
+      //console.log("token in context", pttoken);
 
       if (!pttoken) {
         setLoading(false);

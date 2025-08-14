@@ -19,7 +19,7 @@ export default function OrdersPage() {
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed to fetch orders");
                 setOrders(data);
-                console.log("Fetched orders:", data);
+                //console.log("Fetched orders:", data);
             } catch (err) {
                 console.error("Error fetching orders:", err);
             } finally {

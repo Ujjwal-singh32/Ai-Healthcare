@@ -20,7 +20,7 @@ export default function PathlabSection() {
       try {
         const res = await axios.get("/api/user/all-pathlab");
         if (res.data.success) {
-          console.log("printing all data of labs", res.data.labs)
+          //console.log("printing all data of labs", res.data.labs)
           setPathlabs(res.data.labs);
         }
       } catch (error) {
