@@ -14,7 +14,7 @@ export default function OCRPage() {
   const [error, setError] = useState("");
 
   const API_URL = process.env.NEXT_PUBLIC_OCR_API_URL;
-  console.log(API_URL);
+  //console.log(API_URL);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
