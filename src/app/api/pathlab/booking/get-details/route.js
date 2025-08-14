@@ -3,6 +3,7 @@ import connectDB from "@/lib/db";
 import PathlabBooking from "@/models/labBookingModel";
 import pathLabModel from "@/models/pathLabModel";
 import patientModel from "@/models/patientModel";
+
 export async function POST(req) {
   try {
     await connectDB();
@@ -16,10 +17,11 @@ export async function POST(req) {
       );
     }
 
-    // Find all reports for this labId
+    // Find all reports for this labId in descending order (latest first)
     const reports = await PathlabBooking.find({ labId })
       .populate("patientId", "name email") // show patient name/email
-      .populate("labId", "name address"); // show lab name/address
+      .populate("labId", "name address")   // show lab name/address
+      .sort({ createdAt: -1 });            
 
     return NextResponse.json({
       success: true,
