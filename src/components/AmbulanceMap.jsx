@@ -1,10 +1,11 @@
 "use client";
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from "react-leaflet";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import L from "leaflet";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useUser } from "@/context/userContext";
+import { useAmbulance } from "@/context/AmbulanceContext";
 
 // Recenter button inside map
 function RecenterButton({ setUserLocation }) {
@@ -34,13 +35,20 @@ export default function AmbulanceMap() {
     const { user, loading } = useUser();
     const router = useRouter();
     const [userLocation, setUserLocation] = useState([22.77196389255201, 86.14730032698566]);
-    const [confirmedAmbulance, setConfirmedAmbulance] = useState(null);
-    const [ambulancePos, setAmbulancePos] = useState([0, 0]);
-    const [route, setRoute] = useState([]);
-    const [remainingRoute, setRemainingRoute] = useState([]);
     const [popupData, setPopupData] = useState(null);
 
-    // Do not render page until we have user._id
+    // Get ambulance context
+    const {
+        confirmedAmbulance,
+        ambulancePos,
+        route,
+        remainingRoute,
+        startAmbulanceMovement,
+        setConfirmedAmbulance,
+        setRoute,
+        setRemainingRoute,
+        setAmbulancePos,
+    } = useAmbulance();
 
     const driverNames = [
         "Amit", "Rahul", "Rohit", "Vikas", "Suresh", "Rajesh", "Anil", "Sunil", "Deepak", "Manish",
@@ -49,7 +57,6 @@ export default function AmbulanceMap() {
         "Rohan", "Mayank", "Anand", "Pankaj", "Raj", "Dev", "Suraj", "Tejas", "Akash", "Nikhil",
         "Lokesh", "Pradeep", "Ritvik", "Varun", "Kunal", "Jatin", "Vishal", "Sachin", "Shyam", "Tanmay"
     ];
-
 
     const getDistance = (lat1, lon1, lat2, lon2) => {
         const R = 6371;
@@ -67,7 +74,7 @@ export default function AmbulanceMap() {
     const randomPhone = () => {
         const prefixes = ["93", "62", "87"];
         const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-        const rest = Math.floor(10000000 + Math.random() * 90000000); // 8 random digits
+        const rest = Math.floor(10000000 + Math.random() * 90000000);
         return prefix + rest.toString();
     };
     const randomAmbNumber = () => "AMB-" + Math.floor(1000 + Math.random() * 9000);
@@ -94,73 +101,29 @@ export default function AmbulanceMap() {
         const randomAmb = ambulances[Math.floor(Math.random() * ambulances.length)];
         setPopupData(randomAmb);
     };
-    const startAmbulanceMovement = (route, startIndex = 0) => {
-        let i = startIndex;
-        const interval = setInterval(() => {
-            if (i < route.length) {
-                setAmbulancePos(route[i]);
-                setRemainingRoute(route.slice(i));
-                localStorage.setItem("ambulanceIndex", i.toString());
-                i++;
-            } else {
-                clearInterval(interval);
-                localStorage.removeItem("confirmedAmbulance");
-                localStorage.removeItem("ambulanceIndex");
-                localStorage.removeItem("route");
-                router.push("/user/home");
-            }
-        }, 100);
 
-        return interval;
-    };
+    const ambulanceIcon = new L.Icon({
+        iconUrl: "/ambulance1.png",
+        iconSize: [30, 30],
+        iconAnchor: [20, 20],
+    });
 
-    useEffect(() => {
-        const savedAmb = JSON.parse(localStorage.getItem("confirmedAmbulance"));
-        const savedIndex = parseInt(localStorage.getItem("ambulanceIndex") || "0");
-        const savedRoute = JSON.parse(localStorage.getItem("route") || "[]");
+    const userEmojiIcon = new L.DivIcon({
+        html: `<div style="font-size: 60px; line-height: 60px;">🧍</div>`,
+        className: "",
+        iconSize: [60, 60],
+        iconAnchor: [30, 30],
+    });
 
-        if (savedAmb && savedRoute.length > 0) {
-            setConfirmedAmbulance(savedAmb);
-            setRoute(savedRoute);
-            setRemainingRoute(savedRoute.slice(savedIndex));
-            setAmbulancePos(savedRoute[savedIndex] || savedAmb.pos);
-
-            const interval = startAmbulanceMovement(savedRoute, savedIndex);
-            return () => clearInterval(interval);
-        }
-    }, [router]);
-    useEffect(() => {
-        const handleBeforeUnload = (e) => {
-            if (confirmedAmbulance) {
-                e.preventDefault();
-                e.returnValue = "Leaving this page will stop live ambulance tracking. Are you sure?";
-                return e.returnValue;
-            }
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, [confirmedAmbulance]);
-    const bookAmbulance = async () => {
-        if (!popupData) return;
-        if (loading) {
-            return <div className="flex justify-center items-center h-[700px]">Loading user...</div>;
-        }
-
-        if (!user?._id) {
-            return <div className="flex justify-center items-center h-[700px]">User not found</div>;
-        }
+    const bookThisAmbulance = async () => {
+        if (!popupData || !user?._id) return;
 
         const selectedAmb = popupData;
         setPopupData(null);
         setConfirmedAmbulance(selectedAmb);
         toast.success("Booking confirmed! Ambulance is on the way 🚑");
-        // Save in localStorage
-        try {
 
+        try {
             const res = await fetch(
                 `/api/getRoute?start=${selectedAmb.pos[1]},${selectedAmb.pos[0]}&end=${userLocation[1]},${userLocation[0]}`
             );
@@ -197,53 +160,39 @@ export default function AmbulanceMap() {
             setRoute(fullRoute);
             setRemainingRoute(fullRoute);
             setAmbulancePos(selectedAmb.pos);
+
             localStorage.setItem("confirmedAmbulance", JSON.stringify(selectedAmb));
             localStorage.setItem("ambulanceIndex", "0");
             localStorage.setItem("route", JSON.stringify(fullRoute));
+
             startAmbulanceMovement(fullRoute);
-            // Send patientId to backend
+
             await fetch("/api/ambulanceBooking", {
                 method: "POST",
                 body: JSON.stringify({ ...selectedAmb, patientId: user._id }),
             });
-
         } catch (err) {
             console.error(err);
         }
     };
 
-
-    const ambulanceIcon = new L.Icon({
-        iconUrl: "/ambulance1.png",
-        iconSize: [30, 30],
-        iconAnchor: [20, 20],
-    });
-
-    const userEmojiIcon = new L.DivIcon({
-        html: `<div style="font-size: 60px; line-height: 60px;">🧍</div>`,
-        className: "",
-        iconSize: [60, 60],
-        iconAnchor: [30, 30],
-    });
-
     return (
         <div className="relative">
             <MapContainer center={userLocation} zoom={14} style={{ height: "700px", width: "100%" }}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
                 <Marker position={userLocation} icon={userEmojiIcon} />
                 {!confirmedAmbulance && ambulances.map((amb, idx) => (
                     <Marker key={idx} position={amb.pos} icon={ambulanceIcon} />
                 ))}
                 {confirmedAmbulance && <Marker position={ambulancePos} icon={ambulanceIcon} />}
-                {confirmedAmbulance && remainingRoute.length > 0 && (
-                    <Polyline positions={remainingRoute} color="blue" />
-                )}
+                {confirmedAmbulance && remainingRoute.length > 0 && <Polyline positions={remainingRoute} color="blue" />}
                 <RecenterButton setUserLocation={setUserLocation} />
             </MapContainer>
 
             {!confirmedAmbulance && (
                 <button
-                    className="mt-4 p-3 bg-red-500 text-white rounded-full text-lg fixed bottom-4 right-4 z-[1000] shadow-lg"
+                    className="fixed bottom-4 right-4 z-[2000] p-3 bg-red-500 text-white rounded-full shadow-lg text-lg"
                     onClick={handleSOS}
                 >
                     🚨 Send SOS
@@ -258,21 +207,9 @@ export default function AmbulanceMap() {
                         <p><strong>Driver:</strong> {popupData.driverName}</p>
                         <p><strong>Driver Number:</strong> {popupData.driverNumber}</p>
                         <p><strong>Distance:</strong> {popupData.distance.toFixed(2)} km</p>
-                        <p><strong>Amount:</strong> ₹{popupData.totalAmount}</p>
-                        <p><strong>Estimated Time:</strong> {popupData.timeReq} mins</p>
                         <div className="flex justify-end gap-4 mt-4">
-                            <button
-                                onClick={() => { setPopupData(null); toast.success("Click SOS to book a new ambulance."); }}
-                                className="px-4 py-2 bg-gray-300 rounded"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={bookAmbulance}
-                                className="px-4 py-2 bg-green-500 text-white rounded"
-                            >
-                                Book
-                            </button>
+                            <button onClick={() => setPopupData(null)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                            <button onClick={bookThisAmbulance} className="px-4 py-2 bg-green-500 text-white rounded">Book</button>
                         </div>
                     </div>
                 </div>

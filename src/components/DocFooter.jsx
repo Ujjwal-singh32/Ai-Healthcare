@@ -13,16 +13,19 @@ export default function DoctorFooter() {
   useEffect(() => {
     async function updateAndFetchStats() {
       try {
-        // Increment count for this role
-        await fetch("/api/refresh", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ role: "doctor" }),
-        });
+        // Increment only if not already counted in this tab
+        if (!window.__doctorCounted) {
+          await fetch("/api/refresh", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: "doctor" }),
+          });
+          window.__doctorCounted = true; // set flag for this tab
+        }
 
+        // Always fetch latest count for display
         const res = await fetch("/api/refresh");
         const data = await res.json();
-
         if (data.success) {
           setDocCount(data.data.doctorRefresh);
         }
@@ -33,7 +36,6 @@ export default function DoctorFooter() {
 
     updateAndFetchStats();
   }, []);
-
   // Intersection observer hook
   const { ref, inView } = useInView({
     triggerOnce: false,
