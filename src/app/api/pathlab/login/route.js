@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 import pathLabModel from "@/models/pathLabModel";
 import connectDB from "@/lib/db";
 
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+const createToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 export async function POST(req) {
@@ -23,8 +23,16 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = createToken(lab._id);
-    return NextResponse.json({ success: true, token, message: "Login successful" });
+    // Role is hardcoded here since it's path lab login
+    const token = createToken(lab._id, "pathlab");
+
+    return NextResponse.json({ 
+      success: true, 
+      token, 
+      role: "pathlab", 
+      message: "Login successful" 
+    });
+
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ success: false, message: error.message });

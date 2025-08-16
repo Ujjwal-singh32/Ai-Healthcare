@@ -24,8 +24,7 @@ export async function POST(req) {
         message: "Patient not found",
       });
     }
-    // console.log("Stored hash:", patient.password);
-    // console.log("Entered password:", password);
+
     const isMatch = await bcrypt.compare(password, patient.password);
     if (!isMatch) {
       return NextResponse.json({
@@ -34,9 +33,15 @@ export async function POST(req) {
       });
     }
 
-    const token = createToken(patient._id);
-    // console.log("token" , token)
-    return NextResponse.json({ success: true, token });
+    // Pass role to token
+    const token = createToken(patient._id, "patient");
+
+    return NextResponse.json({
+      success: true,
+      token,
+      role:  "patient", 
+    });
+
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

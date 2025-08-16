@@ -31,7 +31,7 @@ const MakePayment = () => {
   const date = searchParams.get("date");
   const tests = searchParams.get("tests");
   const fee = searchParams.get("fee");
-  console.log("fee", fee);
+  //console.log("fee", fee);
   const handlePayment = async () => {
     setLoading(true);
     const isScriptLoaded = await loadRazorpayScript();
@@ -43,7 +43,7 @@ const MakePayment = () => {
     }
 
     try {
-      console.log("fee", fee);
+      //console.log("fee", fee);
       const amount = fee;
 
       const { data } = await axios.post("/api/payment/create-order", {

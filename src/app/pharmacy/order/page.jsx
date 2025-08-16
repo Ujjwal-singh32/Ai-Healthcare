@@ -19,7 +19,7 @@ export default function OrdersPage() {
                 const data = await res.json();
                 if (!res.ok) throw new Error(data.error || "Failed to fetch orders");
                 setOrders(data);
-                console.log("Fetched orders:", data);
+                //console.log("Fetched orders:", data);
             } catch (err) {
                 console.error("Error fetching orders:", err);
             } finally {
@@ -77,7 +77,7 @@ export default function OrdersPage() {
                                     </p>
                                 </div>
                                 <div className="text-right text-sm text-blue-600 flex flex-col gap-1">
-                                    <span className="font-bold">ORDER #{order._id}</span>
+                                    <span className="font-bold">ORDER PLACED</span>
                                     <Link href="#" className="hover:underline">
                                         View order details
                                     </Link>

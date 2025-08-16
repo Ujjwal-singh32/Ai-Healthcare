@@ -7,7 +7,7 @@ export async function PUT(req) {
     await connectDB();
 
     const { pathlabId, testId } = await req.json();
-    console.log(pathlabId, testId);
+    // console.log(pathlabId, testId);
     if (!pathlabId || !testId) {
       return NextResponse.json(
         { success: false, message: "labId and testId are required" },

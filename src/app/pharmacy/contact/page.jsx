@@ -44,7 +44,7 @@ export default function PharmacyContact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form Submitted:", formData);
+      //console.log("Form Submitted:", formData);
       toast.success("Your issue has been submitted. We’ll get back to you soon!");
       setFormData({ name: "", email: "", issue: "" });
       setErrors({});
