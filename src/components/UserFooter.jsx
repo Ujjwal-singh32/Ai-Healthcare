@@ -13,30 +13,34 @@ export default function Footer() {
   useEffect(() => {
     async function updateAndFetchStats() {
       try {
-        // Increment count for this role
-        await fetch("/api/refresh", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ role: "patient" }),
-        });
+        // Increment only on first visit after reload
+        if (!window.__patientCounted) {
+          await fetch("/api/refresh", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role: "patient" }),
+          });
+          window.__patientCounted = true; // global flag for this tab
+        }
 
         const res = await fetch("/api/refresh");
         const data = await res.json();
+        if (data.success) setPatientCount(data.data.patientRefresh);
 
-        if (data.success) {
-          setPatientCount(data.data.patientRefresh);
-        }
       } catch (error) {
-        console.error("Failed to fetch stats:", error);
+        console.error(error);
       }
     }
 
     updateAndFetchStats();
   }, []);
 
+
+
+
   // Intersection observer hook
   const { ref, inView } = useInView({
-    triggerOnce: false, 
+    triggerOnce: false,
     threshold: 0.3,
   });
 

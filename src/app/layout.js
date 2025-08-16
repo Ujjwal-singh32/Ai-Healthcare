@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import UserProvider from "@/context/userContext";
-
+import { AmbulanceProvider } from "@/context/AmbulanceContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,13 +28,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         <PathlabProvider>
-        <UserProvider>
-          <DoctorProvider>
-            {children}
-            <ToastContainer position="top-right" autoClose={3000} />
-          </DoctorProvider>
-        </UserProvider>
+        <PathlabProvider>
+          <UserProvider>
+            <DoctorProvider>
+              <AmbulanceProvider>
+                {children}
+                <ToastContainer position="top-right" autoClose={3000} />
+              </AmbulanceProvider>
+            </DoctorProvider>
+          </UserProvider>
         </PathlabProvider>
       </body>
     </html>

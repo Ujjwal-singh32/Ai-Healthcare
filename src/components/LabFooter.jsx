@@ -12,29 +12,33 @@ import CountUp from "react-countup";
 const LabFooter = () => {
   const [labCount, setLabCount] = useState(0);
 
-  useEffect(() => {
-    async function updateAndFetchStats() {
-      try {
-        // Increment count for this role
+useEffect(() => {
+  async function updateAndFetchStats() {
+    try {
+      // Increment only if not already counted in this tab
+      if (!window.__labCounted) {
         await fetch("/api/refresh", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ role: "lab" }),
         });
-
-        const res = await fetch("/api/refresh");
-        const data = await res.json();
-
-        if (data.success) {
-          setLabCount(data.data.pathlabRefresh);
-        }
-      } catch (error) {
-        console.error("Failed to fetch stats:", error);
+        window.__labCounted = true; // set flag for this tab
       }
-    }
 
-    updateAndFetchStats();
-  }, []);
+      // Always fetch latest count for display
+      const res = await fetch("/api/refresh");
+      const data = await res.json();
+      if (data.success) {
+        setLabCount(data.data.pathlabRefresh);
+      }
+    } catch (error) {
+      console.error("Failed to fetch stats:", error);
+    }
+  }
+
+  updateAndFetchStats();
+}, []);
+
 
   // Intersection observer hook
   const { ref, inView } = useInView({
