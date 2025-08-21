@@ -3,6 +3,7 @@ import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import {
   HeartPulse,
   Bot,
@@ -12,177 +13,413 @@ import {
   FileBarChart,
   ShoppingBag,
   ScanText,
+  Ambulance,
+  Shield,
+  Users,
+  TrendingUp,
+  Award,
+  Clock,
+  Star,
+  ArrowRight,
+  CheckCircle,
+  Globe,
+  Smartphone,
 } from "lucide-react";
+
 export default function HomePage() {
+  const [stats, setStats] = useState({
+    patients: 0,
+    doctors: 0,
+    reports: 0,
+    satisfaction: 0,
+  });
+
+  useEffect(() => {
+    const animateStats = () => {
+      const targets = {
+        patients: 10000,
+        doctors: 500,
+        reports: 25000,
+        satisfaction: 98,
+      };
+      const duration = 2000;
+      const steps = 60;
+      const stepDuration = duration / steps;
+
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        currentStep++;
+        const progress = currentStep / steps;
+
+        setStats({
+          patients: Math.floor(targets.patients * progress),
+          doctors: Math.floor(targets.doctors * progress),
+          reports: Math.floor(targets.reports * progress),
+          satisfaction: Math.floor(targets.satisfaction * progress),
+        });
+
+        if (currentStep >= steps) {
+          clearInterval(interval);
+          setStats(targets);
+        }
+      }, stepDuration);
+    };
+
+    const timer = setTimeout(animateStats, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#e0e7ef] via-[#f3f4f6] to-[#e0e7ef] dark:from-[#232946] dark:via-[#334155] dark:to-[#232946] text-[#1e1b4b] dark:text-[#f3e8ff] relative overflow-x-hidden pt-24">
-      {/* Decorative background pattern */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <svg width="100%" height="100%" className="opacity-10 dark:opacity-5">
-          <defs>
-            <radialGradient id="bg-grad" cx="50%" cy="50%" r="80%">
-              <stop offset="0%" stopColor="#6366f1" />
-              <stop offset="100%" stopColor="transparent" />
-            </radialGradient>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#bg-grad)" />
-        </svg>
-      </div>
+    <main className="min-h-screen bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#0f172a] dark:via-[#1e293b] dark:to-[#334155] text-[#1e293b] dark:text-[#f1f5f9] pt-16 flex flex-col">
       <UserNavbar />
-      {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center py-20 px-4">
-        <div className="backdrop-blur-xl bg-white/70 dark:bg-[#232946]/80 rounded-3xl shadow-2xl p-10 max-w-2xl w-full border border-[#c7d2fe] dark:border-[#6366f1] mx-auto animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-[#2563eb] dark:text-[#60a5fa] drop-shadow-lg text-center">
-            Welcome to Rakshaa AI
-          </h1>
-          <div className="flex justify-center mb-6">
-            <Button
-              asChild
-              size="lg"
-              className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white shadow-xl font-semibold px-8 py-4 rounded-full transition-all duration-300"
-            >
-              <Link href="/user/ai">Ask Our AI Doctor</Link>
-            </Button>
+
+      <section className="relative w-full max-w-7xl mx-auto px-6 py-8 lg:py-12">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 bg-[#2563eb]/10 dark:bg-[#60a5fa]/20 text-[#2563eb] dark:text-[#60a5fa] px-4 py-2 rounded-full text-sm font-medium">
+                <Shield className="w-4 h-4" />
+                Trusted Healthcare Platform
+              </div>
+              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+                <span className="text-[#2563eb] dark:text-[#60a5fa]">
+                  Transforming
+                </span>
+                <br />
+                <span className="text-[#1e293b] dark:text-[#f1f5f9]">
+                  Healthcare
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-[#2563eb] to-[#1d4ed8] dark:from-[#60a5fa] dark:to-[#3b82f6] bg-clip-text text-transparent">
+                  with AI
+                </span>
+              </h1>
+              <p className="text-lg lg:text-xl text-[#64748b] dark:text-[#94a3b8] max-w-xl leading-relaxed">
+                Experience the future of healthcare with our comprehensive
+                AI-powered platform. Connect with doctors, predict diseases,
+                manage reports, and access emergency services—all in one place.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+              >
+                <Link href="/user/ai" className="flex items-center gap-2">
+                  Start AI Consultation
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-2 border-[#2563eb] text-[#2563eb] hover:bg-[#2563eb] hover:text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300"
+              >
+                <Link href="/user/doctor">Find Doctors</Link>
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+              <StatCard
+                number={stats.patients.toLocaleString()}
+                label="Patients Served"
+                suffix="+"
+              />
+              <StatCard
+                number={stats.doctors}
+                label="Expert Doctors"
+                suffix="+"
+              />
+              <StatCard
+                number={stats.reports.toLocaleString()}
+                label="Reports Generated"
+                suffix="+"
+              />
+              <StatCard
+                number={stats.satisfaction}
+                label="Satisfaction Rate"
+                suffix="%"
+              />
+            </div>
           </div>
-          <p className="text-lg md:text-xl max-w-xl mx-auto text-[#2563eb] dark:text-[#60a5fa] text-center">
-            Your smart assistant for health tracking, disease prediction, and
-            medical guidance.
-          </p>
-        </div>
-        {/* Animated floating icons */}
-        <div className="absolute left-8 top-8 animate-float-slow hidden md:block">
-          <HeartPulse className="w-12 h-12 text-[#2563eb] opacity-70" />
-        </div>
-        <div className="absolute right-12 top-24 animate-float-fast hidden md:block">
-          <Bot className="w-10 h-10 text-[#2563eb] opacity-60" />
-        </div>
-        <div className="absolute left-24 bottom-8 animate-float-medium hidden md:block">
-          <Activity className="w-10 h-10 text-[#2563eb] opacity-60" />
+
+          <div className="lg:pl-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              <FeatureCard
+                icon={<HeartPulse className="w-8 h-8" />}
+                title="Expert Doctors"
+                description="Connect with certified medical professionals"
+                href="/user/doctor"
+              />
+              <FeatureCard
+                icon={<Bot className="w-8 h-8" />}
+                title="AI Assistant"
+                description="24/7 intelligent health guidance"
+                href="/user/ai"
+              />
+              <FeatureCard
+                icon={<Activity className="w-8 h-8" />}
+                title="Disease Prediction"
+                description="Advanced ML health assessment"
+                href="/user/ml"
+              />
+              <FeatureCard
+                icon={<FileText className="w-8 h-8" />}
+                title="Appointments"
+                description="Seamless booking & management"
+                href="/user/reports"
+              />
+              <FeatureCard
+                icon={<FlaskConical className="w-8 h-8" />}
+                title="Lab Tests"
+                description="Comprehensive pathology services"
+                href="/user/pathlabs"
+              />
+              <FeatureCard
+                icon={<FileBarChart className="w-8 h-8" />}
+                title="Health Reports"
+                description="Centralized medical records"
+                href="/user/pathlab-reports"
+              />
+              <FeatureCard
+                icon={<ShoppingBag className="w-8 h-8" />}
+                title="Pharmacy"
+                description="Online medicine ordering"
+                href="/pharmacy/home"
+              />
+              <FeatureCard
+                icon={<ScanText className="w-8 h-8" />}
+                title="Smart OCR"
+                description="Digital document processing"
+                href="/user/ocr"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="w-full flex justify-center my-8 z-10 relative">
-        <div className="h-1 w-32 bg-[#2563eb] rounded-full shadow-md" />
-      </div>
+      <section className="w-full max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#1e293b] dark:text-[#f1f5f9] mb-4">
+            Why Healthcare Professionals Trust Rakshaa
+          </h2>
+          <p className="text-lg text-[#64748b] dark:text-[#94a3b8] max-w-3xl mx-auto">
+            Our platform combines cutting-edge technology with medical expertise
+            to deliver exceptional healthcare experiences.
+          </p>
+        </div>
 
-      {/* Features */}
-      <section className="py-16 px-4 max-w-6xl mx-auto relative z-10">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[#2563eb] dark:text-[#60a5fa] drop-shadow-lg">
-          What You Can Do
-        </h2>
-        <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-          <FeatureCard
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <TrustCard
             icon={
-              <HeartPulse className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-pulse" />
+              <Shield className="w-8 h-8 text-[#2563eb] dark:text-[#60a5fa]" />
             }
-            title="Consult Doctors"
-            description="Find and connect with medical professionals easily."
-            href="/user/doctor"
+            title="HIPAA Compliant"
+            description="Bank-level security for all medical data"
           />
-          <FeatureCard
+          <TrustCard
             icon={
-              <Bot className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-bounce" />
+              <Award className="w-8 h-8 text-[#2563eb] dark:text-[#60a5fa]" />
             }
-            title="Ask AI"
-            description="Get instant answers to your health-related queries."
-            href="/user/ai"
+            title="Certified Platform"
+            description="ISO 27001 certified healthcare platform"
           />
-          <FeatureCard
+          <TrustCard
             icon={
-              <Activity className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-spin-slow" />
+              <Clock className="w-8 h-8 text-[#2563eb] dark:text-[#60a5fa]" />
             }
-            title="Predict Disease"
-            description="Use machine learning to assess potential health risks."
-            href="/user/ml"
+            title="24/7 Availability"
+            description="Round-the-clock healthcare support"
           />
-          <FeatureCard
+          <TrustCard
             icon={
-              <FileText className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-fade-in" />
+              <Users className="w-8 h-8 text-[#2563eb] dark:text-[#60a5fa]" />
             }
-            title="Appointments"
-            description="View and manage your medical history and reports."
-            href="/user/reports"
+            title="Expert Network"
+            description="500+ verified medical professionals"
           />
         </div>
-        {/* Second row of features */}
-        <div className="grid gap-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-12">
-          <FeatureCard
-            icon={
-              <FlaskConical className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-float-slow" />
-            }
-            title="Pathlabs"
-            description="Book and view your pathology lab tests."
-            href="/user/pathlabs"
-          />
-          <FeatureCard
-            icon={
-              <FileBarChart className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-fade-in" />
-            }
-            title="Reports"
-            description="Access all your medical reports in one place."
-            href="/user/pathlab-reports"
-          />
-          <FeatureCard
-            icon={
-              <ShoppingBag className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-bounce" />
-            }
-            title="Pharmacy"
-            description="Order medicines and manage your prescriptions."
-            href="/pharmacy/home"
-          />
-          <FeatureCard
-            icon={
-              <ScanText className="w-10 h-10 text-[#2563eb] dark:text-[#60a5fa] animate-spin-slow" />
-            }
-            title="OCR"
-            description="Scan and digitize your medical documents."
-            href="/user/ocr"
-          />
+      </section>
+
+      <section className="w-full bg-gradient-to-r from-[#2563eb]/5 to-[#1d4ed8]/5 dark:from-[#2563eb]/10 dark:to-[#1d4ed8]/10 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#1e293b] dark:text-[#f1f5f9] mb-4">
+              Powered by Advanced Technology
+            </h2>
+            <p className="text-lg text-[#64748b] dark:text-[#94a3b8] max-w-3xl mx-auto">
+              Experience healthcare innovation with our AI-driven solutions and
+              seamless digital infrastructure.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            <TechCard
+              icon={
+                <Bot className="w-12 h-12 text-[#2563eb] dark:text-[#60a5fa]" />
+              }
+              title="AI-Powered Diagnostics"
+              description="Advanced machine learning algorithms analyze symptoms and provide preliminary assessments with 95% accuracy."
+              features={[
+                "Natural Language Processing",
+                "Pattern Recognition",
+                "Continuous Learning",
+              ]}
+            />
+            <TechCard
+              icon={
+                <Globe className="w-12 h-12 text-[#2563eb] dark:text-[#60a5fa]" />
+              }
+              title="Telemedicine Platform"
+              description="Secure, high-quality video consultations with integrated health monitoring and prescription management."
+              features={[
+                "HD Video Calls",
+                "Digital Prescriptions",
+                "Real-time Monitoring",
+              ]}
+            />
+            <TechCard
+              icon={
+                <Smartphone className="w-12 h-12 text-[#2563eb] dark:text-[#60a5fa]" />
+              }
+              title="Mobile-First Design"
+              description="Responsive platform optimized for all devices with offline capabilities and sync across platforms."
+              features={[
+                "Cross-platform Sync",
+                "Offline Mode",
+                "Progressive Web App",
+              ]}
+            />
+          </div>
         </div>
       </section>
 
       <UserFooter />
-      {/*SOS Button*/}
-      <div className="fixed z-50 bottom-2 right-2 md:bottom-6 md:right-6 flex items-end justify-end pointer-events-none select-none">
+
+      <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
         <Link
           href="/user/sos"
-          className="relative pointer-events-auto w-[52px] h-[52px] md:w-[70px] md:h-[70px] flex flex-col items-center justify-center rounded-full shadow-2xl bg-[#d42d2d] text-white text-lg md:text-xl focus:outline-none focus:ring-4 focus:ring-red-300"
-          style={{ boxShadow: "0 8px 32px 0 rgba(185,28,28,0.25)" }}
-          aria-label="SOS Emergency"
+          className="relative pointer-events-auto group"
+          aria-label="Emergency SOS"
         >
-          <span
-            className="sos-text text-[1.1rem] md:text-[1.5rem] font-black leading-none font-mono tracking-widest"
-            style={{
-              letterSpacing: "0.08em",
-              fontFamily: "monospace, Arial, sans-serif",
-            }}
-          >
-            SOS
-          </span>
+          <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30"></div>
+          <div className="relative w-16 h-16 flex flex-col items-center justify-center rounded-full shadow-2xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-red-300">
+            <Ambulance className="w-6 h-6 mb-1" />
+            <span className="text-xs font-bold">SOS</span>
+          </div>
         </Link>
       </div>
     </main>
   );
 }
 
-function FeatureCard({ icon, title, description, href }) {
+function StatCard({ number, label, suffix = "" }) {
   return (
-    <Link
-      href={href}
-      className="group p-7 rounded-3xl bg-white/80 dark:bg-[#232946]/80 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 border border-[#2563eb] dark:border-[#60a5fa] hover:border-[#1d4ed8] dark:hover:border-[#3b82f6] backdrop-blur-xl flex flex-col items-center min-h-[220px]"
-    >
-      <div className="flex flex-col items-center gap-4 w-full">
-        <div className="transition-transform duration-300 group-hover:scale-110">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-[#2563eb] dark:text-[#60a5fa] group-hover:text-[#1d4ed8] dark:group-hover:text-[#3b82f6] transition-colors">
-          {title}
-        </h3>
-        <p className="text-base text-[#2563eb] dark:text-[#60a5fa] text-center">
-          {description}
-        </p>
+    <div className="text-center">
+      <div className="text-2xl lg:text-3xl font-bold text-[#2563eb] dark:text-[#60a5fa]">
+        {number}
+        {suffix}
       </div>
+      <div className="text-sm text-[#64748b] dark:text-[#94a3b8] mt-1">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+  href,
+  priority = false,
+  urgent = false,
+}) {
+  const cardClasses = `
+    group relative p-4 lg:p-6 rounded-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#2563eb] min-h-[140px] lg:min-h-[160px] flex flex-col items-center justify-center text-center
+    ${
+      priority
+        ? "bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-white shadow-xl hover:shadow-2xl"
+        : urgent
+        ? "bg-gradient-to-br from-red-500 to-red-600 text-white shadow-xl hover:shadow-2xl"
+        : "bg-white/90 dark:bg-[#1e293b]/90 border border-[#e2e8f0] dark:border-[#334155] shadow-lg hover:shadow-xl hover:border-[#2563eb]/50 dark:hover:border-[#60a5fa]/50"
+    }
+  `;
+
+  const iconClasses = `
+    w-8 h-8 mb-3 transition-transform group-hover:scale-110
+    ${priority || urgent ? "text-white" : "text-[#2563eb] dark:text-[#60a5fa]"}
+  `;
+
+  const titleClasses = `
+    text-sm lg:text-base font-bold mb-2
+    ${priority || urgent ? "text-white" : "text-[#1e293b] dark:text-[#f1f5f9]"}
+  `;
+
+  const descClasses = `
+    text-xs lg:text-sm leading-relaxed
+    ${
+      priority || urgent
+        ? "text-white/90"
+        : "text-[#64748b] dark:text-[#94a3b8]"
+    }
+  `;
+
+  return (
+    <Link href={href} className={cardClasses}>
+      <div className={iconClasses}>{icon}</div>
+      <h3 className={titleClasses}>{title}</h3>
+      <p className={descClasses}>{description}</p>
+      {(priority || urgent) && (
+        <div className="absolute top-2 right-2">
+          {urgent ? (
+            <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+          ) : (
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+          )}
+        </div>
+      )}
     </Link>
+  );
+}
+
+function TrustCard({ icon, title, description }) {
+  return (
+    <div className="text-center p-6 rounded-2xl bg-white/80 dark:bg-[#1e293b]/80 backdrop-blur-sm border border-[#e2e8f0] dark:border-[#334155] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      <div className="flex justify-center mb-4">{icon}</div>
+      <h3 className="text-lg font-bold text-[#1e293b] dark:text-[#f1f5f9] mb-2">
+        {title}
+      </h3>
+      <p className="text-sm text-[#64748b] dark:text-[#94a3b8] leading-relaxed">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function TechCard({ icon, title, description, features }) {
+  return (
+    <div className="p-8 rounded-3xl bg-white/90 dark:bg-[#1e293b]/90 backdrop-blur-sm border border-[#e2e8f0] dark:border-[#334155] shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+      <div className="flex justify-center mb-6">{icon}</div>
+      <h3 className="text-xl font-bold text-[#1e293b] dark:text-[#f1f5f9] mb-4 text-center">
+        {title}
+      </h3>
+      <p className="text-[#64748b] dark:text-[#94a3b8] leading-relaxed mb-6 text-center">
+        {description}
+      </p>
+      <div className="space-y-3">
+        {features.map((feature, index) => (
+          <div key={index} className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-[#2563eb] dark:text-[#60a5fa] flex-shrink-0" />
+            <span className="text-sm text-[#64748b] dark:text-[#94a3b8]">
+              {feature}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
