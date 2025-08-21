@@ -31,7 +31,7 @@ export default function Navbar() {
         <nav className="hidden md:flex gap-6 text-[#2563eb] dark:text-[#60a5fa] text-[18px] font-semibold">
           <NavLink href="/user/doctor" label="Doctors" />
           <NavLink href="/user/pathlabs" label="Path Labs" />
-          <NavLink href="/user/ai" label="OCR" />
+          <NavLink href="/user/ocr" label="OCR" />
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/ambulance" label="Ambulance" />
@@ -66,7 +66,7 @@ export default function Navbar() {
         <div className="md:hidden mt-3 px-4 pb-4 flex flex-col gap-3 text-[#2563eb] dark:text-[#60a5fa] text-[16px] font-semibold bg-white/95 dark:bg-[#181c2a]/95 rounded-2xl shadow-xl border border-[#2563eb]/20 dark:border-[#60a5fa]/20 animate-fade-in">
           <NavLink href="/user/doctor" label="Doctors" />
           <NavLink href="/user/pathlabs" label="Path Labs" />
-          <NavLink href="/user/ai" label="OCR" />
+          <NavLink href="/user/ocr" label="OCR" />
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/ambulance" label="Ambulance" />
