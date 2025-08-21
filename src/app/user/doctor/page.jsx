@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import HealthChatbotSection from "@/components/Chatbot";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -251,6 +252,7 @@ export default function DoctorSection() {
           )}
         </div>
       </section>
+      <HealthChatbotSection />
       <UserFooter />
     </>
   );

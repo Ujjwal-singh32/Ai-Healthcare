@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import HealthChatbotSection from "@/components/Chatbot";
 
 export default function MyBookings() {
   const { user, loading } = useUser();
@@ -139,6 +140,7 @@ export default function MyBookings() {
           </div>
         </div>
       </div>
+      <HealthChatbotSection />
       <UserFooter />
     </>
   );

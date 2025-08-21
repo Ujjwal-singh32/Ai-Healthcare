@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/context/userContext";
-import {
-  Ambulance,
-} from "lucide-react";
+import { Ambulance } from "lucide-react";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const userData = useUser();
@@ -22,7 +20,10 @@ export default function Navbar() {
             href="/user/home"
             className="text-2xl font-extrabold text-[#2563eb] dark:text-[#60a5fa] tracking-tight flex items-center gap-2 drop-shadow-sm hover:text-[#1d4ed8] dark:hover:text-[#3b82f6] transition-colors"
           >
-            <span role="img" aria-label="stethoscope">🩺</span> Rakshaa
+            <span role="img" aria-label="stethoscope">
+              🩺
+            </span>{" "}
+            Rakshaa
           </Link>
         </div>
 
@@ -30,15 +31,26 @@ export default function Navbar() {
         <nav className="hidden md:flex gap-6 text-[#2563eb] dark:text-[#60a5fa] text-[18px] font-semibold">
           <NavLink href="/user/doctor" label="Doctors" />
           <NavLink href="/user/pathlabs" label="Path Labs" />
-          <NavLink href="/user/ai" label="Ask Sakhsam" />
+          <NavLink href="/user/ai" label="OCR" />
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/ambulance" label="Ambulance" />
           <NavLink href="/pharmacy/home" label="Pharmacy" />
         </nav>
 
-        {/* Right: Avatar & Mobile Menu */}
         <div className="flex items-center gap-4">
+          <Link
+            href="/user/sos"
+            className="hidden md:flex relative group"
+            aria-label="Emergency SOS"
+          >
+            <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30"></div>
+            <div className="relative w-12 h-12 flex flex-col items-center justify-center rounded-full shadow-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-red-300">
+              <Ambulance className="w-5 h-5 mb-0.5" />
+              <span className="text-xs font-bold">SOS</span>
+            </div>
+          </Link>
+
           <button
             className="md:hidden text-[#2563eb] dark:text-[#60a5fa] cursor-pointer hover:text-[#1d4ed8] dark:hover:text-[#3b82f6] transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -46,20 +58,6 @@ export default function Navbar() {
           >
             <Menu className="w-7 h-7" />
           </button>
-
-          <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
-            <Link
-              href="/user/sos"
-              className="relative pointer-events-auto group"
-              aria-label="Emergency SOS"
-            >
-              <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30"></div>
-              <div className="relative w-16 h-16 flex flex-col items-center justify-center rounded-full shadow-2xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-red-300">
-                <Ambulance className="w-6 h-6 mb-1" />
-                <span className="text-xs font-bold">SOS</span>
-              </div>
-            </Link>
-          </div>
         </div>
       </div>
 
@@ -68,11 +66,25 @@ export default function Navbar() {
         <div className="md:hidden mt-3 px-4 pb-4 flex flex-col gap-3 text-[#2563eb] dark:text-[#60a5fa] text-[16px] font-semibold bg-white/95 dark:bg-[#181c2a]/95 rounded-2xl shadow-xl border border-[#2563eb]/20 dark:border-[#60a5fa]/20 animate-fade-in">
           <NavLink href="/user/doctor" label="Doctors" />
           <NavLink href="/user/pathlabs" label="Path Labs" />
-          <NavLink href="/user/ai" label="Ask Sakhsam" />
+          <NavLink href="/user/ai" label="OCR" />
           <NavLink href="/user/ml" label="Predict Disease" />
           <NavLink href="/user/reports" label="Appointments" />
           <NavLink href="/user/ambulance" label="Ambulance" />
           <NavLink href="/pharmacy/home" label="Pharmacy" />
+          <Link
+            href="/user/sos"
+            className="flex items-center gap-2 hover:text-[#1d4ed8] dark:hover:text-[#3b82f6] hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors px-2 py-1 rounded-lg duration-200 border-2 border-red-500/20 bg-red-50/50 dark:bg-red-900/10"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-30"></div>
+              <div className="relative w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white">
+                <Ambulance className="w-4 h-4" />
+              </div>
+            </div>
+            <span className="font-bold text-red-600 dark:text-red-400">
+              Emergency SOS
+            </span>
+          </Link>
         </div>
       )}
     </header>
