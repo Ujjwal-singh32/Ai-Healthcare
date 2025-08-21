@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { MailIcon, LockIcon } from "lucide-react";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const roles = ["Patient", "Doctor", "Pathlab"];
 import axios from "axios";
 import imageCompression from 'browser-image-compression';
@@ -189,7 +190,9 @@ export default function AuthPage() {
 
     try {
       if (role === "Patient") {
+        Cookies.remove("healthChatMessages");
         await loginPatient(email, password);
+        
       } else if (role === "Doctor") {
         await loginDoctor(email, password);
       }
