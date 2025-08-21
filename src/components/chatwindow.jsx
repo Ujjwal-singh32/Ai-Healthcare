@@ -1,6 +1,339 @@
+// // "use client";
+// // import { useState } from "react";
+// // import { Bot, User, X, Send, Stethoscope, Pill, Brain, Calendar } from "lucide-react";
+// // import { useRouter } from "next/navigation";
+
+// // export default function ChatWindow({ onClose }) {
+// //   const [messages, setMessages] = useState([]);
+// //   const [input, setInput] = useState("");
+// //   const router = useRouter();
+
+// //   // Call backend (route.js) with conversation history
+// //   const sendMessage = async (text) => {
+// //     const newMessages = [...messages, { sender: "user", text }];
+// //     setMessages(newMessages);
+// //     setInput("");
+
+// //     try {
+// //       const res = await fetch("/api/gemini", {
+// //         method: "POST",
+// //         headers: { "Content-Type": "application/json" },
+// //         body: JSON.stringify({ messages: newMessages }),
+// //       });
+
+// //       const data = await res.json();
+// //       if (data.reply) {
+// //         setMessages((prev) => [
+// //           ...prev,
+// //           { sender: "bot", text: data.reply, options: data.actions || [] },
+// //         ]);
+// //       }
+// //     } catch (error) {
+// //       console.error("Error sending message:", error);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="fixed inset-0 flex items-center justify-center z-50 p-2 sm:p-4">
+// //       {/* Background Overlay */}
+// //       <div
+// //         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+// //         onClick={onClose}
+// //       ></div>
+
+// //       {/* Chat Box */}
+// //       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md h-[90vh] sm:h-[650px] flex flex-col z-10 border border-slate-200 overflow-hidden">
+// //         {/* Header */}
+// //         <div className="bg-slate-50 border-b p-4 flex justify-between items-center">
+// //           <div className="flex items-center gap-3">
+// //             <div className="w-10 h-10 bg-[#2563eb] rounded-lg flex items-center justify-center">
+// //               <Bot className="w-5 h-5 text-white" />
+// //             </div>
+// //             <h2 className="font-bold text-lg text-slate-800">Saksham AI</h2>
+// //           </div>
+// //           <button
+// //             onClick={onClose}
+// //             className="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center"
+// //           >
+// //             <X className="w-4 h-4 text-slate-600" />
+// //           </button>
+// //         </div>
+
+// //         {/* Messages */}
+// //         <div className="flex-1 p-5 overflow-y-auto space-y-5 bg-slate-50/30">
+// //           {messages.map((msg, i) => (
+// //             <div
+// //               key={i}
+// //               className={`flex items-start gap-3 ${
+// //                 msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+// //               }`}
+// //             >
+// //               <div
+// //                 className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+// //                   msg.sender === "user" ? "bg-[#2563eb]" : "bg-white border"
+// //                 }`}
+// //               >
+// //                 {msg.sender === "user" ? (
+// //                   <User className="w-4 h-4 text-white" />
+// //                 ) : (
+// //                   <Bot className="w-4 h-4 text-[#2563eb]" />
+// //                 )}
+// //               </div>
+// //               <div className="max-w-[75%]">
+// //                 <div
+// //                   className={`px-3 py-2 shadow-sm ${
+// //                     msg.sender === "user"
+// //                       ? "bg-[#2563eb] text-white rounded-xl rounded-tr-md"
+// //                       : "bg-white border text-slate-800 rounded-xl rounded-tl-md"
+// //                   }`}
+// //                 >
+// //                   <p className="text-sm font-medium">{msg.text}</p>
+
+// //                   {/* Render options (actions) */}
+// //                   {msg.options && (
+// //                     <div className="mt-3 space-y-2">
+// //                       {msg.options.map((opt, j) => {
+// //                         const getIcon = (label) => {
+// //                           if (label.includes("Doctor"))
+// //                             return <Stethoscope className="w-4 h-4" />;
+// //                           if (label.includes("Medicine"))
+// //                             return <Pill className="w-4 h-4" />;
+// //                           if (label.includes("disease"))
+// //                             return <Brain className="w-4 h-4" />;
+// //                           return <Calendar className="w-4 h-4" />;
+// //                         };
+
+// //                         return (
+// //                           <button
+// //                             key={j}
+// //                             onClick={() => {
+// //                               router.push(opt.route);
+// //                               onClose(); // <-- close chatbox automatically
+// //                             }}
+// //                             className="w-full flex items-center gap-2 px-3 py-2 border-2 border-[#2563eb] text-[#2563eb] rounded-lg hover:bg-[#2563eb] hover:text-white transition-all"
+// //                           >
+// //                             {getIcon(opt.label)}
+// //                             <span>{opt.label}</span>
+// //                           </button>
+// //                         );
+// //                       })}
+// //                     </div>
+// //                   )}
+// //                 </div>
+// //               </div>
+// //             </div>
+// //           ))}
+// //         </div>
+
+// //         {/* Input Box */}
+// //         <div className="p-3 bg-white border-t">
+// //           <div className="flex gap-2">
+// //             <input
+// //               type="text"
+// //               value={input}
+// //               onChange={(e) => setInput(e.target.value)}
+// //               placeholder="Describe your health concern..."
+// //               className="flex-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2563eb]"
+// //               onKeyDown={(e) => {
+// //                 if (e.key === "Enter" && input.trim()) {
+// //                   sendMessage(input);
+// //                 }
+// //               }}
+// //             />
+// //             <button
+// //               onClick={() => input.trim() && sendMessage(input)}
+// //               className="w-10 h-10 bg-[#2563eb] text-white rounded-lg flex items-center justify-center"
+// //             >
+// //               <Send className="w-4 h-4" />
+// //             </button>
+// //           </div>
+// //         </div>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+// "use client";
+// import { useState, useEffect } from "react";
+// import { Bot, User, X, Send, Stethoscope, Pill, Brain, Calendar } from "lucide-react";
+// import { useRouter } from "next/navigation";
+
+// export default function ChatWindow({ onClose }) {
+//   const [messages, setMessages] = useState([]);
+//   const [input, setInput] = useState("");
+//   const router = useRouter();
+
+//   // Show welcome message when chat opens
+//   useEffect(() => {
+//     setMessages([
+//       {
+//         sender: "bot",
+//         text: "Welcome to Rakshaa Healthcare ✨\nI'm Saksham, your dedicated healthcare assistant. I can help you with:\n\n• Booking doctor appointments\n• Symptom assessment and guidance\n• Medication and prescription support",
+//       },
+//     ]);
+//   }, []);
+
+//   const sendMessage = async (text) => {
+//     const newMessages = [...messages, { sender: "user", text }];
+//     setMessages(newMessages);
+//     setInput("");
+
+//     try {
+//       const res = await fetch("/api/gemini", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ messages: newMessages }),
+//       });
+
+//       const data = await res.json();
+//       if (data.reply) {
+//         setMessages((prev) => [
+//           ...prev,
+//           { sender: "bot", text: data.reply, options: data.actions || [] },
+//         ]);
+//       }
+//     } catch (error) {
+//       console.error("Error sending message:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="fixed inset-0 flex items-center justify-center z-50 p-2 sm:p-4">
+//       {/* Background Overlay */}
+//       <div
+//         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+//         onClick={onClose}
+//       ></div>
+
+//       {/* Chat Box */}
+//       <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md h-[90vh] sm:h-[650px] flex flex-col z-10 border border-slate-200 overflow-hidden">
+//         {/* Header */}
+//         <div className="bg-[#2563eb] text-white p-4 flex justify-between items-center">
+//           <div className="flex items-center gap-3">
+//             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+//               <Bot className="w-5 h-5 text-[#2563eb]" />
+//             </div>
+//             <div>
+//               <h2 className="font-bold text-base">Saksham AI</h2>
+//               <p className="text-xs text-white/80">Healthcare Assistant • Online</p>
+//             </div>
+//           </div>
+//           <button
+//             onClick={onClose}
+//             className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center"
+//           >
+//             <X className="w-4 h-4 text-white" />
+//           </button>
+//         </div>
+
+//         {/* Messages */}
+//         <div className="flex-1 p-5 overflow-y-auto space-y-5 bg-slate-50">
+//           {messages.map((msg, i) => (
+//             <div
+//               key={i}
+//               className={`flex items-start gap-3 ${
+//                 msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+//               }`}
+//             >
+//               <div
+//                 className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+//                   msg.sender === "user" ? "bg-[#2563eb]" : "bg-slate-200"
+//                 }`}
+//               >
+//                 {msg.sender === "user" ? (
+//                   <User className="w-4 h-4 text-white" />
+//                 ) : (
+//                   <Bot className="w-4 h-4 text-[#2563eb]" />
+//                 )}
+//               </div>
+
+//               <div className="max-w-[75%]">
+//                 <div
+//                   className={`px-3 py-2 shadow-sm whitespace-pre-line ${
+//                     msg.sender === "user"
+//                       ? "bg-[#2563eb] text-white rounded-xl rounded-tr-md"
+//                       : "bg-white border text-slate-800 rounded-xl rounded-tl-md"
+//                   }`}
+//                 >
+//                   <p className="text-sm font-medium leading-relaxed">
+//                     {msg.text}
+//                   </p>
+
+//                   {/* Render options */}
+//                   {msg.options && (
+//                     <div className="mt-3 space-y-2">
+//                       {msg.options.map((opt, j) => {
+//                         const getIcon = (label) => {
+//                           if (label.includes("Doctor"))
+//                             return <Stethoscope className="w-4 h-4" />;
+//                           if (label.includes("Medicine"))
+//                             return <Pill className="w-4 h-4" />;
+//                           if (label.includes("disease"))
+//                             return <Brain className="w-4 h-4" />;
+//                           return <Calendar className="w-4 h-4" />;
+//                         };
+
+//                         return (
+//                           <button
+//                             key={j}
+//                             onClick={() => {
+//                               router.push(opt.route);
+//                               onClose();
+//                             }}
+//                             className="w-full flex items-center gap-2 px-3 py-2 border-2 border-[#2563eb] text-[#2563eb] rounded-lg hover:bg-[#2563eb] hover:text-white transition-all"
+//                           >
+//                             {getIcon(opt.label)}
+//                             <span>{opt.label}</span>
+//                           </button>
+//                         );
+//                       })}
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* Input Box */}
+//         <div className="p-3 bg-white border-t">
+//           <div className="flex gap-2">
+//             <input
+//               type="text"
+//               value={input}
+//               onChange={(e) => setInput(e.target.value)}
+//               placeholder="Describe your health concern..."
+//               className="flex-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2563eb]"
+//               onKeyDown={(e) => {
+//                 if (e.key === "Enter" && input.trim()) {
+//                   sendMessage(input);
+//                 }
+//               }}
+//             />
+//             <button
+//               onClick={() => input.trim() && sendMessage(input)}
+//               className="w-10 h-10 bg-[#2563eb] text-white rounded-lg flex items-center justify-center"
+//             >
+//               <Send className="w-4 h-4" />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
-import { useState } from "react";
-import { Bot, User, X, Send, Stethoscope, Pill, Brain, Calendar } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Bot,
+  User,
+  X,
+  Send,
+  Stethoscope,
+  Pill,
+  Brain,
+  Calendar,
+  Sparkles,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function ChatWindow({ onClose }) {
@@ -8,7 +341,16 @@ export default function ChatWindow({ onClose }) {
   const [input, setInput] = useState("");
   const router = useRouter();
 
-  // Call backend (route.js) with conversation history
+  // Show welcome message when chat opens
+  useEffect(() => {
+    setMessages([
+      {
+        sender: "bot",
+        text: "✨ Welcome to Rakshaa Healthcare\n\nI'm **Saksham**, your dedicated healthcare assistant. I can help you with:\n\n• Booking doctor appointments\n• Symptom assessment and guidance\n• Medication and prescription support",
+      },
+    ]);
+  }, []);
+
   const sendMessage = async (text) => {
     const newMessages = [...messages, { sender: "user", text }];
     setMessages(newMessages);
@@ -34,33 +376,39 @@ export default function ChatWindow({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 p-2 sm:p-4">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-3 sm:p-6">
       {/* Background Overlay */}
       <div
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       ></div>
 
       {/* Chat Box */}
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md h-[90vh] sm:h-[650px] flex flex-col z-10 border border-slate-200 overflow-hidden">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl h-[85vh] sm:h-[700px] flex flex-col z-10 border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-slate-50 border-b p-4 flex justify-between items-center">
+        <div className="bg-[#2563eb] text-white p-4 flex justify-between items-center shadow-md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#2563eb] rounded-lg flex items-center justify-center">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-11 h-11 bg-white rounded-lg flex items-center justify-center shadow-sm">
+              <Bot className="w-6 h-6 text-[#2563eb]" />
             </div>
-            <h2 className="font-bold text-lg text-slate-800">Saksham AI</h2>
+            <div>
+              <h2 className="font-bold text-lg">Saksham AI</h2>
+              <p className="text-xs text-white/90 flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                Healthcare Assistant • Online
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-lg flex items-center justify-center"
+            className="w-9 h-9 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition"
           >
-            <X className="w-4 h-4 text-slate-600" />
+            <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 p-5 overflow-y-auto space-y-5 bg-slate-50/30">
+        <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-slate-50">
           {messages.map((msg, i) => (
             <div
               key={i}
@@ -69,29 +417,29 @@ export default function ChatWindow({ onClose }) {
               }`}
             >
               <div
-                className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-                  msg.sender === "user" ? "bg-[#2563eb]" : "bg-white border"
+                className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm ${
+                  msg.sender === "user" ? "bg-[#2563eb]" : "bg-slate-200"
                 }`}
               >
                 {msg.sender === "user" ? (
-                  <User className="w-4 h-4 text-white" />
+                  <User className="w-5 h-5 text-white" />
                 ) : (
-                  <Bot className="w-4 h-4 text-[#2563eb]" />
+                  <Bot className="w-5 h-5 text-[#2563eb]" />
                 )}
               </div>
-              <div className="max-w-[75%]">
-                <div
-                  className={`px-3 py-2 shadow-sm ${
-                    msg.sender === "user"
-                      ? "bg-[#2563eb] text-white rounded-xl rounded-tr-md"
-                      : "bg-white border text-slate-800 rounded-xl rounded-tl-md"
-                  }`}
-                >
-                  <p className="text-sm font-medium">{msg.text}</p>
 
-                  {/* Render options (actions) */}
+              <div className="max-w-[70%]">
+                <div
+  className={`px-4 py-3 shadow-sm whitespace-pre-line text-sm leading-relaxed ${
+    msg.sender === "user"
+      ? "bg-[#2563eb] text-white rounded-2xl rounded-tr-md"
+      : "bg-blue-50 border border-blue-200 text-slate-800 rounded-2xl rounded-tl-md"
+  }`}
+>
+                  {msg.text}
+                  {/* Render options */}
                   {msg.options && (
-                    <div className="mt-3 space-y-2">
+                    <div className="mt-4 space-y-2">
                       {msg.options.map((opt, j) => {
                         const getIcon = (label) => {
                           if (label.includes("Doctor"))
@@ -108,9 +456,9 @@ export default function ChatWindow({ onClose }) {
                             key={j}
                             onClick={() => {
                               router.push(opt.route);
-                              onClose(); // <-- close chatbox automatically
+                              onClose();
                             }}
-                            className="w-full flex items-center gap-2 px-3 py-2 border-2 border-[#2563eb] text-[#2563eb] rounded-lg hover:bg-[#2563eb] hover:text-white transition-all"
+                            className="w-full flex items-center gap-2 px-4 py-2 border-2 border-[#2563eb] text-[#2563eb] rounded-lg hover:bg-[#2563eb] hover:text-white transition-all"
                           >
                             {getIcon(opt.label)}
                             <span>{opt.label}</span>
@@ -126,14 +474,14 @@ export default function ChatWindow({ onClose }) {
         </div>
 
         {/* Input Box */}
-        <div className="p-3 bg-white border-t">
-          <div className="flex gap-2">
+        <div className="p-4 bg-white border-t">
+          <div className="flex gap-3">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Describe your health concern..."
-              className="flex-1 border px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#2563eb]"
+              className="flex-1 border px-4 py-3 rounded-xl shadow-sm focus:ring-2 focus:ring-[#2563eb] outline-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && input.trim()) {
                   sendMessage(input);
@@ -142,9 +490,9 @@ export default function ChatWindow({ onClose }) {
             />
             <button
               onClick={() => input.trim() && sendMessage(input)}
-              className="w-10 h-10 bg-[#2563eb] text-white rounded-lg flex items-center justify-center"
+              className="w-12 h-12 bg-[#2563eb] text-white rounded-xl flex items-center justify-center hover:bg-blue-600 transition"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-5 h-5" />
             </button>
           </div>
         </div>
