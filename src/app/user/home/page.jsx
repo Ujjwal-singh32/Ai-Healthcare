@@ -299,7 +299,7 @@ export default function HomePage() {
 
       <UserFooter />
 
-      {/* <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
+      <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
         <Link
           href="/user/sos"
           className="relative pointer-events-auto group"
@@ -311,7 +311,7 @@ export default function HomePage() {
             <span className="text-xs font-bold">SOS</span>
           </div>
         </Link>
-      </div> */}
+      </div>
     </main>
   );
 }
