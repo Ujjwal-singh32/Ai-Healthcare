@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import { useRouter } from "next/navigation";
-import ChatButton from "@/components/chatbutton";
 import axios from "axios";
 
 export default function DoctorSection() {
@@ -252,7 +251,6 @@ export default function DoctorSection() {
           )}
         </div>
       </section>
-      <ChatButton />
       <UserFooter />
     </>
   );

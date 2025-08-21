@@ -5,7 +5,6 @@ import Select from "react-select";
 import { Brain } from "lucide-react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
-import ChatButton from "@/components/chatbutton";
 
 const symptomsDict = {
   itching: 0,
@@ -386,8 +385,6 @@ export default function MLPredictionPage() {
       <div className="w-full">
         <div className="border-t-2 bg-blue-400 border-blue-200 rounded-full" />
       </div>
-
-      <ChatButton />
 
       <UserFooter />
     </div>

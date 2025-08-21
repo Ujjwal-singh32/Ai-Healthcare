@@ -7,9 +7,6 @@ import axios from "axios";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import { useUser } from "@/context/userContext";
-import ChatButton from "@/components/chatbutton";
-
-
 
 const timeSlots = {
   "9:00 AM": 3,
@@ -491,7 +488,6 @@ const PathlabDetailsPage = () => {
           </div>
         </div>
       </div>
-      <ChatButton />
       <UserFooter />
     </>
   );

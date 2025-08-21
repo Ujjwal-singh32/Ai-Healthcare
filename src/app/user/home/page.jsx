@@ -3,7 +3,6 @@ import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import ChatButton from "@/components/chatbutton";
 import { useState, useEffect } from "react";
 import {
   HeartPulse,
@@ -313,7 +312,6 @@ export default function HomePage() {
           </div>
         </Link>
       </div> */}
-       <ChatButton />
     </main>
   );
 }
@@ -422,7 +420,6 @@ function TechCard({ icon, title, description, features }) {
           </div>
         ))}
       </div>
-
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ChatButton from "@/components/chatbutton";
 
 const MakePayment = () => {
   const [loading, setLoading] = useState(false);
@@ -332,10 +331,7 @@ const MakePayment = () => {
             </div>
           </>
         )}
-
-
       </div>
-      <ChatButton />
     </div>
   );
 };

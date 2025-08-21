@@ -5,7 +5,6 @@ import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import { useUser } from "@/context/userContext";
 import { useRouter } from "next/navigation";
-import ChatButton from "@/components/chatbutton";
 import { toast } from "react-toastify";
 
 function MyProfile() {
@@ -227,7 +226,6 @@ function MyProfile() {
           )}
         </div>
       </div>
-      <ChatButton />
       <UserFooter />
     </>
   );
