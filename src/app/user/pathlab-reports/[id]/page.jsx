@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import UserNavbar from "@/components/UserNavbar";
 import { useSearchParams } from "next/navigation";
-import ChatButton from "@/components/chatbutton";
 
 import {
   Document,
@@ -307,7 +306,6 @@ const PathlabReportDetailsPage = () => {
           </div>
         </div>
       )}
-      <ChatButton />
     </>
   );
 };

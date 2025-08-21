@@ -10,7 +10,6 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { useUser } from "@/context/userContext";
 import { Calendar, Clock, MapPin, Award, Stethoscope, DollarSign, Heart, Star, ThumbsUp } from "lucide-react";
-import ChatButton from "@/components/chatbutton";
 // Predefined slot times
 const timeSlots = {
   "10:00 AM": 3,
@@ -357,7 +356,6 @@ export default function DoctorDetailsPage() {
           )}
         </div>
       </div>
-      <ChatButton />
       <UserFooter />
     </>
   );

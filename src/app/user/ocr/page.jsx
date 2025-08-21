@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
-import ChatButton from "@/components/chatbutton";
-
 
 export default function OCRPage() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -388,7 +386,6 @@ export default function OCRPage() {
           </div>
         </div>
       </div>
-      <ChatButton />
       <UserFooter />
     </>
   );

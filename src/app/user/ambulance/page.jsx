@@ -5,7 +5,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
-import ChatButton from "@/components/chatbutton";
 
 export default function MyBookings() {
   const { user, loading } = useUser();
@@ -140,8 +139,6 @@ export default function MyBookings() {
           </div>
         </div>
       </div>
-      <ChatButton />
-      
       <UserFooter />
     </>
   );
