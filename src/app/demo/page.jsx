@@ -57,21 +57,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col relative">
-      {/* Navbar */}
-      <nav className="flex justify-between items-center p-6 bg-blue-600 shadow-md">
-        <h1 className="text-2xl font-bold text-white">DemoSite</h1>
-        <div className="space-x-6">
-          <a href="#" className="text-white hover:text-blue-200">
-            Home
-          </a>
-          <a href="#" className="text-white hover:text-blue-200">
-            Features
-          </a>
-          <a href="#" className="text-white hover:text-blue-200">
-            Contact
-          </a>
-        </div>
-      </nav>
+     
 
       {/* Hero Section */}
       <header className="flex-1 flex flex-col justify-center items-center text-center px-6">

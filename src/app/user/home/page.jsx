@@ -4,6 +4,7 @@ import UserFooter from "@/components/UserFooter";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import HealthChatbotSection from "@/components/Chatbot";
 import {
   HeartPulse,
   Bot,
@@ -24,6 +25,7 @@ import {
   CheckCircle,
   Globe,
   Smartphone,
+  User
 } from "lucide-react";
 
 export default function HomePage() {
@@ -196,6 +198,12 @@ export default function HomePage() {
                 description="Digital document processing"
                 href="/user/ocr"
               />
+              <FeatureCard
+                icon={<User className="w-8 h-8" />}
+                title="Profile"
+                description="Manage Your Profile"
+                href="/user/profile"
+              />
             </div>
           </div>
         </div>
@@ -296,10 +304,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
+      <HealthChatbotSection />
       <UserFooter />
 
-      <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
+      {/* <div className="fixed z-50 bottom-6 right-6 flex items-end justify-end pointer-events-none select-none">
         <Link
           href="/user/sos"
           className="relative pointer-events-auto group"
@@ -311,7 +319,7 @@ export default function HomePage() {
             <span className="text-xs font-bold">SOS</span>
           </div>
         </Link>
-      </div>
+      </div> */}
     </main>
   );
 }
@@ -340,10 +348,9 @@ function FeatureCard({
 }) {
   const cardClasses = `
     group relative p-4 lg:p-6 rounded-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#2563eb] min-h-[140px] lg:min-h-[160px] flex flex-col items-center justify-center text-center
-    ${
-      priority
-        ? "bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-white shadow-xl hover:shadow-2xl"
-        : urgent
+    ${priority
+      ? "bg-gradient-to-br from-[#2563eb] to-[#1d4ed8] text-white shadow-xl hover:shadow-2xl"
+      : urgent
         ? "bg-gradient-to-br from-red-500 to-red-600 text-white shadow-xl hover:shadow-2xl"
         : "bg-white/90 dark:bg-[#1e293b]/90 border border-[#e2e8f0] dark:border-[#334155] shadow-lg hover:shadow-xl hover:border-[#2563eb]/50 dark:hover:border-[#60a5fa]/50"
     }
@@ -361,10 +368,9 @@ function FeatureCard({
 
   const descClasses = `
     text-xs lg:text-sm leading-relaxed
-    ${
-      priority || urgent
-        ? "text-white/90"
-        : "text-[#64748b] dark:text-[#94a3b8]"
+    ${priority || urgent
+      ? "text-white/90"
+      : "text-[#64748b] dark:text-[#94a3b8]"
     }
   `;
 
