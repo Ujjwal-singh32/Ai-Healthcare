@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import ChatButton from "@/components/chatbutton";
 import axios from "axios";
 
 export default function HealthChatbotSection() {
@@ -180,6 +181,8 @@ export default function HealthChatbotSection() {
       <div className="w-full">
         <div className="border-t-2 bg-[#2563eb] border-[#60a5fa] rounded-full shadow-md shadow-[#2563eb]/10" />
       </div>
+
+      <ChatButton />
 
       <UserFooter />
     </>

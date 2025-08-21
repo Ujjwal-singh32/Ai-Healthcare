@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import ChatButton from "@/components/chatbutton";
 
 const AmbulanceMap = dynamic(() => import("src/components/AmbulanceMap.jsx"), { ssr: false });
 export default function SOS() {
@@ -21,7 +22,8 @@ export default function SOS() {
                     <AmbulanceMap />
                 </div>
             </main>
-
+            {/* Chat Button */}
+            {/* <ChatButton /> */}
             {/* Footer */}
             <footer className="mt-4">
                 <UserFooter />

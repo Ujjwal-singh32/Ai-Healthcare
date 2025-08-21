@@ -6,6 +6,7 @@ import clsx from "clsx";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import { useUser } from "@/context/userContext";
+import ChatButton from "@/components/chatbutton";
 import axios from "axios";
 const tabs = ["started", "upcoming", "completed"];
 
@@ -138,6 +139,7 @@ export default function ReportsPage() {
           <div className="my-10 border-t border-[#c7d2fe] dark:border-[#60a5fa]" />
         </div>
       </section>
+      <ChatButton />
       <UserFooter />
     </>
   );

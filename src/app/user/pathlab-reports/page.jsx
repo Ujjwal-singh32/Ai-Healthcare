@@ -5,6 +5,7 @@ import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/userContext";
+import ChatButton from "@/components/chatbutton";
 
 const PathlabReportsPage = () => {
   const { user, patientName } = useUser();
@@ -316,7 +317,9 @@ const PathlabReportsPage = () => {
             </div>
           )}
         </div>
+        <ChatButton />
       </div>
+
       <UserFooter />
     </>
   );

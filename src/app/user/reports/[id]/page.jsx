@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { io } from "socket.io-client";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import ChatButton from "@/components/chatbutton";
 import { Download, Loader2 } from "lucide-react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
@@ -667,6 +668,7 @@ export default function AppointmentDetails() {
           </div>
         </div>
       </div>
+       <ChatButton />
       <UserFooter />
     </>
   );
