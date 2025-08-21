@@ -3,6 +3,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import HealthChatbotSection from "@/components/Chatbot";
 import { useUser } from "@/context/userContext";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -226,6 +227,7 @@ function MyProfile() {
           )}
         </div>
       </div>
+      <HealthChatbotSection />
       <UserFooter />
     </>
   );

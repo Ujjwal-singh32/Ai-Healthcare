@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import HealthChatbotSection from "@/components/Chatbot";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -41,14 +42,13 @@ export default function PathlabSection() {
         )
     )
     .sort((a, b) => {
-      const minPriceA = Math.min(...(a.test || []).map(t => t.price || 0));
-      const minPriceB = Math.min(...(b.test || []).map(t => t.price || 0));
+      const minPriceA = Math.min(...(a.test || []).map((t) => t.price || 0));
+      const minPriceB = Math.min(...(b.test || []).map((t) => t.price || 0));
 
       return sortOrder === "asc"
         ? minPriceA - minPriceB
         : minPriceB - minPriceA;
     });
-
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -130,16 +130,11 @@ export default function PathlabSection() {
                         </div>
                       </div>
 
-                      {/* Title and verified badge */}
+                      {/* Title */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#2563eb] leading-tight tracking-tight break-words">
-                            {lab.labName && lab.labName.toUpperCase()}
-                          </h3>
-                          <span className="flex-shrink-0 h-5 px-2 sm:h-6 sm:px-3 rounded-full bg-[#2563eb] flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                            VERIFIED
-                          </span>
-                        </div>
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-[#2563eb] leading-tight tracking-tight break-words">
+                          {lab.labName && lab.labName.toUpperCase()}
+                        </h3>
                       </div>
                     </div>
 
@@ -202,6 +197,7 @@ export default function PathlabSection() {
           )}
         </div>
       </section>
+      <HealthChatbotSection />
       <UserFooter />
     </>
   );

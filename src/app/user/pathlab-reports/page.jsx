@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import UserNavbar from "@/components/UserNavbar";
 import UserFooter from "@/components/UserFooter";
+import HealthChatbotSection from "@/components/Chatbot";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/userContext";
 
@@ -317,6 +318,7 @@ const PathlabReportsPage = () => {
           )}
         </div>
       </div>
+      <HealthChatbotSection />
       <UserFooter />
     </>
   );
