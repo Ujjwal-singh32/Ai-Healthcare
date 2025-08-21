@@ -3,6 +3,7 @@ import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import UserProvider from "@/context/userContext";
 import { AmbulanceProvider } from "@/context/AmbulanceContext";
+import ChatButton from "@/components/chatbutton";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
               <AmbulanceProvider>
                 {children}
                 <ToastContainer position="top-right" autoClose={3000} />
+                <ChatButton />
               </AmbulanceProvider>
             </DoctorProvider>
           </UserProvider>
